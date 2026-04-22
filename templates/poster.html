@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ data.paper_title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --box-bg: #ffffff;
+            --accent: #2c3e50;
+            --text-main: #333333;
+            --border-radius: 12px;
+            --padding-inner: 20px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 3840px;
+            height: 2880px;
+            background-color: var(--primary-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .poster-container {
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            flex-grow: 1;
+            height: 0; /* allows children to flex appropriately without breaking grid bounds */
+        }
+
+        .poster-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            height: 100%;
+        }
+
+        .section-box {
+            background-color: var(--box-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: var(--padding-inner);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--accent);
+            flex-grow: 1; /* Natively stretches to eliminate blank gaps vertically */
+            justify-content: flex-start;
+        }
+
+        /* Title block styling */
+        .title-block {
+            border-top: none;
+            background: transparent;
+            box-shadow: none;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .title-block h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 130px;
+            color: var(--accent);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .authors-block {
+            font-family: 'Inter', sans-serif;
+            font-size: 60px;
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 70px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .bullet-list {
+            font-size: 45px;
+            line-height: 1.5;
+            padding-left: 50px;
+            margin: 0;
+        }
+
+        .bullet-item {
+            margin-bottom: 20px;
+        }
+
+        .figures-container {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .figure-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .figure-img {
+            max-width: 100%;
+            max-height: 380px;
+            border-radius: 16px;
+            object-fit: contain;
+            border: 3px solid #ccc;
+        }
+
+        .figure-caption {
+            font-size: 35px;
+            color: #666;
+            margin-top: 18px;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+    <!-- Add inline styles for dynamic critic fixes if provided -->
+    {% if critic_css %}
+    <style>
+        {{ critic_css }}
+    </style>
+    {% endif %}
+</head>
+<body>
+    <div class="poster-container">
+        <!-- Title Header -->
+        <div class="title-block">
+            {% for section in data.sections %}
+                {% if section.layout.col == -1 %}
+                    <h1>{{ data.paper_title }}</h1>
+                    {% if data.paper_authors %}
+                        <div class="authors-block">{{ data.paper_authors }}</div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- CSS Grid Body -->
+        <div class="poster-grid">
+            <!-- Render 3 Columns -->
+            {% for col_idx in range(3) %}
+            <div class="poster-column">
+                {% for section in data.sections %}
+                    {% if section.layout.col == col_idx %}
+                    <div class="section-box">
+                        <h2 class="section-title">{{ section.name }}</h2>
+                        <ul class="bullet-list">
+                            {% for bullet in section.bullets %}
+                                <li class="bullet-item">{{ bullet }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        {% if section.figures and section.figures|length > 0 %}
+                        <div class="figures-container">
+                            {% for fig in section.figures %}
+                            <div class="figure-wrapper">
+                                <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" alt="{{ fig.caption }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

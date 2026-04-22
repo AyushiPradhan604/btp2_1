@@ -1,0 +1,11 @@
+langchain
+langchain-core
+langchain-google-genai
+langchain-ollama
+pydantic
+pydantic-settings
+jinja2
+pymupdf
+playwright
+python-dotenv
+docling
