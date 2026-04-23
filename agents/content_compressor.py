@@ -36,7 +36,7 @@ Rules:
 - Aim for 15-20 words per bullet to ensure the text fits perfectly inside the restricted section box.
 - Extract substantive insights, theoretical derivations, methodology details, and numerical results where available.
 - Never output blank lines or "Summary not available" if content is present.
-- Translate heavy math/notation into eloquent functional English.
+- Preserve mathematical equations and notation natively using LaTeX formatting ($ for inline, $$ for block). Do NOT strip out math.
 '''
     actual_content = extract_section_text(section_name, section_content)
     messages = [
