@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ data.paper_title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --box-bg: #ffffff;
+            --accent: #2c3e50;
+            --text-main: #333333;
+            --border-radius: 20px;
+            --padding-inner: 40px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 3840px;
+            height: 2880px;
+            background-color: var(--primary-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .poster-container {
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            border: 30px solid var(--accent); /* HARD CONSTRAINT BORDER */
+            overflow: hidden;
+        }
+
+        .poster-grid {
+            column-count: 3;
+            column-gap: 60px;
+            column-fill: auto;
+            flex-grow: 1;
+            width: 100%;
+            height: 10px; /* Forces explicit height context for sequential flow under flex */
+            padding-bottom: 20px;
+            border-top: 8px solid var(--accent);
+            padding-top: 0px;
+        }
+
+        .section-box {
+            box-sizing: border-box;
+            display: block; 
+            margin-bottom: 60px; 
+            break-inside: auto; /* ALLOW the section text to natively split across columns */
+            width: 100%;
+        }
+
+        /* Title block styling */
+        .title-block {
+            border-top: none;
+            background: transparent;
+            box-shadow: none;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .title-block h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 130px;
+            color: var(--accent);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .authors-block {
+            font-family: 'Inter', sans-serif;
+            font-size: 60px;
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 55px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: -8px; /* Shifts exact 8px border up to overlap perfectly */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border-top: 8px solid var(--accent);
+            padding-top: 20px;
+            break-after: avoid;
+        }
+
+        .bullet-list {
+            font-size: 32px;
+            line-height: 1.4;
+            padding-left: 45px;
+            margin: 0;
+        }
+
+        .bullet-item {
+            margin-bottom: 20px;
+        }
+
+        .figures-container {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .figure-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .figure-float {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .figure-img {
+            max-width: 90%;
+            max-height: 500px;
+            border-radius: 16px;
+            object-fit: contain;
+            border: 4px solid #ccc;
+        }
+
+        /* Dynamically format MathJax equations to align side-by-side if they fit */
+        mjx-container[display="true"] {
+            display: inline-block !important;
+            margin: 15px 30px !important;
+            vertical-align: middle;
+        }
+
+    </style>
+    <!-- Add inline styles for dynamic critic fixes if provided -->
+    {% if critic_css %}
+    <style>
+        {{ critic_css }}
+    </style>
+    {% endif %}
+    <!-- MathJax for rendering LaTeX equations -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="poster-container">
+        <!-- Title Header -->
+        <div class="title-block">
+            {% for section in data.sections %}
+                {% if section.layout.col == -1 %}
+                    <h1>{{ data.paper_title }}</h1>
+                    {% if data.paper_authors %}
+                        <div class="authors-block">{{ data.paper_authors }}</div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- CSS Native Multi-Column Flow -->
+        <div class="poster-grid">
+                {% for section in data.sections %}
+                    {% if section.layout.col != -1 %}
+                    <div class="section-box">
+                        <h2 class="section-title">{{ section.name }}</h2>
+                        
+                        <div class="content-wrapper" style="display: block;">
+                            {% set fig_pairs = section.figures|batch(2)|list %}
+                            
+                            <ul class="bullet-list">
+                            {% for bullet in section.bullets %}
+                                <li class="bullet-item">{{ bullet }}</li>
+                                
+                                {% set pair_idx = (loop.index0 // 2) %}
+                                {% if loop.index is odd and pair_idx < fig_pairs|length %}
+                                    </ul>
+                                    <div class="figures-container" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 25px; align-items: center; margin: 25px 0;">
+                                        {% for fig in fig_pairs[pair_idx] %}
+                                            <div style="flex: 0 1 auto; max-width: 100%; text-align: center;">
+                                                <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" style="max-height: 280px; width: auto; max-width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <ul class="bullet-list">
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                            
+                            <!-- If there are more figure pairs than bullets, render them at the bottom so none vanish -->
+                            {% set rendered_pairs = (section.bullets|length + 1) // 2 %}
+                            {% for i in range(rendered_pairs, fig_pairs|length) %}
+                                <div class="figures-container" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 25px; align-items: center; margin: 25px 0;">
+                                    {% for fig in fig_pairs[i] %}
+                                        <div style="flex: 0 1 auto; max-width: 100%; text-align: center;">
+                                            <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" style="max-height: 280px; width: auto; max-width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
