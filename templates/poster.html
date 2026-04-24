@@ -42,10 +42,10 @@
         .poster-grid {
             column-count: 3;
             column-gap: 60px;
-            column-fill: balance;
+            column-fill: auto;
             flex-grow: 1;
             width: 100%;
-            height: auto; /* Fallback to natural flex flow */
+            height: 10px; /* Forces explicit height context for sequential flow under flex */
             padding-bottom: 20px;
             border-top: 8px solid var(--accent);
             padding-top: 0px;

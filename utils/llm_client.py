@@ -65,12 +65,20 @@ def get_structured_completion(messages: list, response_format: type[BaseModel]) 
         start = result_text.find('{')
         end = result_text.rfind('}')
         
-        # General typo cleanup
-        result_text = result_text.replace('"imagepath":', '"image_path":')
-        
         if start != -1 and end != -1:
              result_text = result_text[start:end+1]
-        else:
+             
+        # General typo cleanup and LaTeX JSON crash prevention
+        result_text = result_text.replace('"imagepath":', '"image_path":')
+        
+        # HuggingFace open models natively fail to escape LaTeX backslashes inside JSON.
+        # This replaces single backslashes with double backslashes so json.loads() doesn't throw JSONDecodeError!
+        import re
+        result_text = re.sub(r'\\(?!["\\/bfnrt])', r'\\\\', result_text)
+        # Flatten raw literal newlines that destroy JSON validation natively
+        result_text = result_text.replace('\n', ' ').replace('\r', '')
+        
+        if start == -1 or end == -1:
              if '"bullets":' in result_text:
                  result_text = "{" + result_text + "}"
                  # Clean up the trailing characters if it drifted
