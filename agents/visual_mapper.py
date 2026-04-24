@@ -15,14 +15,12 @@ def map_figures(section_name: str, section_bullets: List[str], available_figures
         return []
         
     system_prompt = '''
-You are a highly intelligent layout mapper. You must review available figures and integrate them into the correct academic section to create a balanced poster.
+You are a highly intelligent layout mapper. You must review available figures and strictly integrate them into sections only when profoundly applicable.
 Rules:
-- Select 1 to 2 figures per section whenever available to prevent overflow. Do not overcrowd a single section.
-- Distribute images evenly across sections where relevant. The final poster should have 5 to 6 images in total across all sections.
-- Method -> system architectures or logic flows.
-- Results -> plots or outcome matrices.
-- Introduction -> generic overviews.
-- Only select figures that strongly relate to the section text.
+- IMPORTANT CONTEXT-AWARE MAPPING: Only include an image if its specific caption (e.g., "Figure X") is explicitly referenced or inherently mathematically required by the section's text constraints.
+- DO NOT arbitarily force image placement if the explicit context or caption title doesn't logically align perfectly with the section content.
+- Ensure each figure is mapped EXACTLY ONCE globally. Do not duplicate figures.
+- Select 1 to 2 relevant figures per section to avoid crowding.
 - Only provide EXACT image paths from the available list.
 '''
     content = f"Section: {section_name}\nBullets:\n" + "\n".join(section_bullets)
@@ -44,7 +42,9 @@ Rules:
             base_f = os.path.basename(f.image_path)
             for af in available_figures:
                 if os.path.basename(af['image_path']) == base_f:
-                    mapped.append({"image_path": af['image_path'], "caption": f.caption})
+                    # Enforce that the real PDF caption is used as a fallback if the LLM mangles it
+                    caption_to_use = f.caption if len(f.caption) > 3 else af.get('caption', f"Figure for {section_name}")
+                    mapped.append({"image_path": af['image_path'], "caption": caption_to_use})
                     break
         return mapped
     return []

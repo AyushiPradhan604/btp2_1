@@ -8,14 +8,12 @@ class SectionSelection(BaseModel):
 def select_sections(paper_text: str) -> List[str]:
     """Selects the most relevant sections for a poster."""
     system_prompt = '''
-You are an expert academic editor. Given the text or structure of a research paper, extract the names of the most important sections for a conference poster.
+You are an expert academic editor. Given the headers of a research paper, select the most important sections for a conference poster.
 Rules:
-- Select 5-7 sections max.
-- Must include equivalents of: Title, Problem, Method, Results, Conclusion.
-- Merge redundant sections (e.g., "Methodology" + "Approach").
-- Ignore references, acknowledgements, appendices.
-- If sections are missing, infer from content.
-- If paper is unstructured, create logical section names.
+- Select 5-6 sections max.
+- CRITICAL: You MUST output the EXACT, verbatim headings exactly as they appear in the provided structure list. NEVER invent, adapt, or paraphrase new names.
+- Ensure the sections flow logically: Introduction -> Core Methodology -> Experiments/Results -> Conclusion.
+- If a section header is extremely long, still output its exact string verbatim to preserve string matching algorithms.
 '''
     import re
     headers = [line for line in paper_text.split('\n') if line.startswith('#')]

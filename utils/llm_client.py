@@ -35,6 +35,8 @@ def get_structured_completion(messages: list, response_format: type[BaseModel]) 
             example_json = '{"bullets": ["Point 1", "Point 2", "Point 3"]}'
         elif "SectionFigures" in str(response_format) or "VisualMapping" in str(response_format):
             example_json = '{"figures": [{"image_path": "/path.png", "caption": "desc"}]}'
+        elif "SectionSelection" in str(response_format):
+            example_json = '{"selected_sections": ["1. Header 1", "2. Header 2"]}'
         else:
             example_json = '{"status": "OK"}'
             

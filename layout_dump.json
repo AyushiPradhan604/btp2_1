@@ -1,0 +1,2708 @@
+[
+    {
+        "type": "Section-header",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            143.03700256347656,
+            89.9119873046875,
+            453.84759521484375,
+            104.25818634033203
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Pietro Barbiero * 1 Gabriele Ciravegna * 2 Francesco Giannini * 3 Mateo Espinosa Zarlenga 1",
+        "bbox": [
+            98.80999755859375,
+            139.3885498046875,
+            496.9328918457031,
+            152.9661407470703
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Lucie Charlotte Magister 1 Alberto Tonda 4 Pietro Li\u00b4o 1 Frederic Precioso 2 Mateja Jamnik 1",
+        "bbox": [
+            95.71499633789062,
+            151.34356689453125,
+            500.0278625488281,
+            164.92115783691406
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Giuseppe Marra * 5",
+        "bbox": [
+            257.1799621582031,
+            164.50128173828125,
+            338.0385437011719,
+            176.8761749267578
+        ],
+        "page": 1
+    },
+    {
+        "type": "Section-header",
+        "content": "Abstract",
+        "bbox": [
+            150.19796752929688,
+            199.97125244140625,
+            194.68325805664062,
+            211.92645263671875
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Deep learning methods are highly accurate, yettheir opaque decision process prevents them fromearning full human trust. Concept-based mod-els aim to address this issue by learning tasksbased on a set of human-understandable concepts.However, state-of-the-art concept-based modelsrely on high-dimensional concept embedding rep-resentations which lack a clear semantic mean-ing, thus questioning the interpretability of theirdecision process. To overcome this limitation,we propose the Deep Concept Reasoner (DCR),the first interpretable concept-based model thatbuilds upon concept embeddings. In DCR, neuralnetworks do not make task predictions directly,but they build syntactic rule structures using con-cept embeddings. DCR then executes these ruleson meaningful concept truth degrees to providea final interpretable and semantically-consistentprediction in a differentiable manner. Our experi-ments show that DCR: (i) improves up to +25%w.r.t. state-of-the-art interpretable concept-basedmodels on challenging benchmarks (ii) discoversmeaningful logic rules matching known groundtruths even in the absence of concept supervisionduring training, and (iii), facilitates the generationof counterfactual examples providing the learntrules as guidance.",
+        "bbox": [
+            75.00700378417969,
+            216.84857177734375,
+            271.2623291015625,
+            539.6875
+        ],
+        "page": 1
+    },
+    {
+        "type": "Section-header",
+        "content": "1. Introduction",
+        "bbox": [
+            55.43999481201172,
+            563.8911743164062,
+            132.2760772705078,
+            575.8463745117188
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "The opaque decision process of deep learning (DL) modelshas failed to inspire human trust despite their state-of-the-artperformance across multiple tasks (Rudin, 2019; Bussone",
+        "bbox": [
+            55.13100051879883,
+            583.2345581054688,
+            289.4434509277344,
+            619.1505126953125
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "*Equal contribution1University of Cambridge, Cambridge,UK 2Universit\u00b4e C\u02c6ote d\u2019Azur, Inria, CNRS, I3S, Maasai, Nice,France 3University of Siena, Siena, Italy 4INRA, Universit\u00b4e Paris-Saclay, Thiverval-Grignon, France 5KU Leuven, Leuven, Belgium.Correspondence to: Pietro Barbiero <pb737@cam.ac.uk>.",
+        "bbox": [
+            55.439998626708984,
+            626.0277099609375,
+            291.0102844238281,
+            677.7295532226562
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Proceedings of the 40 th International Conference on MachineLearning, Honolulu, Hawaii, USA. PMLR 202, 2023. Copyright2023 by the author(s).",
+        "bbox": [
+            55.1619987487793,
+            684.2979125976562,
+            289.44171142578125,
+            717.5805053710938
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "et al., 2015), raising ethical (Dur\u00b4an & Jongsma, 2021; Lo Pi-ano, 2020) and legal (Wachter et al., 2017; EUGDPR, 2017)concerns. For this reason, interpretability is now a coreresearch topic in the field of responsible AI (Rudin, 2019).",
+        "bbox": [
+            307.44000244140625,
+            199.89154052734375,
+            543.0907592773438,
+            247.81150817871094
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Concept-based models (Kim et al., 2018; Chen et al., 2020)aim to increase human trust in deep learning models byusing human-understandable concepts to train interpretablemodels\u2014such as logistic regression or decision trees (Rudin,2019; Koh et al., 2020; Kazhdan et al., 2020) (Figure 1).This approach significantly increases human trust in the AIpredictor (Rudin, 2019; Shen, 2022) as it allows users toclearly understand a model\u2019s decision process. However,state-of-the-art concept-based models, which rely on con-cept embeddings (Yeh et al., 2020; Kazhdan et al., 2020;Mahinpei et al., 2021; Espinosa Zarlenga et al., 2022) toattain high performance, are not completely interpretable.Indeed, concept embeddings lack clear semantics on individ-ual dimensions, e.g., \u02c6cyellow = [2.3, 0.3, \u22123.5, . . . ]T doesnot have semantics assigned to each of its dimensions. Thissacrifice of interpretability in favour of model capacity leadsto a possible reduction in human trust when using thesemodels, as argued by Rudin (2019); Mahinpei et al. (2021).",
+        "bbox": [
+            307.1310119628906,
+            253.73956298828125,
+            543.1849975585938,
+            468.9825134277344
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "In this paper, we propose the Deep Concept Reasoner1",
+        "bbox": [
+            307.44000244140625,
+            474.05621337890625,
+            541.4649047851562,
+            486.9154968261719
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "(DCR, Section 3), the first interpretable concept-basedmodel building on concept embeddings. DCR applies dif-ferentiable and learnable modules on concept embeddingsto build a set of fuzzy rules which can then be executed onsemantically meaningful concept truth degrees to provide afinal interpretable prediction. Our experiments (Section 4)show that DCR: (i) attains better task accuracy than state-of-the-art interpretable concept-based models (Figure 1), (ii)discovers meaningful logic rules, matching known groundtruths even in absence of training concept supervision, and(iii) facilitates the generation of counterfactual examplesthanks to the highly-interpretable learnt rules.",
+        "bbox": [
+            307.11199951171875,
+            486.8655700683594,
+            543.0980224609375,
+            630.3775024414062
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "1Code available in public repository: https://github.com/pietrobarbiero/pytorch_explain.",
+        "bbox": [
+            307.44000244140625,
+            637.2546997070312,
+            545.2066040039062,
+            659.0685424804688
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "1",
+        "bbox": [
+            295.95001220703125,
+            730.7615966796875,
+            300.9313049316406,
+            742.7665405273438
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "CONCEPTS",
+        "bbox": [
+            186.86764526367188,
+            76.37625885009766,
+            235.34869384765625,
+            86.12471008300781
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "AND",
+        "bbox": [
+            279.9960632324219,
+            130.04046630859375,
+            298.4164123535156,
+            139.78892517089844
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "INTERPRETABLE",
+        "bbox": [
+            274.416259765625,
+            76.37625885009766,
+            346.97003173828125,
+            86.12471008300781
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "PREDICTION",
+        "bbox": [
+            283.786376953125,
+            86.84732055664062,
+            337.5989074707031,
+            96.59577178955078
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "3-Dimethylaminophenol",
+        "bbox": [
+            116.97532653808594,
+            169.1324920654297,
+            168.90199279785156,
+            174.25042724609375
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "INPUT",
+        "bbox": [
+            128.86776733398438,
+            76.37625885009766,
+            155.04542541503906,
+            86.12471008300781
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Phenol",
+        "bbox": [
+            201.25514221191406,
+            131.47567749023438,
+            219.43771362304688,
+            137.56846618652344
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Dimethylamine",
+        "bbox": [
+            191.82028198242188,
+            174.2325439453125,
+            230.61231994628906,
+            180.32533264160156
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Concept EncoderConcept-based Model",
+        "bbox": [
+            158.03472900390625,
+            190.05397033691406,
+            282.96551513671875,
+            194.92820739746094
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            420.5870361328125,
+            148.40313720703125,
+            468.35009765625,
+            162.2056427001953
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "70",
+        "bbox": [
+            396.0174865722656,
+            129.3345947265625,
+            401.8524475097656,
+            135.5916748046875
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "80",
+        "bbox": [
+            396.0174865722656,
+            114.91022491455078,
+            401.8524475097656,
+            121.16730499267578
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            396.0174865722656,
+            100.48583984375,
+            401.8524475097656,
+            106.742919921875
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "100",
+        "bbox": [
+            393.0987854003906,
+            86.06145477294922,
+            401.85125732421875,
+            92.31853485107422
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Task AUC (%)",
+        "bbox": [
+            383.7256774902344,
+            93.72682189941406,
+            391.7208557128906,
+            139.80555725097656
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Generalization vs.",
+        "bbox": [
+            410.3770446777344,
+            69.0031967163086,
+            469.81707763671875,
+            77.69358825683594
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Interpretability",
+        "bbox": [
+            415.55682373046875,
+            77.86465454101562,
+            464.6364440917969,
+            86.55504608154297
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "CE+DCR (ours)CT+Decision TreeCT+Logistic RegressionCE+XGBoost",
+        "bbox": [
+            411.79986572265625,
+            165.1510009765625,
+            462.495849609375,
+            192.36737060546875
+        ],
+        "page": 2
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 1. (a) An interpretable concept-based model f maps concepts \u02c6C to tasks \u02c6Y generating an interpretable rule. When input featuresare not semantically meaningful, a concept encoder g can map raw features to a concept space. (b) The proposed approach (DCR)outperforms interpretable concept-based models in the Dot dataset. CE stands for concept embeddings and CT for concept truth values.",
+        "bbox": [
+            54.9379997253418,
+            208.29148864746094,
+            542.0457153320312,
+            242.00253295898438
+        ],
+        "page": 2
+    },
+    {
+        "type": "Section-header",
+        "content": "2. Preliminaries",
+        "bbox": [
+            55.440032958984375,
+            262.1361083984375,
+            136.24522399902344,
+            274.09130859375
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Concept-based modelsConcept-based models f : C \u2192Y learn a map from a concept space C to a task spaceY (Yeh et al., 2020). If concepts are semantically mean-ingful, then humans can interpret this mapping by tracingback predictions to the most relevant concepts (Ghorbaniet al., 2019a). When the features of the input space arehard for humans to reason about (such as pixel intensities),concept-based models work on the output of a concept-encoder mapping g : X \u2192C from the input space X tothe concept space C (Ghorbani et al., 2019b; Koh et al.,2020). In general, training a concept-based model mayrequire a dataset where each sample consists of input fea-tures x \u2208X \u2286Rn (e.g., an image\u2019s pixels), k groundtruth concepts c \u2208C \u2286{0, 1}k (i.e., a binary vectorwith concept annotations, when available) and o task la-bels y \u2208Y \u2286{0, 1}o (e.g., an image\u2019s classes). Duringtraining, a concept-based model is encouraged to align itspredictions to task labels i.e., y \u2248\u02c6y = f(g(x)). Similarly,a concept encoder can be supervised when concept labelsare available i.e., c \u2248\u02c6c = g(x). When concept labels arenot available, they can still be extracted from pre-trainedmodels associating concept labels to clusters found in theirembeddings as proposed by Ghorbani et al. (2019b); Magis-ter et al. (2021). We indicate concept and task predictionsas \u02c6ci = (g(x))i and \u02c6yj = (f(\u02c6c))j respectively.",
+        "bbox": [
+            55.082000732421875,
+            281.47955322265625,
+            291.09600830078125,
+            581.9035034179688
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Concept truth values vs. concept embeddingsUsually,concept-based models represent concepts using their truthdegree, that is, \u02c6c1, . . . , \u02c6ck \u2208[0, 1]. However, this repre-sentation might significantly degrade task accuracy as ob-served by Mahinpei et al. (2021) and Espinosa Zarlengaet al. (2022). To overcome this issue, concept-based mod-els may represent concepts using concept embeddings\u02c6ci \u2208Rm alongside their truth degrees \u02c6ci \u2208[0, 1].2 While",
+        "bbox": [
+            55.12200164794922,
+            592.863525390625,
+            291.0934143066406,
+            689.2974243164062
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "2With an abuse of notation, we use the same symbol for aconcept embedding and its corresponding truth degree, with the",
+        "bbox": [
+            55.439998626708984,
+            695.7656860351562,
+            289.44256591796875,
+            717.5805053710938
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "this increases task accuracy of concept-based models (Es-pinosa Zarlenga et al., 2022), it also weakens their inter-pretability as concept embeddings lack clear semantics.",
+        "bbox": [
+            307.44000244140625,
+            262.1065673828125,
+            543.0936279296875,
+            298.0224914550781
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Fuzzy logic rulesContinuous fuzzy logics (H\u00b4ajek, 2013)extend Boolean logic by relaxing discrete truth-values in{0, 1} to truth degrees in [0, 1], and Boolean connectivesto (differentiable) real-valued operators. In particular, at-norm \u2227: [0, 1] \u00d7 [0, 1] \u2192[0, 1] generalises the Booleanconjunction while a t-conorm \u2228: [0, 1] \u00d7 [0, 1] \u2192[0, 1]generalises the disjunction. These two operators are con-nected by the strong negation \u00ac, defined as \u00acx = 1 \u2212x.For example, the product (fuzzy) logic can be defined bythe operators x \u2227y := x \u00b7 y and x \u2228y := x + y \u2212xy. Asin Boolean logic, the syntax of a t-norm fuzzy rule includes:(i) Atomic formulas consisting of propositional variables z,and logical constants \u22a5(false, \u201c0\u201d) and \u22a4(true, \u201c1\u201d),(ii) Literals representing atomic formulas or their negation,and (iii) Logical connectives \u00ac, \u2227, \u2228, \u21d2, \u21d4joining formu-las in arbitrarily complex compound formulas.",
+        "bbox": [
+            307.11199951171875,
+            317.3295593261719,
+            543.1834716796875,
+            508.71148681640625
+        ],
+        "page": 2
+    },
+    {
+        "type": "Section-header",
+        "content": "3. Deep Concept Reasoning",
+        "bbox": [
+            307.44000244140625,
+            525.3011474609375,
+            446.90936279296875,
+            537.25634765625
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Here we describe the \u201cDeep Concept Reasoner\u201d (DCR, Fig-ure 2), the first interpretable concept-based model based onconcept embeddings. Similarly to existing models basedon concept embeddings, DCR exploits high-dimensionalrepresentations of the concepts. However, in DCR, suchrepresentations are only used to compute a logic rule. Thefinal prediction is then obtained by evaluating such ruleson the concepts\u2019 truth values and not on their embeddings,thus maintaining clear semantics and providing a totallyinterpretable decision. Being differentiable, DCR is train-able as an independent module on concept databases, butit can also be trained end-to-end with differentiable con-cept encoders. In the following section, we describe (1) the",
+        "bbox": [
+            307.44000244140625,
+            544.64453125,
+            543.0947265625,
+            700.1115112304688
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "former in bold to distinguish it.",
+        "bbox": [
+            307.44000244140625,
+            706.7760009765625,
+            419.52880859375,
+            717.5805053710938
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "2",
+        "bbox": [
+            295.95001220703125,
+            730.7615356445312,
+            300.9313049316406,
+            742.7664794921875
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "syntax of the rules we aim to learn (Section 3.1), (2) howto (neurally) generate and execute learnt rules to predicttask labels (Section 3.2), (3) how DCR learns simple rulesin specific t-norm semantics (Section 3.2), and (4) how wecan generate global and counterfactual explanations withDCR (Section 3.4). We provide Figure 2 as a reference tographically follow the discussion.",
+        "bbox": [
+            55.439998626708984,
+            67.81756591796875,
+            289.7985534667969,
+            151.5535125732422
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "3.1. Rule syntax",
+        "bbox": [
+            55.439998626708984,
+            166.24151611328125,
+            122.96649169921875,
+            176.20411682128906
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "To understand the rationale behind DCR\u2019s design, we beginwith an illustrative toy example:",
+        "bbox": [
+            55.082000732421875,
+            183.33453369140625,
+            289.4420166015625,
+            207.2944793701172
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Example 3.1. Consider the problem of defining the fruit\u201cbanana\u201d given the vocabulary of concepts \u201csoft\u201d, \u201cround\u201d,and \u201cyellow\u201d.A simple definition can be ybanana \u21d4\u00accround \u2227cyellow. From this rule we can deduce that (i) being\u201csoft\u201d is irrelevant for being a \u201cbanana\u201d (indeed bananascan be both soft or hard), and (ii) being both \u201cnot round\u201dand \u201cyellow\u201d is relevant to being a \u201cbanana\u201d.",
+        "bbox": [
+            51.564998626708984,
+            211.96505737304688,
+            291.6535949707031,
+            293.735595703125
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "As in this example, DCR rules can express whether a con-cept is relevant or not (e.g., \u201csoft\u201d), and whether a con-cept plays a positive (e.g., \u201cyellow\u201d) or negative (e.g., \u201cnotround\u201d) role. To formalize this description of rule syntax,we let lji denote the literal of concept ci (i.e., \u02c6ci or \u00ac\u02c6ci)representing the role of the concept i for the j-th class. Sim-ilarly, we let rji \u2208{0, 1} representing whether \u02c6ci is relevantfor predicting the class yj. For each sample x and predictedclass \u02c6yj, DCR learns a rule with the following syntax3:",
+        "bbox": [
+            55.082000732421875,
+            303.5555419921875,
+            291.0972595214844,
+            411.4205627441406
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u02c6yj \u21d4\ufffd $$",
+        "bbox": [
+            140.57199096679688,
+            420.9313659667969,
+            184.43943786621094,
+            434.5603942871094
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ i: rji=1lji(1) $$",
+        "bbox": [
+            165.15098571777344,
+            421.81256103515625,
+            290.10736083984375,
+            444.8572692871094
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Such a rule defines a logical statement for why a givensample is predicted to have label \u02c6yj using a conjunction ofrelevant concept literals (i.e., \u02c6ci or \u00ac\u02c6ci).",
+        "bbox": [
+            55.439998626708984,
+            452.6275634765625,
+            289.4423828125,
+            490.0374755859375
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "3.2. Rule generation and execution",
+        "bbox": [
+            55.44001770019531,
+            503.2304992675781,
+            202.10935974121094,
+            513.193115234375
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Having defined the syntax of DCR rules, we describe howto generate and execute these rules in a differentiable way.To generate a rule we use two neural modules \u03d5j and \u03c8jwhich determine the role and relevance of each concept,respectively. Then, we execute each rule using the concepts\u2019truth degrees of a given sample. We split this process intothree steps: (i) learning each concept\u2019s roles, (ii) learningeach concept\u2019s relevance, and (iii) predicting the task usingthe relevant concepts.",
+        "bbox": [
+            55.082000732421875,
+            520.3235473632812,
+            291.1868591308594,
+            627.969482421875
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Concept roleGeneration: To determine the role (posi-tive/negative) of a concept, we use a feed-forward neuralnetwork \u03d5j : Rm \u2192[0, 1], with m being the dimensionof each concept embedding. The neural model \u03d5j takes as",
+        "bbox": [
+            55.439998626708984,
+            640.3245849609375,
+            291.0946350097656,
+            689.6895141601562
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "3Here and in all equations we omit the explicit dependence onx for simplicity, i.e., we write \u02c6yj for \u02c6yj(x).",
+        "bbox": [
+            55.16400146484375,
+            695.7656860351562,
+            289.4396667480469,
+            718.5765380859375
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "input a concept embedding \u02c6ci \u2208Rm and returns a soft indi-cator representing the role of the concept in the formula, thatis, whether in literal lji the concept should appear negated(e.g., \u03d5banana(\u02c6cround) = 0) or not (e.g., \u03d5banana(\u02c6cyellow) = 1).Execution: When we execute the rule, we need to computethe actual truth degree of a literal lji given its role \u03d5(\u02c6ci).We define this truth degree \u2113ji \u2208[0, 1]. In particular, wewant to (i) forward the same truth degree of the concept, i.e.\u2113ji = \u02c6ci, when \u03d5(\u02c6ci) = 1, and (ii) negate it, i.e. \u2113ji = \u00ac\u02c6ci,when \u03d5(\u02c6ci) = 0. This behaviour can be generalized by afuzzy equality \u21d4when both \u03d5j and \u02c6c are fuzzy values, i.e.:",
+        "bbox": [
+            306.97198486328125,
+            64.20257568359375,
+            543.1871337890625,
+            200.86851501464844
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u2113ji = (\u03d5j(\u02c6ci) \u21d4\u02c6ci)(2) $$",
+        "bbox": [
+            383.6319885253906,
+            209.7205810546875,
+            542.1074829101562,
+            222.5975341796875
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Example 3.2. For a given object consider \u02c6cround = 0and \u03d5banana(\u02c6cround) = 0.Then we get \u2113banana,round =(\u03d5banana(\u02c6cround) \u21d4\u02c6cround) = \u00ac\u02c6cround = 1. If instead we had\u03d5banana(\u02c6cround) = 1, then \u2113banana,round = (\u03d5banana(\u02c6cround) \u21d4\u02c6cround) = 0.",
+        "bbox": [
+            306.2750244140625,
+            233.46804809570312,
+            541.6923217773438,
+            292.1534118652344
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Concept relevance.Generation: To determine the rele-vance of a concept \u02c6ci, we use another feed-forward neu-ral network \u03c8j : Rm \u2192[0, 1]. The model \u03c8j takes asinput a concept embedding \u02c6ci \u2208Rm and returns a softindicator representing the likelihood of a concept being rel-evant for the formula (e.g., \u03c8banana(\u02c6csoft) = 1) or not (e.g.,\u03c8banana(\u02c6cyellow) = 0). Execution: When we execute the rule,we need to compute the truth degree of a literal given itsrelevance rji. We define the truth degree of a relevant literalas \u2113rji \u2208[0, 1], where r stands for \u201crelevant\u201d. In particular,we want to (i) filter irrelevant concepts when \u03c8j(\u02c6ci) = 0by setting \u2113rji = 1, and (ii) retain relevant literals when\u03c8j(\u02c6ci) = 1 by setting \u2113rji = \u2113ji. This behaviour can begeneralized to fuzzy values of \u03c8j as follows:",
+        "bbox": [
+            307.0820007324219,
+            305.0375671386719,
+            543.0968017578125,
+            473.9544982910156
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u2113rji = (\u03c8j(\u02c6ci) \u21d2\u2113ji) = (\u00ac\u03c8j(\u02c6ci) \u2228\u2113ji)(3) $$",
+        "bbox": [
+            344.4530029296875,
+            490.6347351074219,
+            542.1084594726562,
+            504.8374938964844
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Note that setting \u2113rji = 1 makes the literal lji irrelevantsince \u201c1\u201d is neutral w.r.t. the conjunction in Equation 4.",
+        "bbox": [
+            307.44000244140625,
+            515.5535888671875,
+            541.4412841796875,
+            539.5134887695312
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Example 3.3. For a given object of type \u201cbanana\u201d, letthe concept \u201csoft\u201d be irrelevant, that is \u03c8banana(\u02c6csoft) = 0.Then we get \u2113rbanana,soft = (\u03c8banana(\u02c6csoft) \u21d2\u2113banana,soft) =1, independently from the content of \u02c6csoft or \u2113banana,soft.Conversely, let the concept \u201cyellow\u201d by relevant, thatis \u03c8banana(\u02c6cyellow) = 1, and let its concept literal be\u2113banana,yellow=\u02c6cyellow=1.As a result, we get\u2113rbanana,yellow = (\u03c8banana(\u02c6cyellow) \u21d2\u2113banana,yellow) = 1.",
+        "bbox": [
+            306.8819885253906,
+            545.06201171875,
+            543.1834716796875,
+            641.4855346679688
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Task predictionFinally, we conjoin the relevant literals\u2113rji to obtain the task prediction \u02c6yj:",
+        "bbox": [
+            307.44000244140625,
+            652.49658203125,
+            541.44384765625,
+            679.0494995117188
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u02c6yj = $$",
+        "bbox": [
+            400.3900451660156,
+            699.5049438476562,
+            419.990966796875,
+            710.9625244140625
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ k\ufffd $$",
+        "bbox": [
+            423.6740417480469,
+            689.3877563476562,
+            434.74249267578125,
+            707.1669921875
+        ],
+        "page": 3
+    },
+    {
+        "type": "Formula",
+        "content": "$$ i=1\u2113rji(4) $$",
+        "bbox": [
+            422.75604248046875,
+            697.7277221679688,
+            542.1075439453125,
+            720.569580078125
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "3",
+        "bbox": [
+            295.9500732421875,
+            730.7615356445312,
+            300.9313659667969,
+            742.7664794921875
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "FUZZY RULE \nGENERATORS",
+        "bbox": [
+            134.68016052246094,
+            137.0847625732422,
+            176.3715362548828,
+            150.61048889160156
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "(neural)",
+        "bbox": [
+            144.7257080078125,
+            150.9665985107422,
+            166.32598876953125,
+            157.4477996826172
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "ConceptEmbeddingsConcepts\nTruth Degree",
+        "bbox": [
+            91.72029113769531,
+            182.70614624023438,
+            174.41209411621094,
+            197.10919189453125
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "FUZZY RULE",
+        "bbox": [
+            114.7897720336914,
+            102.27659606933594,
+            153.79090881347656,
+            108.75780487060547
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "EXECUTION",
+        "bbox": [
+            116.56385040283203,
+            109.32110595703125,
+            152.0200653076172,
+            115.80231475830078
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "(symbolic)",
+        "bbox": [
+            120.2706298828125,
+            116.15843200683594,
+            148.31004333496094,
+            122.63964080810547
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Task",
+        "bbox": [
+            124.96157836914062,
+            83.25422668457031,
+            138.89559936523438,
+            90.1983871459961
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Deep Concept Reasoner",
+        "bbox": [
+            94.66873168945312,
+            99.38662719726562,
+            101.14994049072266,
+            166.43878173828125
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "CONCEPTS",
+        "bbox": [
+            279.72198486328125,
+            116.82341766357422,
+            288.12982177734375,
+            158.63717651367188
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Deep Concept Reasoner",
+        "bbox": [
+            337.7015380859375,
+            67.75841522216797,
+            459.4792785644531,
+            79.52935028076172
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Concept",
+        "bbox": [
+            247.54156494140625,
+            138.97698974609375,
+            274.9679260253906,
+            145.70323181152344
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Encoder",
+        "bbox": [
+            248.37411499023438,
+            146.20184326171875,
+            272.4629211425781,
+            152.92808532714844
+        ],
+        "page": 4
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 2. (left) Deep Concept Reasoner (DCR) generates fuzzy logic rules using neural models on concept embeddings. Then DCRexecutes the rule using the concept truth degrees to evaluate the rule symbolically. (right) Schema of DCR modules: first neural models \u03d5and \u03c8 generate the rule, and then the rule is executed symbolically.",
+        "bbox": [
+            54.937984466552734,
+            210.44105529785156,
+            541.4424438476562,
+            243.16354370117188
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Example 3.4. For a given object of type \u201cbanana\u201d, con-sider the following truth degrees for the concepts: \u02c6csoft =1, \u02c6cround = 0, \u02c6cyellow = 1.Consider also the follow-ing values for the role and relevance of the class \u201cba-nana\u201d: \u03d5banana(\u02c6ci) = [0, 0, 1] and \u03c8banana(\u02c6ci) = [0, 1, 1]for i \u2208{soft, round, yellow}. Then, we obtain the finalprediction for class banana as:",
+        "bbox": [
+            54.94200134277344,
+            264.6640930175781,
+            291.0980224609375,
+            346.6946716308594
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\u02c6ybanana = \ufffd3i=1 (\u00ac\u03c8banana(\u02c6ci) \u2228(\u03d5banana(\u02c6ci) \u21d4\u02c6ci)) == (1 \u2228(0 \u21d41)) \u2227(0 \u2228(0 \u21d40)) \u2227(0 \u2228(1 \u21d41)) == (1 \u22280) \u2227(0 \u22281) \u2227(0 \u22281) = 1 \u22271 \u22271 = 1",
+        "bbox": [
+            63.74798583984375,
+            354.5977783203125,
+            281.13970947265625,
+            391.14349365234375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "We remark that the models \u03d5j and \u03c8j: (a) generate fuzzylogic rules using concept embeddings which might holdmore information than just concept truth degrees, and (b) donot depend on the number of input concepts which makesthem applicable\u2014without retraining\u2014in testing environ-ments where the set of concepts available differs from theset of concepts used during training. We also remark that thewhole process is differentiable as the neural models \u03d5j and\u03c8j are differentiable as well as the fuzzy logic operations aswe will see in the next section.",
+        "bbox": [
+            54.97198486328125,
+            405.5375671386719,
+            291.09344482421875,
+            525.1384887695312
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "3.3. Rule parsimony and fuzzy semantics",
+        "bbox": [
+            55.43998718261719,
+            539.8255004882812,
+            228.40065002441406,
+            549.7880859375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Rule parsimonySimple explanations and logic rules areeasier to interpret for humans (Miller, 1956; Rudin, 2019).We can encode this behaviour within the DCR architec-ture by enforcing a certain degree of competition amongconcepts to make only relevant concepts survive. To thisend, we design a special activation function for the neuralnetwork \u03c8j rescaling the output of a log-softmax activation:",
+        "bbox": [
+            54.97198486328125,
+            556.9195556640625,
+            291.1808776855469,
+            642.1494750976562
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\u03b3ji = log",
+        "bbox": [
+            95.71798706054688,
+            659.64794921875,
+            133.9126739501953,
+            671.1044921875
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\ufffdexp(MLPj(\u02c6ci))\ufffdki\u2032=1 exp(MLPj(\u02c6ci\u2032))",
+        "bbox": [
+            135.70498657226562,
+            649.7742919921875,
+            239.56788635253906,
+            681.3544921875
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\ufffd",
+        "bbox": [
+            240.76097106933594,
+            649.7742919921875,
+            248.65135192871094,
+            659.7369384765625
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "(5)",
+        "bbox": [
+            278.490966796875,
+            658.2285766601562,
+            290.1073303222656,
+            670.2335205078125
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "rji = \u03c8j(\u02c6ci) = \u03c3",
+        "bbox": [
+            96.38198852539062,
+            694.2399291992188,
+            166.99363708496094,
+            705.8355102539062
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\ufffd",
+        "bbox": [
+            167.35499572753906,
+            684.5053100585938,
+            175.24537658691406,
+            694.4679565429688
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\u03b3ji \u22121",
+        "bbox": [
+            175.2419891357422,
+            687.638916015625,
+            206.02928161621094,
+            705.7064208984375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "k",
+        "bbox": [
+            200.7889862060547,
+            701.5260620117188,
+            205.97950744628906,
+            711.4886474609375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "k\ufffd",
+        "bbox": [
+            209.74998474121094,
+            684.2607421875,
+            224.14593505859375,
+            702.0399780273438
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "i\u2032=1\u03b3ji\u2032",
+        "bbox": [
+            209.14498901367188,
+            694.6930541992188,
+            240.27874755859375,
+            715.5875244140625
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "\ufffd",
+        "bbox": [
+            241.27499389648438,
+            684.5053100585938,
+            249.16537475585938,
+            694.4679565429688
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "(6)",
+        "bbox": [
+            278.490966796875,
+            692.9595336914062,
+            290.1073303222656,
+            704.9644775390625
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "This way, if the scores \u03b3ji are uniformly distributed, then weexpect the network \u03c8j to select half of the concepts. We canalso parametrise this function by introducing a parameter\u03c4 \u2208[\u2212\u221e, \u221e] that allows a user to bias the default behaviourof the activation function: rji = \u03c3(\u03b3ji \u2212\u03c4",
+        "bbox": [
+            307.1309814453125,
+            263.267578125,
+            541.6097412109375,
+            325.3485107421875
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "k\ufffdki\u2032=1 \u03b3ji\u2032). Auser can increase \u03c4 to get more relevance scores closer to 1(more complex rules) or decrease it to get more relevancescores closer to 0 (simpler rules).",
+        "bbox": [
+            307.11199951171875,
+            311.2177734375,
+            542.4363403320312,
+            360.3424987792969
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Fuzzy semanticsTo create a semantically valid model, weenforce the same semantic structure in all logic and neuraloperations. Moreover, to train our model end-to-end, weneed these semantics to be differentiable in all its operations,including logic functions. Marra et al. (2020c) describe a setof possible t-norm fuzzy logics which can serve the purpose.In our experiments, we use the G\u00a8odel t-norm. With thissemantics, we can rewrite Equation 2 as:",
+        "bbox": [
+            307.44000244140625,
+            375.237548828125,
+            543.1857299804688,
+            470.9284973144531
+        ],
+        "page": 4
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u2113ji= \u03d5j(\u02c6ci) \u21d4\u02c6ci = (\u03d5j(\u02c6ci) \u21d2\u02c6ci) \u2227(\u02c6ci \u21d2\u03d5j(\u02c6ci)) == (\u00ac\u03d5j(\u02c6ci) \u2228\u02c6ci) \u2227(\u00ac\u02c6ci \u2228\u03d5j(\u02c6ci)) == min{max{1 \u2212\u03d5j(\u02c6ci), \u02c6ci}, max{1 \u2212\u02c6ci, \u03d5(\u02c6ci)}} $$",
+        "bbox": [
+            312.4219970703125,
+            483.68292236328125,
+            542.6923828125,
+            518.5355224609375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "and Equation 4 as: \u02c6yj = minki=1{max{1 \u2212\u03c8j(\u02c6ci), \u2113ji}}",
+        "bbox": [
+            307.43994140625,
+            531.44873046875,
+            534.8505859375,
+            545.0765380859375
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "3.4. Global and counterfactual explanations",
+        "bbox": [
+            307.43994140625,
+            558.5764770507812,
+            492.8738098144531,
+            568.5390625
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Interpreting global behaviourIn general, DCR rulesmay have different weights and concepts for different sam-ples. However, we can still globally interpret the predictionsof our model without the need for an external post-hoc ex-plainer. To this end, we collect a batch of (or all) fuzzy rulesgenerated DCR on the training data Xtrain. Following Bar-biero et al. (2022), we then Booleanize the collected rulesand aggregate them with a global disjunction to get a singlelogic formula valid for all samples of class j:",
+        "bbox": [
+            307.44000244140625,
+            575.6695556640625,
+            543.0978393554688,
+            683.3164672851562
+        ],
+        "page": 4
+    },
+    {
+        "type": "Formula",
+        "content": "$$ \u02c6yCj =\ufffd $$",
+        "bbox": [
+            386.822998046875,
+            695.9993286132812,
+            430.3174743652344,
+            710.7265014648438
+        ],
+        "page": 4
+    },
+    {
+        "type": "Formula",
+        "content": "$$ x\u2208Xtrain\u02c6yj(x)(7) $$",
+        "bbox": [
+            412.04998779296875,
+            696.881591796875,
+            542.1074829101562,
+            720.3887329101562
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "4",
+        "bbox": [
+            295.7750244140625,
+            730.7615966796875,
+            300.7563171386719,
+            742.7665405273438
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "This way we obtain a global overview of the decision pro-cess of our model for each class.",
+        "bbox": [
+            55.13100051879883,
+            67.81756591796875,
+            291.08929443359375,
+            91.77849578857422
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "Counterfactual explanationsLogic rules clearly revealwhich concepts play a key role in a prediction. This trans-parency, typical of interpretable models, facilitates the ex-traction of simple counterfactual explanations without theneed for an external algorithm as in Abid et al. (2021). InDCR we extract simple counter-examples x\u22c6using the logicrule as guidance. Following Wachter et al. (2017), we gen-erate counter-examples as close as possible to the originalsample |x\u2212x\u22c6| < \u03f5. In particular, Wachter et al. (2017) pro-poses to perturb the input features of a model starting fromthe most relevant features. As the decision process dependsmostly on the most relevant features, perturbing a smallset of features is usually enough to find counter-examples.To this end, we first rank the concepts present in the ruleaccording to their relevance scores. Then, starting from themost relevant concept, we invert their truth value until theprediction of the model changes. The new rule represents acounterfactual explanation for the original prediction.",
+        "bbox": [
+            55.082000732421875,
+            105.93756103515625,
+            291.1872253417969,
+            321.1805114746094
+        ],
+        "page": 5
+    },
+    {
+        "type": "Section-header",
+        "content": "4. Experiments",
+        "bbox": [
+            55.439998626708984,
+            337.7701721191406,
+            132.47930908203125,
+            349.7253723144531
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "4.1. Research questions",
+        "bbox": [
+            55.439998626708984,
+            358.6725158691406,
+            154.32876586914062,
+            368.6351013183594
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "In this section, we analyze the following research questions:",
+        "bbox": [
+            55.439998626708984,
+            375.76556396484375,
+            290.82049560546875,
+            387.7705078125
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "\u2022 Generalization \u2014 How does DCR generalize on un-seen samples compared to interpretable and neural-symbolic models? How does DCR generalize whenconcepts are unsupervised?",
+        "bbox": [
+            66.89700317382812,
+            403.007568359375,
+            291.09735107421875,
+            450.8785095214844
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "\u2022 Interpretability \u2014 Can DCR discover meaningfulrules? Can DCR re-discover ground-truth rules? Howstable are DCR rules under small perturbations of theinput compared to interpretable models and local post-hoc explainers? How long does it take to extract acounterfactual explanation from DCR compared to anon-interpretable model?",
+        "bbox": [
+            66.8969955444336,
+            461.4775695800781,
+            291.0989074707031,
+            545.2135009765625
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "4.2. Experimental setup",
+        "bbox": [
+            55.43999481201172,
+            569.2105102539062,
+            156.1718292236328,
+            579.173095703125
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "Data & task setupWe investigate our research questionsusing six datasets spanning three of the most common datatypes used in deep learning: tabular, image, and graph-structured data. We use the three benchmark datasets (XOR,Trigonometry, and Dot) proposed by Espinosa Zarlengaet al. (2022) as they capture increasingly complex concept-to-label relationships, therefore challenging concept-basedmodels. To test the DCR\u2019s ability to re-discover ground-truth rules we use the MNIST-Addition dataset (Manhaeveet al., 2018), a standard benchmark for neural-symbolic sys-tems where one aims to predict the sum of two digits from",
+        "bbox": [
+            54.88199996948242,
+            586.3035888671875,
+            291.09747314453125,
+            717.8604736328125
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "the MNIST\u2019s dataset. Furthermore, we evaluate our meth-ods on two real-world benchmark datasets: the Large-scaleCelebFaces Attributes (CelebA, (Liu et al., 2015)) and theMutagenicity (Morris et al., 2020) dataset. In particular, wedefine a new CelebA task to simulate a real-world conditionof concept \u201cshifts\u201d where train and test concepts are cor-related (e.g., \u201cbeard\u201d and \u201cmustaches\u201d) but do not matchexactly. To this end, we split the set of CelebA attributesdefined by Espinosa Zarlenga et al. (2022) in two partiallydisjoint sets and use one set of attributes for training mod-els and one for testing. Finally, we use Mutagenicity as areal-world scenario the concept encoder is unsupervised. AsMutagenicity does not have concept annotations, we firsttrain a graph neural network (GNN) on this dataset, andthen we use the Graph Concept Explainer (GCExplainer,(Magister et al., 2021)) to extract a set of concepts fromthe embeddings of the trained GNN. For dataset with con-cept labels instead, we generate concept embeddings andtruth degrees by training a Concept Embedding Model (Es-pinosa Zarlenga et al., 2022).",
+        "bbox": [
+            307.0220031738281,
+            67.81756591796875,
+            543.0963134765625,
+            306.97149658203125
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "BaselinesWe compare DCR against interpretable mod-els, such as logistic regression (Verhulst, 1845), deci-sion trees (Breiman, 2017), as well as state-of-the-artblack-box classifiers, such as extreme gradient boost-ing (XGBoost) (Chen & Guestrin, 2016), and locally-interpretable neural models, such as the Relu Net (Ciravegnaet al., 2023). We train all baseline models in two differ-ent conditions mapping concepts to tasks either using con-cept truth degrees or using concept embeddings (baselinesmarked with CT and CE in figures, respectively). We con-sider interpretable only baselines trained on concept truthdegrees only, as concept embeddings lack of clear semanticsassigned to each dimension. However, baselines trainedon concept embeddings still provide a strong reference fortask accuracy w.r.t. interpretable models. On the MNIST-Addition dataset we compare DCR with state-of-the-artneural-symbolic baselines including: DeepProbLog (Man-haeve et al., 2018), DeepStochLog (Winters et al., 2022),Logic Tensor Networks (Badreddine et al., 2022), and Em-bed2Sym (Aspis et al., 2022). This is possible as the MNIST-Addition dataset provides access to the full set of ground-truth rules, allowing us to train these neural-symbolic sys-tems. Finally, we compare DCR interpretability with inter-pretable models, such as logistic regression and decisiontrees, and with local post-hoc explainers, such as the LocalInterpretable Model-agnostic Explanations (LIME, (Ribeiroet al., 2016)) applied on XGBoost.",
+        "bbox": [
+            306.8330078125,
+            321.08355712890625,
+            543.0973510742188,
+            643.9224853515625
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "EvaluationWe assess each model\u2019s performance and in-terpretability based on four criteria. First, we measure taskgeneralization using the Area Under the Receiver Oper-ating Characteristic Curve (ROC AUC) from predictionscores (Hand & Till, 2001) (the higher the better). Second,",
+        "bbox": [
+            307.44000244140625,
+            658.0345458984375,
+            543.093505859375,
+            717.8604736328125
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "5",
+        "bbox": [
+            295.95001220703125,
+            730.7615356445312,
+            300.9313049316406,
+            742.7664794921875
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            98.3309326171875,
+            153.90411376953125,
+            142.92005920410156,
+            168.63966369628906
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "50",
+        "bbox": [
+            74.7641372680664,
+            137.2320098876953,
+            80.99356842041016,
+            143.91207885742188
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "60",
+        "bbox": [
+            74.7641372680664,
+            125.51800537109375,
+            80.99356842041016,
+            132.1980743408203
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "70",
+        "bbox": [
+            74.7641372680664,
+            113.80400085449219,
+            80.99356842041016,
+            120.48406219482422
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "80",
+        "bbox": [
+            74.7641372680664,
+            102.08999633789062,
+            80.99356842041016,
+            108.77005767822266
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            74.7641372680664,
+            90.37598419189453,
+            80.99356842041016,
+            97.05604553222656
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "100",
+        "bbox": [
+            71.64814758300781,
+            78.66197967529297,
+            80.9922866821289,
+            85.342041015625
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "Task AUC (%)",
+        "bbox": [
+            61.641395568847656,
+            91.37285614013672,
+            70.17703247070312,
+            140.56655883789062
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "XOR",
+        "bbox": [
+            111.64158630371094,
+            69.62335205078125,
+            132.58169555664062,
+            80.75679016113281
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            191.3337860107422,
+            153.90411376953125,
+            235.9229278564453,
+            168.63966369628906
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "85",
+        "bbox": [
+            167.76699829101562,
+            131.9328155517578,
+            173.99642944335938,
+            138.61288452148438
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            167.76699829101562,
+            114.91961669921875,
+            173.99642944335938,
+            121.59967803955078
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "95",
+        "bbox": [
+            167.76699829101562,
+            97.90641784667969,
+            173.99642944335938,
+            104.58647918701172
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "100Trigonometry",
+        "bbox": [
+            164.6510009765625,
+            69.62335205078125,
+            244.0798797607422,
+            87.57328033447266
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            284.3366394042969,
+            153.90411376953125,
+            328.92578125,
+            168.63966369628906
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "70",
+        "bbox": [
+            260.76983642578125,
+            131.5178680419922,
+            266.9992980957031,
+            138.19793701171875
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "80",
+        "bbox": [
+            260.76983642578125,
+            114.08970642089844,
+            266.9992980957031,
+            120.76976776123047
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            260.76983642578125,
+            96.66155242919922,
+            266.9992980957031,
+            103.34161376953125
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "100Dot",
+        "bbox": [
+            257.6538391113281,
+            69.62335205078125,
+            316.3240051269531,
+            85.9134521484375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            377.3394775390625,
+            153.90411376953125,
+            421.92864990234375,
+            168.63966369628906
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "70",
+        "bbox": [
+            353.772705078125,
+            131.5178680419922,
+            360.00213623046875,
+            138.19793701171875
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "80",
+        "bbox": [
+            353.772705078125,
+            114.08970642089844,
+            360.00213623046875,
+            120.76976776123047
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            353.772705078125,
+            96.66155242919922,
+            360.00213623046875,
+            103.34161376953125
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "100Mutagenicity",
+        "bbox": [
+            350.6567077636719,
+            69.62335205078125,
+            429.0590515136719,
+            85.9134521484375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "yesnoInterpretable",
+        "bbox": [
+            470.34234619140625,
+            153.90411376953125,
+            514.9314575195312,
+            168.63966369628906
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "50",
+        "bbox": [
+            446.77557373046875,
+            137.2320098876953,
+            453.0049743652344,
+            143.91207885742188
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "60",
+        "bbox": [
+            446.77557373046875,
+            125.51800537109375,
+            453.0049743652344,
+            132.1980743408203
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "70",
+        "bbox": [
+            446.77557373046875,
+            113.80400085449219,
+            453.0049743652344,
+            120.48406219482422
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "80",
+        "bbox": [
+            446.77557373046875,
+            102.08999633789062,
+            453.0049743652344,
+            108.77005767822266
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "90",
+        "bbox": [
+            446.77557373046875,
+            90.37598419189453,
+            453.0049743652344,
+            97.05604553222656
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "100 CelebA (shifted)",
+        "bbox": [
+            443.6595458984375,
+            69.62335205078125,
+            529.4033203125,
+            86.44654846191406
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "CE+DCR (ours)CT+Decision Tree",
+        "bbox": [
+            151.1011962890625,
+            171.45448303222656,
+            190.10324096679688,
+            184.15228271484375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "CT+Logistic RegressionCT+ReluNet",
+        "bbox": [
+            214.96990966796875,
+            171.45448303222656,
+            265.4847717285156,
+            183.8659210205078
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "CT+XGBoostCE+Decision Tree",
+        "bbox": [
+            290.3678283691406,
+            171.45448303222656,
+            328.9369201660156,
+            183.8659210205078
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "CE+Logistic RegressionCE+ReluNet",
+        "bbox": [
+            353.8010559082031,
+            171.45448303222656,
+            403.8829040527344,
+            183.8659210205078
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "CE+XGBoost",
+        "bbox": [
+            428.7634582519531,
+            171.45448303222656,
+            457.7413330078125,
+            176.65524291992188
+        ],
+        "page": 6
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 3. Mean ROC AUC for task predictions for all baselines across all tasks (the higher the better). DCR often outperforms interpretableconcept-based models. CE stands for concept embeddings, while CT for concept truth degrees. Models trained on concept embeddingsare not interpretable as concept embeddings lack a clear semantic for individual embedding dimensions.",
+        "bbox": [
+            54.9379997253418,
+            201.22804260253906,
+            541.441162109375,
+            233.95059204101562
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "we evaluate DCR interpretability by comparing the learntlogic formulae with ground-truth rules in XOR, Trigonome-try, and MNIST-Addition datasets, and indirectly on Muta-genicity by checking whether the learnt rules involve con-cepts corresponding to functional groups known for theirharmful effects, as done by Ying et al. (2019). Third, tofurther assess interpretability, we measure the sensitivityof the predictions under small perturbations following Yehet al. (2019) (the lower the better). Finally, we measure howreceptive our model is to extract meaningful counterfactualexamples from its rules by computing the number of conceptperturbations required to obtain a counterfactual examplefollowing Wachter et al. (2017) (the lower the better). Foreach metric, we report their mean and 95% Confidence In-tervals (CI) on our test sets using 5 different initializationseeds. We report further details and results in the appendix.",
+        "bbox": [
+            55.082000732421875,
+            254.0545654296875,
+            291.1632080078125,
+            445.3865051269531
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "4.3. Task generalization",
+        "bbox": [
+            55.439998626708984,
+            460.07452392578125,
+            155.8131866455078,
+            470.037109375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "DCR outperforms interpretable models (Figure 3)Ourexperiments show that DCR generalizes significantly bet-ter than interpretable benchmarks in our most challengingdatasets. This improvement peaks when concept embed-dings hold more information than concept truth degrees,as in the CelebA and Dot tasks where this deficit of in-formation is imposed byconstruction (Espinosa Zarlengaet al., 2022). This grants DCR a significant advantage (upto \u223c25% improvement in ROC-AUC) over the other in-terpretable baselines. This phenomenon confirms the find-ings by Mahinpei et al. (2021) and Espinosa Zarlenga et al.(2023). In particular, the concept shift in CelebA causes in-terpretable models to behave almost randomly as the set oftest concepts is different from the set of train concepts (de-spite being correlated). DCR however still generalizes wellas the mechanism generating rules only depends on conceptembeddings and the embeddings hold more information onthe correlation between train and test concepts w.r.t. concepttruth degrees. To further test this hypothesis, we compareDCR against XGBoost, decision trees (DTs), and logistic",
+        "bbox": [
+            55.11199951171875,
+            477.16754150390625,
+            291.18499755859375,
+            716.3204956054688
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "regression trained on concept embeddings. In most cases,concept embeddings allow DTs and logistic regression toimprove task generalization, but the predictions of suchmodels are no longer interpretable. In fact, even a logicrule whose terms correspond to dimensions of a conceptembedding is not semantically meaningful as discussed inSection 2. In contrast, DCR uses concept embeddings to as-semble rules whose terms are concept truth degrees, whichmakes it possible to keep the rules semantically meaningful.",
+        "bbox": [
+            307.44000244140625,
+            254.0545654296875,
+            543.1876220703125,
+            361.70050048828125
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "DCR matches the accuracy of neural-symbolic systemstrained using human rules (Table 1)Our experimentsshow that DCR generates rules that, when applied, obtainaccuracy levels close to neural-symbolic systems trainedusing human rules, currently representing the gold standardto benchmark rule learners. We show this result on theMNIST-Addition dataset (Manhaeve et al., 2018), a standardbenchmark in neural-symbolic AI, where the labels on theconcepts are not available. We learn concepts without su-pervision by adding another task classifier, which only usesvery crisp \u02c6ci to make the task predictions (see Appendix H).DCR achieves similar performance to state-of-the-art neural-symbolic baselines (within 1% accuracy from the best base-line). However, DCR is the only system discovering logicrules directly from data, while all the other baselines aretrained using ground-truth rules. Therefore, this experimentindicates how DCR can learn meaningful rules also withoutconcept supervision while still maintaining state-of-the-artperformance.",
+        "bbox": [
+            307.0220031738281,
+            376.67779541015625,
+            543.1846313476562,
+            602.343505859375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "4.4. Interpretability",
+        "bbox": [
+            307.44000244140625,
+            617.030517578125,
+            391.00628662109375,
+            626.9931030273438
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "DCR discovers semantically meaningful logic rules (Ta-ble 2)Our experiments show that DCR induces logic rulesthat are both accurate in predicting the task and formallycorrect when compared to ground-truth logic rules. Weevaluate the formal correctness of DCR rules on the XOR,Trigonometry, and MNIST-Addition datasets where we haveaccess to ground-truth logic rules. We report a selection",
+        "bbox": [
+            306.8819885253906,
+            635.6759033203125,
+            543.0977783203125,
+            717.8604736328125
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "6",
+        "bbox": [
+            295.95001220703125,
+            730.7615356445312,
+            300.9313049316406,
+            742.7664794921875
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "Table 1. Task accuracy on the MNIST-addition dataset. The neural-symbolic baselines use the knowledge of the symbolic task todistantly supervise the image recognition task. DCR achievessimilar performances even though it learns the rules from scratch.",
+        "bbox": [
+            54.893001556396484,
+            74.87605285644531,
+            290.92559814453125,
+            118.55654907226562
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "MODELACCURACY (%)With ground truth rulesDeepProbLog97.2 \u00b1 0.5DeepStochLog97.9 \u00b1 0.1Embed2Sym97.7 \u00b1 0.1LTN98.0 \u00b1 0.1Without ground truth rulesDCR(ours)97.4 \u00b1 0.2",
+        "bbox": [
+            107.71568298339844,
+            120.00145721435547,
+            237.1650848388672,
+            206.96975708007812
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "of Booleanized DCR rules with the corresponding groundtruth rules in Table 2. Our results indicate that DCR\u2019s rulesalign with human-designed ground truth rules, making themhighly interpretable. For instance, DCR predicts that thesum of two MNIST digits is 17 if either the first image isa(i.e., c\u20329) and the second is an(i.e., c\u2032\u20328) or vice-versa which we can interpret globally using Equation 7as: y17 \u21d4(c\u20329 \u2227c\u2032\u20328) \u2228(c\u20328 \u2227c\u2032\u20329). We list all logic rulesdiscovered by DCR on the MNIST-Addition dataset in Ap-pendix H. It is interesting to investigate the potential ofDCR also in settings where we do not have access to theground-truth logic rules, such as the Mutagenicity dataset.Here, unlike the MNIST addition dataset, not only there isno supervision on the concepts, but we don\u2019t even knowwhich are the concepts. We use GCExplainer (Magisteret al., 2021) to generate a set of concept embeddings fromthe embeddings of a trained GNN. We then use these em-beddings to train DCR. In this setting, we can only evalu-ate the correctness of a DCR rules indirectly by checkingwhether the concepts appearing in the rules correspond tofunctional groups known for their harmful effects withinthe Mutagenicity dataset following Ying et al. (2019). Inter-estingly, many of DCR\u2019s rules predicting mutagenic effectsinclude functional groups such as phenols (H\u00a8attenschwiler& Vitousek, 2000) and dimethylamines (ACGIH\u00ae, 2016),which can be highly toxic when combined in moleculessuch as 3-Dimethylaminophenols (Sabry et al., 2011). Thissuggests that DCR has the potential to unveil semanticallymeaningful relations among concepts and to make themexplicit to humans by means of the learnt rules. We provideexperimental details with the full list of concepts and rulesdiscovered in Mutagenicity in Appendix C.",
+        "bbox": [
+            55.051998138427734,
+            232.37158203125,
+            291.1839599609375,
+            617.384521484375
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "DCR rules are stable under small perturbations (Fig-ure 4)An important characteristic of local explanationsis to be stable under small perturbations (Yeh et al., 2019).Indeed, users do not trust explanations if they change sig-nificantly on very similar inputs for which the model makesthe same prediction. This metric, also known as explanationsensitivity, is generally computed as the maximum change",
+        "bbox": [
+            55.439998626708984,
+            635.607421875,
+            291.1820068359375,
+            717.8604736328125
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "Table 2. Error rate of Booleanised DCR rules w.r.t. ground truthrules. Error rate represents how often the label predicted by aBooleanised rule differs from the fuzzy rule generated by ourmodel. The error rate is reported with the mean and standard errorof the mean. A full list of logic rules for MNIST is in Appendix H.",
+        "bbox": [
+            306.89300537109375,
+            74.85304260253906,
+            543.0127563476562,
+            129.49356079101562
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "GROUND-TRUTH RULEPREDICTED RULEERROR (%)XORy0 \u2190\u00acc0 \u2227\u00acc1y0 \u2190\u00acc0 \u2227\u00acc10.00 \u00b1 0.00y0 \u2190c0 \u2227c1y0 \u2190c0 \u2227c10.00 \u00b1 0.00y1 \u2190\u00acc0 \u2227c1y1 \u2190\u00acc0 \u2227c10.02 \u00b1 0.02y1 \u2190c0 \u2227\u00acc1y1 \u2190c0 \u2227\u00acc10.01 \u00b1 0.01Trigonometryy0 \u2190\u00acc0 \u2227\u00acc1 \u2227\u00acc2y0 \u2190\u00acc0 \u2227\u00acc1 \u2227\u00acc20.00 \u00b1 0.00y1 \u2190c0 \u2227c1 \u2227c2y1 \u2190c0 \u2227c1 \u2227c20.00 \u00b1 0.00MNIST-Additiony18 \u2190c\u20329 \u2227c\u2032\u20329y18 \u2190c\u20329 \u2227c\u2032\u203290.00 \u00b1 0.00y17 \u2190c\u20329 \u2227c\u2032\u20328y17 \u2190c\u20329 \u2227c\u2032\u203280.00 \u00b1 0.00y17 \u2190c\u20328 \u2227c\u2032\u20329y17 \u2190c\u20328 \u2227c\u2032\u203290.00 \u00b1 0.00",
+        "bbox": [
+            312.367431640625,
+            130.83567810058594,
+            536.3079833984375,
+            259.44232177734375
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "in the explanation of a model \u03a6(f) on a slightly perturbedinput (x\u22c6), that is, |\u03a6(f(x\u22c6)) \u2212\u03a6(f(x))|, |x \u2212x\u22c6|\u221e< \u03f5.We compare the DCR explanations w.r.t. our interpretablebaselines as well as w.r.t. LIME (Ribeiro et al., 2016) ex-plaining the output of XGBoost. Since we are using differenttypes of models, we use a normalised version of the sensi-tivity |\u03a6(f(x\u22c6)) \u2212\u03a6(f(x))|/|\u03a6(f(x))|. We compute thedistance between two explanations considering the featureimportance of the original explanation w.r.t. to the featureimportance of the explanation for the perturbed example.For decision tree\u2019s rules, we consider the distance betweenthe original path and the path of the perturbed example.As highlighted in Figure 4, in all datasets the explanationsprovided by DCR are very stable, particularly w.r.t. LIMEand ReluNet. Notice that the figure does not report theexplanation sensitivity of logistic regression and decisiontree because it is trivially zero as they learn fixed rules forthe entire dataset. The area under the sensitivity curves ofall methods together with further details concerning thisexperiment has been reported in Appendix F.",
+        "bbox": [
+            306.97198486328125,
+            282.97454833984375,
+            543.1849975585938,
+            522.1284790039062
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "DCR explains prediction mistakesIn DCR, task predic-tions are obtained by executing the logic rules. In this sense,the rules transparently represent the model behavior, andthey can explain misclassifications at the level of tasks. Forexample, reading DCR rules we can observe that a task wasmispredicted because some concepts have been predictedwrongly, or the relevance scores are selecting a suboptimalset of concepts. To test this, we analyze the mispredictedtest samples in datasets where we have access to groundtruth rules as reference (XOR and Trigonometry). Interest-ingly, DCR is able to identify a mislabeled sample in theXOR dataset (first row of Table 3), highlighting an error inthe data generation process. In fact, the rule learnt by DCRis correct y = 0 \u2190\u00acc0 \u2227\u00acc1 but the ground truth labelwas incorrect y = 1. In the Trigonometric dataset instead,",
+        "bbox": [
+            307.0820007324219,
+            538.4825439453125,
+            543.0962524414062,
+            717.8604736328125
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "7",
+        "bbox": [
+            295.82501220703125,
+            730.7615356445312,
+            300.8063049316406,
+            742.7664794921875
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.20.4Perturbation Radius",
+        "bbox": [
+            91.06045532226562,
+            128.92005920410156,
+            166.0979766845703,
+            144.7112579345703
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            79.656005859375,
+            121.55714416503906,
+            88.19378662109375,
+            129.61361694335938
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            79.656005859375,
+            105.32877349853516,
+            88.19378662109375,
+            113.38524627685547
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1.0",
+        "bbox": [
+            79.656005859375,
+            89.10041046142578,
+            88.19378662109375,
+            97.1568832397461
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Sensitivity",
+        "bbox": [
+            70.02735900878906,
+            86.76191711425781,
+            78.63875579833984,
+            120.60845184326172
+        ],
+        "page": 8
+    },
+    {
+        "type": "Section-header",
+        "content": "XOR",
+        "bbox": [
+            122.18770599365234,
+            69.03755950927734,
+            143.31370544433594,
+            80.26982116699219
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.10.20.30.4Perturbation Radius",
+        "bbox": [
+            190.14852905273438,
+            128.92005920410156,
+            273.5487060546875,
+            144.7112579345703
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            178.74407958984375,
+            121.55714416503906,
+            187.28187561035156,
+            129.61361694335938
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.1",
+        "bbox": [
+            178.74407958984375,
+            101.74700164794922,
+            187.28187561035156,
+            109.80347442626953
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.2",
+        "bbox": [
+            178.74407958984375,
+            81.93685150146484,
+            187.28187561035156,
+            89.99332427978516
+        ],
+        "page": 8
+    },
+    {
+        "type": "Section-header",
+        "content": "Trigonometry",
+        "bbox": [
+            202.5750732421875,
+            69.03755950927734,
+            261.06121826171875,
+            80.26982116699219
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.20.4Perturbation Radius",
+        "bbox": [
+            91.06045532226562,
+            207.43804931640625,
+            166.0979766845703,
+            223.22926330566406
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            79.656005859375,
+            200.07513427734375,
+            88.19378662109375,
+            208.13160705566406
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            79.656005859375,
+            172.51918029785156,
+            88.19378662109375,
+            180.57565307617188
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Sensitivity",
+        "bbox": [
+            70.02735900878906,
+            165.27992248535156,
+            78.63875579833984,
+            199.12644958496094
+        ],
+        "page": 8
+    },
+    {
+        "type": "Section-header",
+        "content": "Dot",
+        "bbox": [
+            124.47154235839844,
+            147.55557250976562,
+            141.0301971435547,
+            158.78782653808594
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.20.4Perturbation Radius",
+        "bbox": [
+            190.14852905273438,
+            207.43804931640625,
+            265.1860656738281,
+            223.22926330566406
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0",
+        "bbox": [
+            183.93893432617188,
+            200.07513427734375,
+            187.28187561035156,
+            208.13160705566406
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1",
+        "bbox": [
+            183.93893432617188,
+            181.81971740722656,
+            187.28187561035156,
+            189.87619018554688
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "2",
+        "bbox": [
+            183.93893432617188,
+            163.56431579589844,
+            187.28187561035156,
+            171.62078857421875
+        ],
+        "page": 8
+    },
+    {
+        "type": "Section-header",
+        "content": "Mutagenicity",
+        "bbox": [
+            203.575927734375,
+            147.55557250976562,
+            260.02557373046875,
+            158.78782653808594
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "CE+DCR (ours)CT+Relu NetCT+XGBoost+LIME",
+        "bbox": [
+            87.66928100585938,
+            232.10296630859375,
+            270.1304626464844,
+            238.0994415283203
+        ],
+        "page": 8
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 4. Sensitivity of model explanation when changing the ra-dius of the input perturbation. The lower, the better. DCR explana-tions engender trust as they are stable under small perturbations ofthe input. The same does not hold generally for LIME explanationsof XGBoost or Relu Net decision rules.",
+        "bbox": [
+            54.9379997253418,
+            255.80104064941406,
+            290.9325256347656,
+            310.4415588378906
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "concepts were mispredicted, thus leading to incorrect rules.",
+        "bbox": [
+            55.439998626708984,
+            330.0195617675781,
+            291.1252136230469,
+            342.0245056152344
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Table 3. DCR explains prediction errors.DatasetConceptsDCR ruleGround truth labelXOR[0.0, 0.0]y = 0 \u2190\u00acc0 \u2227\u00acc1y = 1Trigonometry[0.0, 1.0, 1.0]y = 1 \u2190\u00acc0 \u2227c1 \u2227c2y = 0Trigonometry[0.0, 1.0, 0.0]y = 0 \u2190\u00acc0 \u2227c1 \u2227\u00acc2y = 1Trigonometry[0.0, 1.0, 1.0]y = 1 \u2190\u00acc0 \u2227c1 \u2227c2y = 0Trigonometry[0.0, 1.0, 1.0]y = 1 \u2190\u00acc0 \u2227c1 \u2227c2y = 0",
+        "bbox": [
+            59.53978729248047,
+            363.4160461425781,
+            283.6347351074219,
+            424.34405517578125
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "DCR enables discovering counterfactual examples (Fig-ure 5)Besides being stable, DCR rules can be used tofind simple counterfactual examples, as introduced in Sec-tion 3.4. In Figure 5 we show a model\u2019s confidence in itspredictions as we increase the number of concept perturba-tions. In making perturbations, we sort concepts from themost relevant to the least using DCR rules, as suggestedby Wachter et al. (2017). Our results show that DCR con-fidence in its predictions drops quickly when we perturbthe most relevant concepts according to a given rule. Thisenables us to discover counterfactual examples where theconcept literals are very similar to the original one rule.This behaviour is emblematic of interpretable models suchas decision trees and logistic regression, for which similarconclusions can be drawn. We also observe how in Muta-genicity DCR confidence is a bit higher than interpretablebaselines. We can explain this behavior as for this challeng-ing dataset DCR rules give equal relevance to a larger setof concepts. Still, DCR confidence is much lower than ablack box such as XGBoost. Local explainers such as LIMEcan only partially explain the decision process of black boxmodels such as XGBoost: LIME areas under the model",
+        "bbox": [
+            55.13100051879883,
+            456.3593444824219,
+            291.1848449707031,
+            717.8604736328125
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.51.01.52.0# Features Perturbed",
+        "bbox": [
+            343.3321533203125,
+            126.73824310302734,
+            425.3133239746094,
+            141.97335815429688
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            332.2534484863281,
+            119.63550567626953,
+            340.49053955078125,
+            127.40825653076172
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            332.2534484863281,
+            98.68550872802734,
+            340.49053955078125,
+            106.45825958251953
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1.0",
+        "bbox": [
+            332.2534484863281,
+            77.73552703857422,
+            340.49053955078125,
+            85.5082778930664
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Confidence",
+        "bbox": [
+            322.9638671875,
+            84.78065490722656,
+            331.2720031738281,
+            119.99956512451172
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "XOR",
+        "bbox": [
+            374.1222229003906,
+            68.96466064453125,
+            394.5042419433594,
+            79.80134582519531
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0123# Features Perturbed",
+        "bbox": [
+            442.6888122558594,
+            126.73824310302734,
+            520.493408203125,
+            141.97335815429688
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            429.52178955078125,
+            119.63690948486328,
+            437.7589111328125,
+            127.40966033935547
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            429.52178955078125,
+            98.6437759399414,
+            437.7589111328125,
+            106.4165267944336
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1.0Trigonometry",
+        "bbox": [
+            429.52178955078125,
+            68.96466064453125,
+            509.77490234375,
+            85.4233627319336
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.00.51.01.52.0# Features Perturbed",
+        "bbox": [
+            343.3321533203125,
+            202.49107360839844,
+            425.3133239746094,
+            217.72616577148438
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            332.2534484863281,
+            196.971923828125,
+            340.49053955078125,
+            204.74465942382812
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            332.2534484863281,
+            175.18768310546875,
+            340.49053955078125,
+            182.96041870117188
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1.0",
+        "bbox": [
+            332.2534484863281,
+            153.4034423828125,
+            340.49053955078125,
+            161.17617797851562
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Confidence",
+        "bbox": [
+            322.9638671875,
+            160.5334930419922,
+            331.2720031738281,
+            195.75238037109375
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Dot",
+        "bbox": [
+            376.32562255859375,
+            144.71746826171875,
+            392.3011474609375,
+            155.5541534423828
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.02.55.07.510.0# Features Perturbed",
+        "bbox": [
+            440.60052490234375,
+            202.49107360839844,
+            517.0967407226562,
+            217.72616577148438
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.0",
+        "bbox": [
+            429.52178955078125,
+            195.71087646484375,
+            437.7589111328125,
+            203.48361206054688
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "0.5",
+        "bbox": [
+            429.52178955078125,
+            174.55715942382812,
+            437.7589111328125,
+            182.32989501953125
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "1.0Mutagenicity",
+        "bbox": [
+            429.52178955078125,
+            144.71746826171875,
+            508.7757568359375,
+            161.17617797851562
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "CE+DCR (ours)CT+XGBoost",
+        "bbox": [
+            331.2964782714844,
+            226.28736877441406,
+            369.7832946777344,
+            240.41233825683594
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "CT+XGBoost+LIMECT+Decision Tree",
+        "bbox": [
+            397.4429931640625,
+            226.28736877441406,
+            447.2860412597656,
+            240.0937957763672
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "CT+Logistic RegressionCT+Relu Net",
+        "bbox": [
+            474.96380615234375,
+            226.28736877441406,
+            531.1563720703125,
+            240.0937957763672
+        ],
+        "page": 8
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 5. Model confidence as a function of the number of per-turbed features on counterfactual examples. The lower, the better.Similarly to interpretable methods, DCR prediction confidencequickly drops after inverting the truth degree of a small set ofrelevant concepts, facilitating the discovery of counterfactual ex-amples.",
+        "bbox": [
+            306.93798828125,
+            257.6160583496094,
+            543.0090942382812,
+            323.215576171875
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "confidence curve are generally higher than the other meth-ods. We report the actual values for all methods in Table 5together with further details and counterfactual examples.",
+        "bbox": [
+            307.44000244140625,
+            344.7385559082031,
+            543.0907592773438,
+            380.6545104980469
+        ],
+        "page": 8
+    },
+    {
+        "type": "Section-header",
+        "content": "5. Key findings & significance",
+        "bbox": [
+            307.44000244140625,
+            397.2441711425781,
+            458.2668151855469,
+            409.1993713378906
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "LimitationsOne of the main limitations of DCR is thatits global behavior may not be directly interpretable, whichmeans that global rules may not perfectly align with theexact reasoning of the model. This could be an issue incases where a user requires a precise understanding of theglobal model behavior. Also, the complexity of DCR rulesmay increase significantly when the difference between twotasks can only be determined by using a very high number ofconcepts. However, in most real-world cases, and in currentbenchmark datasets for concept-based models, this issuerarely arises. Finally, DCR requires concept embeddingsas inputs, which assumes the existence of concept-baseddatasets or high-quality concept-discovery methods.",
+        "bbox": [
+            307.44000244140625,
+            416.5875549316406,
+            541.4425048828125,
+            572.0545043945312
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Relations with concept-based methodsInterpretableconcept-based models (Koh et al., 2020) address the lack ofhuman trust in AI systems as they allow their users to under-stand their decision process (Rudin, 2019; Ghorbani et al.,2019a; Barbiero et al., 2023). These approaches come withseveral advantages over other explainability methods as theycircumvent the brittleness of post-hoc methods (Adebayoet al., 2018; Kindermans et al., 2019) and provide a semanticadvantage in settings where input features are naturally hardto reason about (e.g., raw image pixels) by providing expla-nations in terms of human-interpretable concepts (Ghorbani",
+        "bbox": [
+            307.44000244140625,
+            586.3035888671875,
+            543.097900390625,
+            717.8604736328125
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "8",
+        "bbox": [
+            295.95001220703125,
+            730.7615356445312,
+            300.9313049316406,
+            742.7664794921875
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Interpretable Neural-Symbolic Concept Reasoning",
+        "bbox": [
+            201.31300354003906,
+            47.22712326049805,
+            395.570068359375,
+            56.19352340698242
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "et al., 2019a; Georgiev et al., 2022; Azzolin et al., 2022;Magister et al., 2022; Xuanyuan et al., 2022). However, Es-pinosa Zarlenga et al. (2022) and Mahinpei et al. (2021)emphasise how state-of-the-art concept-based models eitherstruggle to efficiently solve real-world tasks using concepttruth-values only or they weaken their interpretability us-ing concept embeddings to increase their learning capacity.This is true even when concept-based models use a simplelogistic regression or decision tree to map concept embed-dings to tasks because concept embedding dimensions donot have a clear semantic meaning, and models compos-ing such dimensions generate prediction rules that are nothuman-interpretable. Our work solves this issue by introduc-ing the first interpretable concept-based model that learnslogic rules from concept embeddings.",
+        "bbox": [
+            55.13100051879883,
+            67.81756591796875,
+            291.181396484375,
+            247.1954803466797
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "Relations with neural-symbolic methodsA commonparadigm in neural-symbolic is to exploit deep learning mod-els to map subsymbolic information (e.g. images) to an in-termediate logical representation, which is then manipulatedusing weighted logic formalisms, such as probabilistic logic(DeepProbLog (Manhaeve et al., 2018), NeurASP (Yanget al., 2020)), fuzzy logic (Lyrics(Marra et al., 2020c),LTN (Badreddine et al., 2022; Wagner & Garcez, 2021))or both (DLM (Marra et al., 2020b), RNM(Marra et al.,2020a)). This sets DCR between concept-based and neural-symbolic models. However, while these neural symbolicmodels focus on how to maximally exploit available logicknowledge (e.g. a logic program) to improve neural pre-dictions, DCR focuses on learning such logical knowledge.Other neural symbolic approaches, such as Neuro-SymbolicConcept Learner (Mao et al., 2019), the Neural LogicMachines (Dong et al., 2019), and the Neural State Ma-chine (Hudson & Manning, 2019), are actually closer inspirit to concept based models as they exploit intermediatesymbolic representations. However, the decision-makingprocess on top of the concepts/symbols still relies on (or isuniquely) an uninterpretable neural component. In contrast,DCR encodes its decision process in a logical rule that isexecuted explicitly giving the user full knowledge and con-trol over the concept-to-task decision-making process. Thiswould be impossible in these neural symbolic approaches,as the decision process is implicit in the weights of thenetworks.",
+        "bbox": [
+            55.082000732421875,
+            261.30755615234375,
+            291.18499755859375,
+            596.1015014648438
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "Key advantages of DCRThe main advantage of DCRw.r.t. existing interpretable and black-box methods ariseswhen dealing with challenging tasks where both inter-pretability and accuracy should be maximized. For simplertasks, existing interpretable methods, such logistic regres-sion, could be enough. On the other side, when interpretabil-ity is not a hard user requirement, then a simple black-boxmodel would be easier to set up (e.g., it does not requireconcept labels or concept encoders). However, in all cases",
+        "bbox": [
+            55.082000732421875,
+            610.2135620117188,
+            291.0979309082031,
+            717.8604736328125
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "where interpretability plays a crucial role for the end userand existing interpretable models fail, then DCR could bepreferable. Finally, compared to existing neural-symbolicapproaches, DCR has an edge in all settings where therules are unknown, while other methods (like DeepProbLog)might be more stable when the full set of rules is known inadvance. For other limitations/drawbacks, please see ourreply to common questions.",
+        "bbox": [
+            307.0820007324219,
+            67.81756591796875,
+            542.1118774414062,
+            163.50950622558594
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "ConclusionThis work presents the Deep Concept Rea-soner (DCR), the new state-of-the-art of interpretableconcept-based models. To achieve this, DCR builds foreach sample a weighted logic rule combining neural andsymbolic algorithms on concept embeddings in a unifiedend-to-end differentiable system. In our experiments, wecompare DCR with state-of-the-art interpretable concept-based models and black-box models using datasets span-ning three of the most common data types used in deeplearning: tabular, image, and graph data. Our experimentsshow that Deep Concept Reasoners: (i) attain better taskaccuracy w.r.t. state-of-the-art interpretable concept-basedmodels, (ii) discover meaningful logic rules, and (iii) fa-cilitate the generation of counterfactual examples. Whilethe global behaviour of the model is still not directly inter-pretable, our results show how aggregating Boolean DCRrules provides an approximation for the global behaviour ofthe model which matches known ground truth relationships.As a result, our experiments indicate that DCR represents asignificant advance over the current state-of-the-art of inter-pretable concept-based models, and thus makes progress ona key research topic within the field of explainability.",
+        "bbox": [
+            307.0820007324219,
+            181.0335693359375,
+            543.185302734375,
+            444.0975036621094
+        ],
+        "page": 9
+    },
+    {
+        "type": "Section-header",
+        "content": "Acknowledgements",
+        "bbox": [
+            307.44000244140625,
+            460.6861572265625,
+            406.2736511230469,
+            472.641357421875
+        ],
+        "page": 9
+    },
+    {
+        "type": "Text",
+        "content": "The authors would like to thank Nikola Simidjievski for hisinsightful comments on earlier versions of this manuscript.PB acknowledges support from the European Union\u2019s Hori-zon 2020 research and innovation programme under grantagreement No 848077. GC and FP acknowledges supportfrom the EU Horizon 2020 project AI4Media, under con-tract no. 951911 and by the French government, throughInvestments in the Future projects managed by the NationalResearch Agency (ANR), 3IA Cote d\u2019Azur with the ref-erence number ANR-19-P3IA-0002. MEZ acknowledgessupport from the Gates Cambridge Trust via a Gates Cam-bridge Scholarship. FG was supported by TAILOR andby HumanE-AI-Net projects funded by EU Horizon 2020research and innovation programme under GA No 952215and No 952026, respectively.",
+        "bbox": [
+            307.1310119628906,
+            480.0305480957031,
+            543.1864013671875,
+            659.4075317382812
+        ],
+        "page": 9
+    }
+]

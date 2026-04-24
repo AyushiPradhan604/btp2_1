@@ -12,8 +12,8 @@
             --box-bg: #ffffff;
             --accent: #2c3e50;
             --text-main: #333333;
-            --border-radius: 12px;
-            --padding-inner: 20px;
+            --border-radius: 20px;
+            --padding-inner: 40px;
         }
         body {
             margin: 0;
@@ -30,39 +30,33 @@
         .poster-container {
             width: 100%;
             height: 100%;
-            padding: 30px;
+            padding: 40px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 40px;
+            border: 30px solid var(--accent); /* HARD CONSTRAINT BORDER */
+            overflow: hidden;
         }
 
         .poster-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            column-count: 3;
+            column-gap: 60px;
+            column-fill: balance;
             flex-grow: 1;
-            height: 0; /* allows children to flex appropriately without breaking grid bounds */
-        }
-
-        .poster-column {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            height: 100%;
+            width: 100%;
+            height: auto; /* Fallback to natural flex flow */
+            padding-bottom: 20px;
+            border-top: 8px solid var(--accent);
+            padding-top: 0px;
         }
 
         .section-box {
-            background-color: var(--box-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: var(--padding-inner);
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            border-top: 5px solid var(--accent);
-            flex-grow: 1; /* Natively stretches to eliminate blank gaps vertically */
-            justify-content: flex-start;
+            display: block; 
+            margin-bottom: 60px; 
+            break-inside: auto; /* ALLOW the section text to natively split across columns */
+            width: 100%;
         }
 
         /* Title block styling */
@@ -92,18 +86,21 @@
         }
 
         .section-title {
-            font-size: 70px;
+            font-size: 55px;
             font-weight: 800;
             color: var(--accent);
-            margin-top: 0;
-            margin-bottom: 25px;
+            margin-top: -8px; /* Shifts exact 8px border up to overlap perfectly */
+            margin-bottom: 20px;
             text-transform: uppercase;
+            border-top: 8px solid var(--accent);
+            padding-top: 20px;
+            break-after: avoid;
         }
 
         .bullet-list {
-            font-size: 45px;
-            line-height: 1.5;
-            padding-left: 50px;
+            font-size: 32px;
+            line-height: 1.4;
+            padding-left: 45px;
             margin: 0;
         }
 
@@ -128,21 +125,29 @@
             max-width: 100%;
         }
 
-        .figure-img {
-            max-width: 100%;
-            max-height: 380px;
-            border-radius: 16px;
-            object-fit: contain;
-            border: 3px solid #ccc;
+        .figure-float {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
-        .figure-caption {
-            font-size: 35px;
-            color: #666;
-            margin-top: 18px;
-            text-align: center;
-            font-style: italic;
+        .figure-img {
+            max-width: 90%;
+            max-height: 500px;
+            border-radius: 16px;
+            object-fit: contain;
+            border: 4px solid #ccc;
         }
+
+        /* Dynamically format MathJax equations to align side-by-side if they fit */
+        mjx-container[display="true"] {
+            display: inline-block !important;
+            margin: 15px 30px !important;
+            vertical-align: middle;
+        }
+
     </style>
     <!-- Add inline styles for dynamic critic fixes if provided -->
     {% if critic_css %}
@@ -176,35 +181,31 @@
             {% endfor %}
         </div>
 
-        <!-- CSS Grid Body -->
+        <!-- CSS Native Multi-Column Flow -->
         <div class="poster-grid">
-            <!-- Render 3 Columns -->
-            {% for col_idx in range(3) %}
-            <div class="poster-column">
                 {% for section in data.sections %}
-                    {% if section.layout.col == col_idx %}
+                    {% if section.layout.col != -1 %}
                     <div class="section-box">
                         <h2 class="section-title">{{ section.name }}</h2>
-                        <ul class="bullet-list">
-                            {% for bullet in section.bullets %}
-                                <li class="bullet-item">{{ bullet }}</li>
-                            {% endfor %}
-                        </ul>
                         
-                        {% if section.figures and section.figures|length > 0 %}
-                        <div class="figures-container">
-                            {% for fig in section.figures %}
-                            <div class="figure-wrapper">
-                                <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" alt="{{ fig.caption }}">
-                            </div>
-                            {% endfor %}
+                        <div class="content-wrapper" style="display: block;">
+                            {% if section.figures and section.figures|length > 0 %}
+                                {% for fig in section.figures %}
+                                    <div class="figure-float">
+                                        <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" alt="Figure">
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <ul class="bullet-list">
+                                {% for bullet in section.bullets %}
+                                    <li class="bullet-item">{{ bullet }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        {% endif %}
                     </div>
                     {% endif %}
                 {% endfor %}
-            </div>
-            {% endfor %}
         </div>
     </div>
 </body>
