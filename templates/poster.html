@@ -189,19 +189,38 @@
                         <h2 class="section-title">{{ section.name }}</h2>
                         
                         <div class="content-wrapper" style="display: block;">
-                            {% if section.figures and section.figures|length > 0 %}
-                                {% for fig in section.figures %}
-                                    <div class="figure-float">
-                                        <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" alt="Figure">
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
+                            {% set fig_pairs = section.figures|batch(2)|list %}
                             
                             <ul class="bullet-list">
-                                {% for bullet in section.bullets %}
-                                    <li class="bullet-item">{{ bullet }}</li>
-                                {% endfor %}
+                            {% for bullet in section.bullets %}
+                                <li class="bullet-item">{{ bullet }}</li>
+                                
+                                {% set pair_idx = (loop.index0 // 2) %}
+                                {% if loop.index is odd and pair_idx < fig_pairs|length %}
+                                    </ul>
+                                    <div class="figures-container" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 25px; align-items: center; margin: 25px 0;">
+                                        {% for fig in fig_pairs[pair_idx] %}
+                                            <div style="flex: 0 1 auto; max-width: 100%; text-align: center;">
+                                                <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" style="max-height: 280px; width: auto; max-width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <ul class="bullet-list">
+                                {% endif %}
+                            {% endfor %}
                             </ul>
+                            
+                            <!-- If there are more figure pairs than bullets, render them at the bottom so none vanish -->
+                            {% set rendered_pairs = (section.bullets|length + 1) // 2 %}
+                            {% for i in range(rendered_pairs, fig_pairs|length) %}
+                                <div class="figures-container" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 25px; align-items: center; margin: 25px 0;">
+                                    {% for fig in fig_pairs[i] %}
+                                        <div style="flex: 0 1 auto; max-width: 100%; text-align: center;">
+                                            <img src="file:///{{ fig.image_path|replace('\\','/') }}" class="figure-img" style="max-height: 280px; width: auto; max-width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                     {% endif %}

@@ -85,7 +85,7 @@ def main():
                 # Assign if explicitly referenced in text, OR natively resides in this identically tracked section header layout
                 if is_referred or (nat_clean and (nat_clean in sec_clean or sec_clean in nat_clean)):
                     sec_figures.append({"image_path": fig["image_path"], "caption": fig["caption"]})
-            
+
             # Ensure absolute uniqueness by removing used figures from the pool globally
             used_paths = {fig['image_path'] for fig in sec_figures}
             available_figures = [f for f in available_figures if f['image_path'] not in used_paths]
