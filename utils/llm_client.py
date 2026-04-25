@@ -73,6 +73,10 @@ def get_structured_completion(messages: list, response_format: type[BaseModel]) 
         
         # Flatten raw literal newlines that destroy JSON validation natively
         result_text = result_text.replace('\n', ' ').replace('\r', '')
+
+        # Escape backslashes that are not followed by valid JSON escape quotes or slashes, ensuring LaTeX macros like \txt are correctly decoded in JSON
+        import re
+        result_text = re.sub(r'(?<!\\)\\(?!["\\/])', r'\\\\', result_text)
         
         if start == -1 or end == -1:
              if '"bullets":' in result_text:

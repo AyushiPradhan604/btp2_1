@@ -208,15 +208,28 @@ def parse_pdf_structured(pdf_path: str, output_dir: str = "assets/figures") -> d
                     "page": page_num + 1
                 })
 
-    text_fallback = ""
-    for b in structured_data:
-        if b['type'] == 'Section-header':
-            text_fallback += f"\n# {b['content']}\n"
-        elif b['type'] == 'Formula':
-            text_fallback += f"\n{b['content']}\n"
-        elif b['type'] == 'Text':
-            text_fallback += str(b['content']) + " "
-            
+    try:
+        import pymupdf4llm
+        text_fallback = pymupdf4llm.to_markdown(doc)
+    except Exception as e:
+        print(f"[WARN] PyMuPDF4LLM failed ({e}), falling back to raw text extraction.")
+        text_fallback = ""
+        for b in structured_data:
+            if b['type'] == 'Section-header':
+                text_fallback += f"\n# {b['content']}\n"
+            elif b['type'] == 'Formula':
+                text_fallback += f"\n{b['content']}\n"
+            elif b['type'] == 'Text':
+                t = str(b['content'])
+                # Natively transliterate PDF unicode symbols to LaTeX so LLM and HTML can render them!
+                t = t.replace('\u2208', ' \\in ').replace('\u00d7', ' \\times ').replace('\u2211', ' \\sum ').replace('\u221e', ' \\infty ')
+                t = t.replace('\u2264', ' \\leq ').replace('\u2265', ' \\geq ').replace('\u2192', ' \\rightarrow ').replace('\u2225', ' \\| ')
+                t = t.replace('\u03bb', ' \\lambda ').replace('\u03c3', ' \\sigma ').replace('\u03f5', ' \\epsilon ').replace('\u03b1', ' \\alpha ')
+                t = t.replace('\u03b2', ' \\beta ').replace('\u03b3', ' \\gamma ').replace('\u2212', ' - ').replace('\u2248', ' \\approx ')
+                t = t.replace('\u2260', ' \\neq ').replace('\u00b7', ' \\cdot ').replace('\u22c6', ' \\star ').replace('\u22a4', ' \\top ')
+                t = t.replace('\u2297', ' \\otimes ')
+                
+                text_fallback += t + " "
     # Mathematically lock figures to their originating layout section!
     current_section = "Introduction"
     for p_num in range(1, len(doc)+1):

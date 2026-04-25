@@ -47,7 +47,7 @@ You are an expert science communicator formatting text for a highly visual acade
 Your goal is to extract deep technical information while crafting a compelling "mini-story".
 Rules:
 - Intelligently appraise and decide the priority of all available content. Do not oversimplify sections into generic bullet points. Re-synthesize the core essence and direct contributions of each section authentically without losing technical weight.
-- Filter and prioritize key mathematical equations, rules, formulas, and parameters natively leveraging LaTeX formatting (e.g. `$`, `$$`). Strategically include these only if they form the structural anchor of the methodology or results.
+- Filter and prioritize key mathematical equations, rules, formulas, and parameters. CRITICAL: You must aggressively reconstruct garbled mathematical equations from the text into proper LaTeX. You MUST surround ALL inline math with `$` (e.g., `$W \in \mathbb{R}^{n_2 \times n_2}$`) and block math with `$$`. Do not output raw unicode characters for math symbols, use proper LaTeX macros.
 - Narrative & Hook: Craft a strong central narrative thread (Problem -> Idea -> Why it matters). Include a strong "hook" to grab attention while preserving empirical rigor.
 - "Aha Moment": Clearly articulate what is novel, parameter setups, or critical outcomes, articulating exactly why this is different from prior constraints natively.
 - Summarize the section comprehensively using 5 to 7 meticulously dense bullet points (approx 25-40 words each) to preserve visual layout bounds and absolutely eliminate poster whitespace.
@@ -67,7 +67,8 @@ Rules:
     # If the LLM produces invalid JSON due to heavy unescaped mathematics, dynamically slice 
     # the exact paper text natively instead of returning useless crash strings.
     import re
-    clean_raw = re.sub(r'\$\$?[^\$]+\$\$?', '', actual_content)
+    # We DO NOT delete equations here anymore! Let MathJax render whatever survives.
+    clean_raw = actual_content
     # Strip weird mid-sentence citations and numbers to clean up raw flow
     sentences = [s.strip() + "." for s in clean_raw.split('.') if len(s.strip()) > 50]
     return sentences[:5] if sentences else ["Complex theoretical derivations omitted. Refer to source publication."]
