@@ -1,34 +1,45 @@
 [
     {
         "type": "Section-header",
-        "content": "PAXION: Patching Action Knowledge inVideo-Language Foundation Models",
+        "content": "Exploring Geometry of Blind Spots in Vision Models",
         "bbox": [
-            159.19700622558594,
-            99.87686920166016,
-            453.2358093261719,
-            137.0172576904297
+            112.86199951171875,
+            99.8338394165039,
+            499.1413879394531,
+            117.04924011230469
         ],
         "page": 1
     },
     {
         "type": "Text",
-        "content": "Zhenhailong Wang1, Ansel Blume1, Sha Li1, Genglin Liu1,Jaemin Cho2, Zineng Tang2, Mohit Bansal2, Heng Ji1",
+        "content": "Sriram Balasubramanian\u2217sriramb@cs.umd.eduGaurang Sriramanan\u2217gaurangs@cs.umd.eduVinu Sankar Sadasivanvinu@cs.umd.edu",
         "bbox": [
-            179.74000549316406,
-            179.87112426757812,
-            429.7696228027344,
-            202.70814514160156
+            127.06900024414062,
+            159.65139770507812,
+            484.93194580078125,
+            182.37110900878906
         ],
         "page": 1
     },
     {
         "type": "Text",
-        "content": "1UIUC2UNC{wangz3,hengji}@illinois.edu",
+        "content": "Soheil Feizisfeizi@cs.umd.edu",
         "bbox": [
-            232.79188537597656,
-            203.10421752929688,
-            379.232421875,
-            225.57215881347656
+            261.5530090332031,
+            200.24951171875,
+            350.46942138671875,
+            221.46009826660156
+        ],
+        "page": 1
+    },
+    {
+        "type": "Text",
+        "content": "Department of Computer ScienceUniversity of Maryland, College Park",
+        "bbox": [
+            230.947021484375,
+            233.0674591064453,
+            381.0534362792969,
+            253.93905639648438
         ],
         "page": 1
     },
@@ -36,21 +47,21 @@
         "type": "Section-header",
         "content": "Abstract",
         "bbox": [
-            283.75787353515625,
-            254.9232177734375,
-            328.2431640625,
-            266.87841796875
+            283.7580261230469,
+            283.53814697265625,
+            328.2433166503906,
+            295.49334716796875
         ],
         "page": 1
     },
     {
         "type": "Text",
-        "content": "Action knowledge involves the understanding of textual, visual, and temporal as-pects of actions. We introduce the Action Dynamics Benchmark (ActionBench)containing two carefully designed probing tasks: Action Antonym and Video Rever-sal, which targets multimodal alignment capabilities and temporal understandingskills of the model, respectively. Despite recent video-language models\u2019 (VidLM)impressive performance on various benchmark tasks, our diagnostic tasks revealtheir surprising deficiency (near-random performance) in action knowledge, sug-gesting that current models rely on object recognition abilities as a shortcut for ac-tion understanding. To remedy this, we propose a novel framework, PAXION, alongwith a new Discriminative Video Dynamics Modeling (DVDM) objective. ThePAXION framework utilizes a Knowledge Patcher network to encode new actionknowledge and a Knowledge Fuser component to integrate the Patcher into frozenVidLMs without compromising their existing capabilities. Due to limitations of thewidely-used Video-Text Contrastive (VTC) loss for learning action knowledge, weintroduce the DVDM objective to train the Knowledge Patcher. DVDM forces themodel to encode the correlation between the action text and the correct orderingof video frames. Our extensive analyses show that PAXION and DVDM togethereffectively fill the gap in action knowledge understanding (~50% \u219280%), whilemaintaining or improving performance on a wide spectrum of both object- andaction-centric downstream tasks. The code and data will be made publicly availablefor research purposes at https://github.com/MikeWangWZHL/Paxion.git.",
+        "content": "Despite the remarkable success of deep neural networks in a myriad of settings, sev-eral works have demonstrated their overwhelming sensitivity to near-imperceptibleperturbations, known as adversarial attacks. On the other hand, prior works havealso observed that deep networks can be under-sensitive, wherein large-magnitudeperturbations in input space do not induce appreciable changes to networkactivations. In this work, we study in detail the phenomenon of under-sensitivityin vision models such as CNNs and Transformers, and present techniques to studythe geometry and extent of \u201cequi-confidence\u201d level sets of such networks. Wepropose a Level Set Traversal algorithm that iteratively explores regions of highconfidence with respect to the input space using orthogonal components of thelocal gradients. Given a source image, we use this algorithm to identify inputsthat lie in the same equi-confidence level set as the source image despite beingperceptually similar to arbitrary images from other classes. We further observe thatthe source image is linearly connected by a high-confidence path to these inputs,uncovering a star-like structure for level sets of deep networks. Furthermore, weattempt to identify and estimate the extent of these connected higher-dimensionalregions over which the model maintains a high degree of confidence. The codefor this project is publicly available at this URL.",
         "bbox": [
-            143.5070037841797,
-            280.4690246582031,
-            469.79193115234375,
-            508.903076171875
+            143.86599731445312,
+            307.597412109375,
+            469.7861022949219,
+            502.9380798339844
         ],
         "page": 1
     },
@@ -59,31 +70,31 @@
         "content": "1Introduction",
         "bbox": [
             108.0,
-            531.3351440429688,
+            523.0321655273438,
             190.8136749267578,
-            543.2903442382812
+            534.9873657226562
         ],
         "page": 1
     },
     {
         "type": "Text",
-        "content": "Recent video-language models (VidLMs) [30, 25, 55, 35, 57, 52] have shown impressive performanceon a wide range of video-language tasks. However, such multimodal models are not withoutdeficiencies: [24] points out that many popular video-language benchmarks [56, 3, 16] can be solvedby looking at a single frame, and [59] shows that vision-language models struggle to understandcompositional and order relations in images, treating images as bags of objects. Such limitationssuggest that models\u2019 understanding of actions, which may require several frames and comprehensionof object relationships, may be lacking.",
+        "content": "Deep neural networks have demonstrated remarkable success in various diverse domains includingcomputer vision and natural language processing, surpassing the performance of classical algorithmsby a significant margin. However, though they achieve state of the art results on many computervision tasks like image classification, sometimes even exceeding human-level performance [He et al.,2015, 2016], the overall visual processing conducted by such models can deviate significantly fromthat effectively observed in the human visual system. Perhaps most iconic and representative of thesedifferences lies in the overwhelming susceptibility of neural networks to near-imperceptible changesto their inputs \u2014 commonly called adversarial attacks [Szegedy et al., 2014] \u2014 an extraordinaryfailure mode that highlights the over-sensitivity of such models. Indeed, an active area of researchover the past few years has been focused towards analyzing adversarial perturbations under differentthreat models [Goodfellow et al., 2015, Tram\u00e8r et al., 2018, Wong et al., 2019, Laidlaw et al.,2021, Croce and Hein, 2022] and in addressing adversarial vulnerabilities using robust trainingmethodologies [Madry et al., 2018, Zhang et al., 2019b, Singla and Feizi, 2020, Wu et al., 2020,Laidlaw et al., 2021, Levine and Feizi, 2021].",
         "bbox": [
-            108.0,
-            556.388427734375,
-            504.0037536621094,
-            631.8060302734375
+            107.7509994506836,
+            547.2863159179688,
+            505.24725341796875,
+            699.0970458984375
         ],
         "page": 1
     },
     {
         "type": "Text",
-        "content": "To test this hypothesis, we first define action knowledge as an understanding of the cause and effectof actions in textual, visual, and temporal dimensions. To quantify a model\u2019s action knowledge, weintroduce the Action Dynamics Benchmark (ActionBench). ActionBench contains two probingtasks: distinguishing between (1) a video\u2019s caption and the caption with its action verbs replaced bytheir antonyms; (2) the original and reversed videos. The benchmark also includes a baseline taskfor controlling the undesired impact from domain mismatch and investigating potential bias towardsobjects. The baseline task requires the model to differentiate between the original video captions",
+        "content": "\u2217Equal Contribution, author names ordered alphabetically",
         "bbox": [
-            107.69100189208984,
-            638.1788330078125,
-            504.3451843261719,
-            713.6730346679688
+            119.8219985961914,
+            704.3238525390625,
+            327.6673583984375,
+            715.0484008789062
         ],
         "page": 1
     },
@@ -100,254 +111,78 @@
     },
     {
         "type": "Text",
-        "content": "Knowledge Patcher",
-        "bbox": [
-            190.8837432861328,
-            110.22213745117188,
-            275.51666259765625,
-            121.43318176269531
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Frozen",
-        "bbox": [
-            121.08218383789062,
-            98.10814666748047,
-            147.3359375,
-            107.53307342529297
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "VidLM",
-        "bbox": [
-            122.3300552368164,
-            108.23169708251953,
-            146.08604431152344,
-            117.65662384033203
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "ActionBench",
-        "bbox": [
-            163.94911193847656,
-            74.48651885986328,
-            211.31048583984375,
-            83.91144561767578
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Data",
-        "bbox": [
-            178.73020935058594,
-            84.61006927490234,
-            196.54766845703125,
-            94.03499603271484
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Knowledge Fuser",
-        "bbox": [
-            395.5957336425781,
-            110.22213745117188,
-            471.23895263671875,
-            121.43318176269531
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Integrating with backboneLearning action knowledge",
-        "bbox": [
-            166.50636291503906,
-            133.13800048828125,
-            489.6783142089844,
-            144.44790649414062
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Action-centric",
-        "bbox": [
-            232.10736083984375,
-            74.48651885986328,
-            283.20599365234375,
-            83.91144561767578
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Loss",
-        "bbox": [
-            248.75146484375,
-            84.61006927490234,
-            266.56890869140625,
-            94.03499603271484
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Downstream Tasks",
-        "bbox": [
-            397.86297607421875,
-            76.73619842529297,
-            468.96881103515625,
-            86.16112518310547
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "action-centricrepresentation",
-        "bbox": [
-            313.13970947265625,
-            97.94831085205078,
-            356.2795715332031,
-            111.67487335205078
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "backbone representation",
-        "bbox": [
-            296.16168212890625,
-            124.9444580078125,
-            370.4415588378906,
-            132.48440551757812
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "\u2744\ufe0f",
-        "bbox": [
-            121.24037170410156,
-            74.24979400634766,
-            137.57797241210938,
-            86.50261688232422
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "\ud83d\udd25\ud83d\udd25",
-        "bbox": [
-            177.89537048339844,
-            98.76156616210938,
-            393.66094970703125,
-            110.1242446899414
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "DVDM",
-        "bbox": [
-            228.13525390625,
-            85.48665618896484,
-            245.0191192626953,
-            93.32427978515625
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Probing Tasks",
-        "bbox": [
-            308.00762939453125,
-            76.73619842529297,
-            360.8403015136719,
-            86.16112518310547
-        ],
-        "page": 2
-    },
-    {
-        "type": "Caption",
-        "content": "Figure 1: Overview of the PAXION framework. The goal is to patch frozen VidLMs with actionknowledge without compromising their general vision-language capabilities. The Knowledge Patcher(KP) aims to learn an action-centric representation by leveraging ActionBench data (\u00a7 2) and ournewly proposed Discriminative Video Dynamics Modeling (DVDM) training objectives (\u00a7 3.1). TheKnowledge Fuser (KF) aims to obtain a balanced representation for general downstream tasks byfusing the KP with the backbone.",
-        "bbox": [
-            107.6709976196289,
-            154.66830444335938,
-            504.3511962890625,
-            219.25204467773438
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "and altered versions with randomly replaced objects. We find that state-of-the-art video-languagefoundation models [52, 57, 24] exhibit near-random performance on our action-oriented probing taskswhile excelling on the object-oriented baseline task (Figure 2). This shows that VidLMs lack actionknowledge and suggests that their impressive performance on other benchmarks may be attributed totheir object recognition ability instead of action understanding.",
-        "bbox": [
-            107.64099884033203,
-            230.87930297851562,
-            504.00225830078125,
-            284.5530700683594
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "To address this shortcoming, we propose a novel framework, PAXION (Patching Actions), to patch ex-isting VidLMs with action knowledge without compromising their general vision-language (VL) capa-bilities. PAXION comprises two main components, the Knowledge Patcher and the Knowledge Fuser.The Knowledge Patcher (KP) is a Perceiver-based [21, 20] lightweight module attached to a frozenVidLM backbone used to augment the VidLM with action-aware representations. Through ourpreliminary experiments, one major challenge for patching action knowledge is that the widely-usedVideo-Text Contrastive (VTC) objective [43, 55, 29, 26, 28] is insufficient, which echoes the findingsof related work [7, 24, 59]. Hence, inspired by dynamics modeling in robotics and reinforcementlearning [1, 4, 15, 23, 39], we introduce the Discriminative Video Dynamics Modeling (DVDM)objective that forces the model to learn the correlation between an action\u2019s textual signifier, theaction text (e.g. the word \u201cfalling\u201d), and the action\u2019s visual depiction (e.g. a clip of a falling book).DVDM includes two new losses, Video-Action Contrastive (VAC) and Action-Temporal Matching(ATM), which are compatible with VTC without additional parameters. Specifically, we formulatediscriminative tasks using action antonyms and reversed videos, with special emphasis on learn-ing from data instances with salient state changes. We demonstrate that the synergy between theKnowledge Patcher and DVDM leads to a dramatic improvement on our ActionBench tasks.",
-        "bbox": [
-            107.33300018310547,
-            290.9653625488281,
-            505.7443542480469,
-            464.57806396484375
-        ],
-        "page": 2
-    },
-    {
-        "type": "Text",
-        "content": "Next, we investigate whether our Knowledge Patcher, which is specialized for action understanding,can be integrated into existing VidLMs for downstream tasks that require both action and objectknowledge. To this end, we introduce the Knowledge Fuser (KF) component of PAXION which fusesthe action-centric representation from the Knowledge Patcher with the object-centric representationfrom the frozen backbone using cross-attention. We show that the fused representation from PAXIONimproves both object and action understanding on a wide spectrum of tasks, including Video-TextRetrieval (SSv2-label [13, 24]), Video-to-Action Retrieval (SSv2-template [24], Temporal [45]), andCausal-Temporal Video Question Answering (NExT-QA [54]). Moreover, our analysis shows that theKnowledge Fuser is essential to maintain a balance between the models\u2019 object-related understandingand improving performance on downtream action and temporal-oriented tasks.",
+        "content": "On the other hand, it has been shown that such models may also be under-sensitive, wherein inputimages that are unmistakably disparate to a human oracle induce near identical network activationsor predictions [Jacobsen et al., 2018a]. To tractably analyze this phenomenon, Jacobsen et al. [2018a]utilize a special class of neural networks that are bijective functions, called fully Invertible RevNets[Jacobsen et al., 2018b, Kingma and Dhariwal, 2018], to craft large-magnitude semantic perturbationsin input space that are designed to leave its corresponding network representations unchanged.Furthermore, Tram\u00e8r et al. [2020] show that robust training with \u2113p bounded adversaries can be asource of excessive model-invariance in itself, due to the poor approximation of the true imperceptiblethreat model of human oracles by \u2113p norm-bounded balls in RGB-pixel space [Laidlaw et al., 2021].Indeed, the authors \u2018break\u2019 a provably robust defense on MNIST [Zhang et al., 2019a] with a certifiedaccuracy of 87%, by crafting perturbations within the certified \u2113\u221eradius of 0.4, that however causemodel agreement with human oracles to diminish to 60%.",
         "bbox": [
             108.0,
-            471.00445556640625,
-            505.2469482421875,
-            579.1480102539062
+            74.1694107055664,
+            505.74530029296875,
+            204.37008666992188
         ],
         "page": 2
     },
     {
         "type": "Text",
-        "content": "We also test the robustness of PAXION by considering a zero-shot cross-domain transfer setting on theMoments-in-Time [38] and Kinetics [22] datasets. We find that the Knowledge Fuser is critical forincreasing robustness to domain shifts and that positive transfer to unseen domains can be achievedby further ensembling PAXION with the backbone model.",
+        "content": "However, these methods either rely upon special invertible network architectures or the selection ofthe nearest training image of another class as a target followed by a sequence of complex alignmentand spectral clustering techniques, so as to semantically alter the input in a conspicuous manner thatinduces a change in the human assigned oracle label, while leaving the model prediction unchanged.This leads us to our research question: Is it possible to analyze the phenomenon of under-sensitivityof general vision models in a systematic manner on natural image datasets, and characterize thegeometry and extent of \u201cblind spots\u201d of such networks? Indeed, we empirically demonstrate theveracity of this claim \u2014 in this work, we present a novel Level Set Traversal algorithm to explore the\u201cequi-confidence\u201d level sets of popular vision models. Given an arbitrary source and target image pair,our proposed algorithm successfully finds inputs that lie in the same level set as the source image,despite being near-identical perceptually to the target image. Furthermore, the proposed algorithmidentifies a connected path between the original source image and the \u201cblind spot\" input so generated,wherein high prediction confidence with respect to the source class is maintained throughout thepath. In summary, we make the following contributions in this work:",
         "bbox": [
-            107.53199768066406,
-            585.650390625,
-            504.16888427734375,
-            628.2640380859375
+            106.67500305175781,
+            210.7917022705078,
+            505.7470703125,
+            362.5760803222656
         ],
         "page": 2
     },
     {
         "type": "Text",
-        "content": "To the best of our knowledge, this is the first work to systematically evaluate action knowledge andpatch it into video-language foundation models. Our main contributions are threefold:",
+        "content": "\u2022 We present a novel Level Set Traversal algorithm that iteratively uses orthogonal componentsof the local gradient to identify the \u201cblind spots\u201d of common vision models such as CNNsand ViTs on CIFAR-10 and ImageNet.\u2022 We thereby show that there exist piecewise-linear connected paths in input space betweenimages that a human oracle would deem to be extremely disparate, though vision modelsretain a near-uniform level of confidence on the same path.\u2022 Furthermore, we show that the linear interpolant path between these images also remarkablylies within the same level set; as we observe the consistent presence of this phenomenonacross arbitrary source-target image pairs, this unveils a star-like set substructure withinthese equi-confidence level sets.\u2022 We demonstrate that adversarially robust models tend to be under-sensitive over subsetsof the input domain that lie well beyond its original threat model, and display level-setsof high-confidence that extend over a significant fraction of the triangular convex hull of agiven source image and arbitrary pair of target images.",
         "bbox": [
-            107.69100189208984,
-            634.6677856445312,
-            504.0003356933594,
-            655.5620727539062
+            135.39700317382812,
+            373.532470703125,
+            504.3484802246094,
+            524.4220581054688
+        ],
+        "page": 2
+    },
+    {
+        "type": "Section-header",
+        "content": "2Preliminaries",
+        "bbox": [
+            108.0,
+            542.4591674804688,
+            194.7827911376953,
+            554.4143676757812
         ],
         "page": 2
     },
     {
         "type": "Text",
-        "content": "1. We introduce the Action Dynamics Benchmark (\u00a7 2), which probes action understandingcapabilities in video-language models. We evaluate three state-of-the-art video-languagefoundation models and conclude that they lack a basic grasp of action knowledge.2. We propose a novel learning framework called PAXION, which patches the missingaction knowledge into frozen video-language foundation models without hurting their gen-",
+        "content": "Notation: In this paper, we primarily consider the setting of classification with access to a labelleddataset. Let x \u2208X denote d-dimensional input images, and let their corresponding labels bedenoted as y \u2208{1, . . . , N}. Let f : X \u2192[0, 1]N denote the classification model considered, wheref(x) =\ufffdf 1(x), . . . , f N(x)\ufffdrepresents the softmax predictions over the N-classes. Further, letCf(x) be the argmax over the N-dimensional softmax output, representing the class predicted by themodel for input x. For a given data sample (x, y), let the cross-entropy loss achieved by the model bedenoted as CE(f(x), y). Given a prediction confidence value p \u2208[0, 1], and a class j \u2208{1, . . . , N}we define the Level Set Lf(p, j), and Superlevel Set L+f (p, j) for the function f as follows:",
         "bbox": [
-            131.41200256347656,
-            665.1312866210938,
-            505.65716552734375,
-            722.4070434570312
+            107.6409912109375,
+            567.811767578125,
+            504.004638671875,
+            660.279541015625
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Lf(p, j) = {x \u2208X : f j(x) = p} , L+f (p, j) = {x \u2208X : f j(x) \u2265p}",
+        "bbox": [
+            163.531982421875,
+            662.4597778320312,
+            448.4682922363281,
+            677.353515625
+        ],
+        "page": 2
+    },
+    {
+        "type": "Text",
+        "content": "Given a pair of inputs x1 and x2, we define the linear interpolant path between them asP(\u03bb; x1, x2) = \u03bb \u00b7 x1 + (1 \u2212\u03bb) \u00b7 x2, for \u03bb \u2208[0, 1]. A given set S is thus said to be convexif P(\u03bb; x1, x2) \u2208S, \u2200x1, x2 \u2208S and \u03bb \u2208[0, 1]. Further, a set S is said to be star-like if there existssome s0 \u2208S such that P(\u03bb; s0, x) \u2208S, \u2200x \u2208S and \u03bb \u2208[0, 1].",
+        "bbox": [
+            108.0,
+            679.4869384765625,
+            504.247314453125,
+            723.5414428710938
         ],
         "page": 2
     },
@@ -364,463 +199,111 @@
     },
     {
         "type": "Text",
-        "content": "VidLM",
+        "content": "2.1Conjugate Nature of Adversarial and Confidence Preserving Perturbations",
         "bbox": [
-            307.256103515625,
-            103.704833984375,
-            328.877197265625,
-            111.80524444580078
+            108.0,
+            74.31652069091797,
+            448.7110290527344,
+            84.27912139892578
         ],
         "page": 3
     },
     {
         "type": "Text",
-        "content": "\"Book falling like a rock\"",
+        "content": "Given a classification model f and a correctly classified benign input (x, y), an adversarial image isa specially crafted image \ufffdx = x + \u03b5 such that both x and \ufffdx appear near-identical to a human oracle,but induces the network to misclassify, i.e. Cf(x + \u03b5) \u0338= Cf(x) = y. To enforce imperceptibility ina computationally tractable manner, several adversarial threat models have been proposed, with the\u21132 and \u2113\u221enorm constraint models being the most popular. Amongst the earliest adversarial attacksspecific to the latter threat model was the Fast Gradient Sign Method (FGSM) attack, proposed byGoodfellow et al. [2015], wherein the adversarial perturbation is found by single-step direct ascentalong the local gradient with pixel-wise clipping. A stronger multi-step variant of this attack calledIterated-FGSM (IFGSM) was later introduced by [Kurakin et al., 2017], wherein iterated gradientascent is performed alternately with projection operations onto the constraint set. A popular variant,called the Projected Gradient Descent (PGD) attack was introduced by Madry et al. [2018] whichincorporates a initial random perturbation to the clean image, which was observed to help mitigategradient masking effects Kurakin et al. [2016]. A large class of adversarial attacks [Croce and Hein,2020, Gowal et al., 2019, Carlini et al., 2019, Sriramanan et al., 2020] thus utilize perturbationsparallel to the gradient, with appropriate projection operations to ensure constraint satisfaction.",
         "bbox": [
-            348.48193359375,
-            86.93914031982422,
-            445.8834533691406,
-            96.83963012695312
+            108.0,
+            94.15190124511719,
+            505.2489929199219,
+            257.0720520019531
         ],
         "page": 3
     },
     {
         "type": "Text",
-        "content": "\"Book\u00a0rising\u00a0like a rock\"",
+        "content": "In contrast, perturbations that leave the network prediction confidence unchanged, are locally orthog-onal to the gradient direction. Indeed, for any differentiable function g : Rd \u2192R, denote the level setas Lg(c) for a given output c \u2208R. Let \u03b3(t) : [0, 1] \u2192Lg(c) be any differentiable curve within thelevel set. Then, g(\u03b3(t)) = c \u2200t \u2208[0, 1]. Thus, d",
         "bbox": [
-            348.48193359375,
-            115.13636016845703,
-            443.926025390625,
-            125.03684997558594
+            108.0,
+            263.550537109375,
+            505.6501159667969,
+            307.8982849121094
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "dt(g(\u03b3(t))) = 0 = \u27e8\u2207g(\u03b3(t)), \u03b3\u2032(t)\u27e9, implying that\u03b3\u2032(t) is orthogonal to \u2207g(\u03b3(t)), \u2200t \u2208[0, 1]. Since this is true for any curve \u03b3 contained in the levelset, we conclude that the gradient vector is always perpendicular to the level set. Furthermore, we canadditionally show that the level set Lg(c) is often a differentiable submanifold, with mild additionalconditions on the gradient. Indeed, a level set Lg(c) is said to be regular if \u2207g(x) \u0338= 0 \u2200x \u2208Lg(c).Lemma 1. If g : Rd \u2192R is a continuously differentiable function, then each of its regular level setsis a (d \u22121) dimensional submanifold of Rd.",
+        "bbox": [
+            108.0,
+            296.3283996582031,
+            505.64129638671875,
+            378.0986022949219
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "We present the proof of Lemma 1 in Section A of the Appendix. We thus observe that adversarialperturbations, largely parallel to the gradient, are locally orthogonal to confidence preserving direc-tions which correspond to the (d \u22121) dimensional tangent space of the level set. We take inspirationfrom this observation to develop a general framework that applies to a broad class of differentiableneural networks, as opposed to previous works [Jacobsen et al., 2018a] that require the network to beinvertible to identify confidence preserving perturbations.",
+        "bbox": [
+            107.53199768066406,
+            387.14630126953125,
+            505.6573791503906,
+            451.7300720214844
+        ],
+        "page": 3
+    },
+    {
+        "type": "Text",
+        "content": "We also remark that adversarial attacks and level set preserving perturbations are complementaryfrom another perspective as well, as noted by prior works: the former attempts to find inputs thatchange model predictions without modifying human oracle assignments, while the latter attemptsto keep network predictions unchanged though human oracles would likely change their originallabel assignment. Thus, both classes of adversarial attacks and level set preserving perturbationsinduce misalignment between oracle and model predictions, and cast light onto independent meansof evaluating the coherence of models towards human expectations.",
+        "bbox": [
+            107.53199768066406,
+            458.0802917480469,
+            504.35260009765625,
+            533.5730590820312
         ],
         "page": 3
     },
     {
         "type": "Section-header",
-        "content": "\u2714",
+        "content": "3Proposed Method: Level Set Traversal",
         "bbox": [
-            455.62506103515625,
-            86.75503540039062,
-            465.30474853515625,
-            102.8283920288086
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "\u2718",
-        "bbox": [
-            455.52435302734375,
-            111.72972106933594,
-            465.39739990234375,
-            127.80307006835938
+            108.0,
+            549.72412109375,
+            322.06982421875,
+            561.6793212890625
         ],
         "page": 3
     },
     {
         "type": "Text",
-        "content": "\"Book falling\u00a0like a rock\"",
+        "content": "We now describe our algorithm for traversing the level set, which we call the Level Set Traversal(LST) algorithm (Algorithm 1). We try to find a path from a source image to a target image such thatall points on that path are classified by the model as the source class with high confidence. Given thatthese (d\u22121) dimensional level set submanifolds can be potentially highly complex in their geometries,we use a discretized approximation using small yet finite step sizes to tractably explore these regions.Let the source image be xs with true label ys, and g = \u2207xCE(f(x), ys) be the gradient of the crossentropy loss of the model (f) prediction with respect to x. The key idea is to get as close as possibleto a target image xt from some image x by computing the projection of \u2206x = xt \u2212x onto theorthogonal complement of g, to obtain a new image xnew that leaves the model confidence unchanged.We can compute the projection of \u2206x on the orthogonal complement by subtracting the componentof \u2206x parallel to g, that is, x||g = g\ufffd\u2206x\u22a4g",
         "bbox": [
-            130.96058654785156,
-            175.1561279296875,
-            228.3621063232422,
-            185.05662536621094
+            107.53199768066406,
+            573.7242431640625,
+            505.7455139160156,
+            698.1224975585938
         ],
         "page": 3
     },
     {
         "type": "Text",
-        "content": "Original Action Text",
+        "content": "\u2225g\u22252\ufffd(L6). Then, using a scale factor \u03b7, the vector update",
         "bbox": [
-            368.67315673828125,
-            98.46821594238281,
-            431.00531005859375,
-            106.56861877441406
+            266.4570007324219,
+            682.46533203125,
+            503.9986572265625,
+            699.1055908203125
         ],
         "page": 3
     },
     {
         "type": "Text",
-        "content": "Action Antonym Text",
+        "content": "to x can be expressed as \u2206x\u22a5= \u03b7(\u2206x \u2212x||g) (L7), and therefore xnew = x + \u2206x\u22a5. Starting fromthe source image xs, we repeatedly perform this iteration to get reasonably close to the target image",
         "bbox": [
-            370.0830383300781,
-            126.66543579101562,
-            436.0440673828125,
-            134.76583862304688
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Probing Task: Action Antonym (AA)",
-        "bbox": [
-            117.26480102539062,
-            73.45655822753906,
-            268.02996826171875,
-            84.16268920898438
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Probing Task: Video Reversal (VR)",
-        "bbox": [
-            117.26480102539062,
-            139.5186004638672,
-            262.6483459472656,
-            150.2247314453125
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "VidLMResult23.2%",
-        "bbox": [
-            473.7581481933594,
-            74.22286224365234,
-            494.70416259765625,
-            99.31790924072266
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Original Action Text",
-        "bbox": [
-            147.92926025390625,
-            187.08802795410156,
-            210.2614288330078,
-            195.1884307861328
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "76.8%",
-        "bbox": [
-            474.14837646484375,
-            116.19218444824219,
-            494.70416259765625,
-            124.29258728027344
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Baseline Task: Object Replacement (OR)",
-        "bbox": [
-            117.26480102539062,
-            216.85952758789062,
-            286.4364318847656,
-            227.56565856933594
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "GT",
-        "bbox": [
-            454.42291259765625,
-            74.62567901611328,
-            463.3751220703125,
-            81.82603454589844
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "\"Book\u00a0falling like a rock\"",
-        "bbox": [
-            335.99462890625,
-            228.32801818847656,
-            432.4142761230469,
-            238.228515625
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "\"Cellphone\u00a0falling\u00a0like a rock\"",
-        "bbox": [
-            335.99462890625,
-            252.09423828125,
-            453.10272216796875,
-            261.9947509765625
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Original Action Text",
-        "bbox": [
-            358.60272216796875,
-            239.45428466796875,
-            420.93487548828125,
-            247.5546875
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Object Replaced Text",
-        "bbox": [
-            357.25579833984375,
-            262.4148864746094,
-            426.3111572265625,
-            270.5152893066406
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "VidLM",
-        "bbox": [
-            249.65322875976562,
-            176.2119598388672,
-            271.2743225097656,
-            184.31236267089844
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "VidLM",
-        "bbox": [
-            295.1716003417969,
-            243.0796356201172,
-            316.79266357421875,
-            251.18003845214844
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Original",
-        "bbox": [
-            271.53753662109375,
-            117.80345153808594,
-            296.5162353515625,
-            125.90385437011719
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Video",
-        "bbox": [
-            274.8230285644531,
-            126.66543579101562,
-            293.2320556640625,
-            134.76583862304688
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Original Video",
-        "bbox": [
-            300.1942138671875,
-            168.15560913085938,
-            345.6022033691406,
-            176.25601196289062
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Reversed Video",
-        "bbox": [
-            297.37451171875,
-            203.2007293701172,
-            348.8294982910156,
-            211.30113220214844
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Original",
-        "bbox": [
-            256.23046875,
-            257.1782531738281,
-            281.20916748046875,
-            265.2786560058594
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "Video",
-        "bbox": [
-            259.5159606933594,
-            266.04022216796875,
-            277.92498779296875,
-            274.140625
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "\u2714",
-        "bbox": [
-            455.62506103515625,
-            154.42835998535156,
-            465.30474853515625,
-            170.501708984375
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "\u2718",
-        "bbox": [
-            455.52435302734375,
-            187.45938110351562,
-            465.39739990234375,
-            203.53273010253906
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "VidLMResultGT",
-        "bbox": [
-            454.8257141113281,
-            139.882080078125,
-            493.85711669921875,
-            155.13877868652344
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "\u2714",
-        "bbox": [
-            455.62506103515625,
-            229.7552032470703,
-            465.30474853515625,
-            245.82855224609375
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "\u2718",
-        "bbox": [
-            455.52435302734375,
-            252.71580505371094,
-            465.39739990234375,
-            268.7891540527344
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "VidLMResultGT",
-        "bbox": [
-            454.8257141113281,
-            217.22300720214844,
-            493.85711669921875,
-            232.47972106933594
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "49.9%",
-        "bbox": [
-            474.14837646484375,
-            158.89080810546875,
-            494.70416259765625,
-            166.9912109375
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "50.1%",
-        "bbox": [
-            474.14837646484375,
-            191.92184448242188,
-            494.70416259765625,
-            200.02224731445312
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "77.9%",
-        "bbox": [
-            474.5511779785156,
-            234.21766662597656,
-            495.1069641113281,
-            242.3180694580078
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "22.1%",
-        "bbox": [
-            474.5511779785156,
-            257.1782531738281,
-            495.1069641113281,
-            265.2786560058594
-        ],
-        "page": 3
-    },
-    {
-        "type": "Caption",
-        "content": "Figure 2: Top: Illustration of the probing tasks and baseline task in our proposed ActionBench. Thebounding boxes in the video frames are purely for visualization. The numbers on the right show theranking scores from a state-of-the-art VidLM, InternVideo [52]. The model struggles to determinewhether a book is \u201cfalling\u201d or \u201crising,\u201d but can confidently identify the object to be a \u201cbook\u201d insteadof a \u201ccellphone\u201d. Bottom: ActionBench results of three recent VidLMs [52, 57, 24]. The column\u201cAvg\u201d indicates averaged results on each task across all three models. Existing VidLMs achievenear-random results on the probing tasks (AA and VR) while excelling on the baseline task (OR).This demonstrates that existing VidLMs lack fundamental action knowledge and exhibit strong bias toobject understanding.",
-        "bbox": [
-            106.67497253417969,
-            424.1955261230469,
-            505.74530029296875,
-            521.3455810546875
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "eral vision-language capabilities. The key components of PAXION include a Perceiver-basedKnowledge Patcher (\u00a7 3) and a cross-attention-based Knowledge Fuser (\u00a7 4).",
-        "bbox": [
-            143.865966796875,
-            537.482421875,
-            503.9996643066406,
-            558.2780151367188
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "3. We propose the DVDM objective (\u00a7 3.1), an improvement over the widely-used VTC loss,which forces the model to encode the correlation between the action text and the correctordering of video frames. Extensive experiments show that PAXION with DVDM improvesthe joint understanding of objects and actions while being robust to domain shift.",
-        "bbox": [
-            131.41197204589844,
-            565.839599609375,
-            505.24578857421875,
-            608.5480346679688
-        ],
-        "page": 3
-    },
-    {
-        "type": "Section-header",
-        "content": "2Action Dynamics Benchmark (ActionBench): Do Video-LanguageFoundation Models Understand Action Knowledge?",
-        "bbox": [
-            107.99996948242188,
-            628.3391723632812,
-            461.93365478515625,
-            654.2413940429688
-        ],
-        "page": 3
-    },
-    {
-        "type": "Text",
-        "content": "To investigate the presence of action knowledge in state-of-the-art video-language foundation models,we propose the Action Dynamics Benchmark (ActionBench). ActionBench comprises the ActionAntonym (AA) and Video Reversal (VR) probing tasks, along with the Object Replacement (OR)baseline task. The probing tasks evaluate the multimodal and temporal correlations between anaction text and a video. The baseline task controls for the potential impact of domain mismatch.",
-        "bbox": [
-            107.6409683227539,
-            668.8843994140625,
-            505.24493408203125,
-            722.4070434570312
+            108.0,
+            701.17578125,
+            504.0020446777344,
+            723.017578125
         ],
         "page": 3
     },
@@ -828,131 +311,98 @@
         "type": "Text",
         "content": "3",
         "bbox": [
-            303.50897216796875,
+            303.5090026855469,
             742.3324584960938,
-            308.4902648925781,
+            308.49029541015625,
             752.2950439453125
         ],
         "page": 3
     },
     {
-        "type": "Text",
-        "content": "We construct this benchmark by leveraging two existing open-domain video-language datasets,Ego4D [14] and Something-Something v2 (SSv2) [13], which provide fine-grained action annotationsfor each video clip. Compared to a previous verb understanding probing benchmark [42] basedon MSRVTT [56] and LSMDC [44], ActionBench is more action-oriented, larger in scale, andcontains both ego-centric and third-person videos. Detailed statistics can be found in Appendix B.An illustration of each ActionBench task can be found in Figure 2.",
+        "type": "Caption",
+        "content": "Figure 1: Pictorial representation of the LST al-gorithm. The contour lines represent level sets ofthe model confidence f(x), with blue representinghigh confidence (low loss) and red representing lowconfidence (high loss). At each iteration, we obtainxnew by adding two vectors, x\u22a5= \u03b7(\u2206x \u2212c//g)(projection of \u2206x onto the orthogonal complementof g) and x|| (a small perturbation to increase theconfidence and remain within the level set).",
         "bbox": [
-            107.53199768066406,
-            74.33230590820312,
-            505.74139404296875,
-            138.91506958007812
+            107.6709976196289,
+            183.48532104492188,
+            307.6499938964844,
+            280.7960510253906
         ],
         "page": 4
     },
     {
         "type": "Text",
-        "content": "Probing Task: Action Antonym (AA).The Action Antonym task probes the multimodal alignmentof the action text and the video representation. We formulate AA as a binary classification task thatinvolves distinguishing the original text annotation from its altered version with the action replaced byits antonym, given the corresponding video clip. For example, if the original text is \u201cBook fallinglike a rock\u201d, the action antonym text would be \u201cBook rising like a rock\u201d. We leverage theWordNet [36] database and manually constructed mappings to automatically construct the antonymtexts (details in Appendix B).",
+        "content": "Algorithm 1 Level Set Traversal (LST)",
         "bbox": [
-            107.53199768066406,
-            146.40435791015625,
-            504.3529968261719,
-            221.83505249023438
+            317.52099609375,
+            88.08953094482422,
+            475.51751708984375,
+            98.14309692382812
         ],
         "page": 4
     },
     {
         "type": "Text",
-        "content": "Probing Task: Video Reversal (VR).The Video Reversal task probes the temporal understandingof actions. We formulate VR as a binary classification task, where given a video-text pair with atleast one action and a reversed version of the video, the goal is to distinguish the original video fromthe reversed one. Achieving non-trivial performance on the Video Reversal task requires the modelto understand the temporal sequence implied by the action. The Video Reversal task also evaluatesVLMs\u2019 abilities to identify violations of physical knowledge, as some clips defy expectation whenreversed (e.g. a falling book becomes one which rises without any discernible cause).",
+        "content": "1: Input: Source image xs with label y, targetimage xt, model f, max iterations m, scalefactor \u03b7, stepsize \u03f5, confidence threshold \u03b42: Initialize x = xs, x|| = 03: for i = 1 to m do4:\u2206x = xt \u2212x5:g = \u2207xCE(f(x), y)6:c// = (g \u00b7 \u2206x)/||g||2",
+        "bbox": [
+            322.8590087890625,
+            101.21989440917969,
+            504.0032043457031,
+            189.34552001953125
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "7:\u2206x\u22a5= \u03b7(\u2206x \u2212c//g)8:x|| = \u03a0\u221e(x|| \u2212\u03f5g, \u2212\u03f5, \u03f5)9:xnew = x + \u2206x\u22a5+ x||10:if f(xs)[j] \u2212f(xnew)[j] > \u03b4 then11:return x12:x = xnew13: return x",
+        "bbox": [
+            318.37615966796875,
+            189.4657745361328,
+            482.0765686035156,
+            267.35406494140625
+        ],
+        "page": 4
+    },
+    {
+        "type": "Caption",
+        "content": "Figure 2: Intermediate images over the path traversed by the LST algorithm using a source image ofa \u2018goose\u2019 and a target image of a \u2018Scottish terrier\u2019 (a dog) for a normally trained ResNet-50 model.We observe that the model predicts the \u2018goose\u2019 class with very high confidence for all images overthe path, though the target blindspot found by LST clearly appears as a \u2018dog\u2019 to human oracles.",
+        "bbox": [
+            107.53199768066406,
+            337.7457580566406,
+            505.7405700683594,
+            380.4050598144531
+        ],
+        "page": 4
+    },
+    {
+        "type": "Text",
+        "content": "while carefully ensuring that the confidence of the model prediction at any given point does not dropbelow a preset confidence threshold \u03b4 compared to the source image (L10).",
         "bbox": [
             107.64099884033203,
-            229.29638671875,
-            504.0014953613281,
-            304.75506591796875
+            394.97491455078125,
+            504.00067138671875,
+            415.80108642578125
         ],
         "page": 4
     },
     {
         "type": "Text",
-        "content": "Baseline Task: Object Replacement (OR).Object Replacement is a binary classification task thatrequires the model to distinguish between the original text annotation and an altered version withobjects tokens randomly replaced by other object tokens in the dataset. The Object Replacementtask allows us to understand: (1) whether current VidLMs rely on object recognition as a \u201cshortcut\u201dfor video-text matching (i.e., if they have an object-biased representation), and (2) whether poorperformance on Action Antonym can be attributed to domain mismatch (i.e., not being trained onEgo4D or SSv2) instead of a lack of action knowledge.",
-        "bbox": [
-            108.0,
-            312.239501953125,
-            505.77392578125,
-            387.6750793457031
-        ],
-        "page": 4
-    },
-    {
-        "type": "Text",
-        "content": "2.1Evaluating Video-Language Models on ActionBench",
-        "bbox": [
-            108.0,
-            402.4095153808594,
-            353.0201416015625,
-            412.3721008300781
-        ],
-        "page": 4
-    },
-    {
-        "type": "Text",
-        "content": "We evaluate three recent video-language foundation models, InternVideo [52], CLIP-ViP [57] andSingularity-temporal [24]1, on ActionBench. Despite their impressive improvements on video-language benchmarks, these models struggle to achieve non-trivial performance on Action Antonymand Video Reversal, as depicted in Figure 2. The fact that they achieve significantly better performanceon the Object Replacement task indicates a strong bias towards objects over actions, and affirms thatthe poor performance on AA is not solely a result of domain mismatch. The near-random performanceon the VR task indicates a lack of basic temporal reasoning and physical knowledge.",
+        "content": "While the above method works well with a relatively large \u03b7 if the curvature of f is low, it risksa non-trivial drop in model confidence (or even a change in the model prediction) if the curvatureof f at x is high enough. Therefore, after each step, we add a small perturbation vector x|| in thedirection of \u2212g scaled by a factor of \u03f5. This step decreases the cross entropy loss, and thus increasesthe confidence so as to offset any confidence drops incurred due to the addition of \u2206x\u22a5. Thus,we can maintain a higher model confidence over the path. In order to ensure that the norm of thisperturbation is not arbitrarily large, we bound the \u2113\u221enorm by projecting the vector to an \u2113\u221eball ofradius \u03f5. Then, the step x|| can be computed as clamp(\u03f5g, \u2212\u03f5, \u03f5), where the function clamp(v, a, b)is the element-wise application of the function min(max(\u00b7, a), b) on all elements of v. Thus, wemodify L9 so that now xnew = x + \u2206x\u22a5\u2212x||. We present a pictorial schematic of Algorithm 1in Fig 1. We further employ an exponential moving average of x||, in order to smoothen componentsthat potentially undulate heavily during the iterative traversal. Thus, since the frequent changes inx|| are smoothened out, we find that the final output images are often linearly connected to the sourceimage with high confidence over the linear interpolations (see Fig 6).",
         "bbox": [
             107.53199768066406,
-            422.5279846191406,
-            505.65447998046875,
-            498.0240783691406
+            421.9969177246094,
+            505.24957275390625,
+            575.1090698242188
         ],
         "page": 4
     },
     {
         "type": "Text",
-        "content": "These observations align with previous approaches [17, 42, 59, 37] which show similar limitationsin image-language models [43, 28] and earlier video-language models [11, 35]. We find that highperformance on video-language benchmarks does not necessarily equate to a stronger understandingof action knowledge.",
+        "content": "We now apply this algorithm to explore the level sets of standard and robust ResNet-50 models. In Fig2, we present the path traversed by the LST algorithm, wherein the model predicts the source \u2018goose\u2019class with very high confidence over the entire path, though the target blindspot found by LST clearlyappears as a \u2018dog\u2019 to human oracles. To substantiate the efficacy of the LST algorithm, we randomlyselect five images from five arbitrary ImageNet classes (\u2018goose\u2019, \u2018Scottish Terrier\u2019, \u2018meerkat\u2019,\u2018academic gown\u2019, \u2018cleaver\u2019), and compute LST blindspots for all possible source-target image pairs.We show the final images output by the LST algorithm in Fig 3 as an image-grid. If we order the fiveselected images, the ith row and jth column of the image-grid is the LST output obtained using theith image as target and jth image as the source. Thus, each column represents the source image beingtransformed iteratively into the other target images. The confidence of the model prediction for thesource class (names on top of each column) is displayed just below each image. For both the normallytrained and adversarially trained model, these images are almost indistinguishable from the targetwhile retaining high model confidence for the source class. Since adversarially robust models have",
         "bbox": [
-            107.69100189208984,
-            504.4014892578125,
-            504.0047302246094,
-            547.1400756835938
-        ],
-        "page": 4
-    },
-    {
-        "type": "Section-header",
-        "content": "3Patching Action Knowledge in Frozen Video-Language Models",
-        "bbox": [
-            108.0,
-            564.2801513671875,
-            446.4995422363281,
-            576.2353515625
-        ],
-        "page": 4
-    },
-    {
-        "type": "Text",
-        "content": "In \u00a7 2, we showed that current VidLMs exhibit limitations in their understanding of action knowledge,a crucial component for developing a comprehensive understanding of the external world. This raisesthe important question: Can we enhance existing VidLMs with this missing knowledge without hurtingtheir general video-language capabilities?",
-        "bbox": [
-            108.0,
-            589.2124633789062,
-            505.24481201171875,
-            631.7255859375
-        ],
-        "page": 4
-    },
-    {
-        "type": "Text",
-        "content": "To this end, we propose a novel learning framework, PAXION, which comprises two main components:the Knowledge Patcher (KP) (\u00a7 3) and the Knowledge Fuser (KF) (\u00a7 4). An overview of thePAXION framework can be found in Figure 1. Analogous to releasing patches to fix bugs in publishedsoftware, the Knowledge Patcher is a Perceiver-based [21, 20] lightweight module attached to a frozenVidLM for steering the VidLM towards action-centric representations. As the widely used video-language contrastive (VTC) objective is insufficient for learning action knowledge, we introduce",
-        "bbox": [
-            107.64099884033203,
-            638.4033813476562,
-            505.6487731933594,
-            702.8600463867188
-        ],
-        "page": 4
-    },
-    {
-        "type": "Text",
-        "content": "1For simplicity, we use \u201cSingularity\u201d to represent \u201cSingularity-temporal\u201d in our figures and tables.",
-        "bbox": [
-            120.65299987792969,
-            711.6576538085938,
-            473.076416015625,
-            722.1663818359375
+            106.34600067138672,
+            581.6113891601562,
+            505.74688720703125,
+            722.4166870117188
         ],
         "page": 4
     },
@@ -969,606 +419,111 @@
     },
     {
         "type": "Text",
-        "content": "Video-TextContrastive (VTC)",
+        "content": "Class Label Predicted by ResNet50",
         "bbox": [
-            290.111328125,
-            94.06156921386719,
-            344.8728332519531,
-            109.28687286376953
+            171.37399291992188,
+            65.10641479492188,
+            250.85519409179688,
+            72.14601135253906
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "reversed",
+        "content": "Class Label Perceived by Humans",
         "bbox": [
-            112.8477783203125,
-            174.36949157714844,
-            138.07244873046875,
-            181.6138916015625
+            113.12451171875,
+            127.70118713378906,
+            120.16410827636719,
+            204.3699951171875
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "videos",
+        "content": "Class Label Predicted by Robust ResNet50",
         "bbox": [
-            116.09002685546875,
-            182.35040283203125,
-            134.8302001953125,
-            189.5948028564453
+            363.51702880859375,
+            65.10641479492188,
+            460.4038391113281,
+            72.14601135253906
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "original",
+        "content": "Class Label Perceived by Humans",
         "bbox": [
-            115.248291015625,
-            130.97328186035156,
-            136.14781188964844,
-            138.21768188476562
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "videos",
-        "bbox": [
-            116.33163452148438,
-            138.95419311523438,
-            135.0718231201172,
-            146.19859313964844
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "\"Book\u00a0falling ...\"\"Book\u00a0rising\u00a0...\"",
-        "bbox": [
-            145.90933227539062,
-            76.65057373046875,
-            258.36181640625,
-            84.95103454589844
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Action-Temporal",
-        "bbox": [
-            242.5921630859375,
-            179.35757446289062,
-            293.6281433105469,
-            186.6019744873047
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Matching (ATM)",
-        "bbox": [
-            244.0418243408203,
-            187.33847045898438,
-            292.1856689453125,
-            194.58287048339844
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Adding action antonym text as hard negs",
-        "bbox": [
-            257.7356262207031,
-            124.98759460449219,
-            375.2498779296875,
-            132.23199462890625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Video-ActionContrastive (VAC)",
-        "bbox": [
-            265.0540771484375,
-            137.457763671875,
-            320.0559997558594,
-            152.68309020996094
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Adding reversed videos\u00a0as hard negs",
-        "bbox": [
-            214.8304443359375,
-            166.88739013671875,
-            321.8953857421875,
-            174.1317901611328
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "original textantonym text",
-        "bbox": [
-            154.26434326171875,
-            84.584228515625,
-            251.75930786132812,
-            91.82862091064453
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Discriminative",
-        "bbox": [
-            335.80670166015625,
-            150.51858520507812,
-            376.5098876953125,
-            157.69964599609375
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "VideoDynamicModeling",
-        "bbox": [
-            343.0004577636719,
-            158.0006866455078,
-            369.30157470703125,
-            180.644775390625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "(DVDM)",
-        "bbox": [
-            343.912353515625,
-            181.44461059570312,
-            368.39776611328125,
-            188.62567138671875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Aligning original text and video",
-        "bbox": [
-            274.00921630859375,
-            82.09019470214844,
-            361.9744567871094,
-            89.33458709716797
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Perceiver",
-        "bbox": [
-            304.68585205078125,
-            255.76956176757812,
-            336.2827453613281,
-            264.12847900390625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "\"...\u00a0falling ...\"\"...\u00a0rising\u00a0...\"original textantonym text",
-        "bbox": [
-            111.49164581298828,
-            234.27359008789062,
-            206.8599853515625,
-            251.44686889648438
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "original",
-        "bbox": [
-            120.23635864257812,
-            276.62493896484375,
-            141.13587951660156,
-            283.86932373046875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "videos",
-        "bbox": [
-            121.3197021484375,
-            283.10943603515625,
-            140.0598907470703,
-            290.35382080078125
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "reversed",
-        "bbox": [
-            173.69444274902344,
-            276.1261291503906,
-            198.91909790039062,
-            283.3705139160156
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "videos",
-        "bbox": [
-            176.9366912841797,
-            282.610595703125,
-            195.67686462402344,
-            289.85498046875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "VTCVACATM",
-        "bbox": [
-            285.5753173828125,
-            219.71368408203125,
-            338.7186279296875,
-            226.8996124267578
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "OR",
-        "bbox": [
-            154.38905334472656,
-            264.7008056640625,
-            164.86399841308594,
-            272.5024719238281
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "OR",
-        "bbox": [
-            154.38905334472656,
-            235.27120971679688,
-            164.86399841308594,
-            243.07286071777344
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "key\u00a0 \u00a0 value",
-        "bbox": [
-            296.1671447753906,
-            269.951416015625,
-            318.8738708496094,
-            274.9667663574219
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Frozen",
-        "bbox": [
-            216.81787109375,
-            251.28030395507812,
-            240.1021728515625,
-            259.63922119140625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "VidLM",
-        "bbox": [
-            217.92459106445312,
-            260.2588195800781,
-            238.99363708496094,
-            268.61773681640625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "query",
-        "bbox": [
-            333.3282775878906,
-            269.951416015625,
-            344.555908203125,
-            274.9667663574219
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "\u2744\ufe0f",
-        "bbox": [
-            217.70635986328125,
-            229.6216278076172,
-            232.19610595703125,
-            240.48858642578125
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "\ud83d\udd25",
-        "bbox": [
-            295.38775634765625,
-            247.3705291748047,
-            305.1833190917969,
-            257.4480285644531
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Paxion: Knowledge Patcher",
-        "bbox": [
-            264.3214416503906,
-            289.349853515625,
-            359.1985168457031,
-            298.1881103515625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Losses",
-        "bbox": [
-            299.53411865234375,
-            199.67323303222656,
-            324.4764709472656,
-            209.6162567138672
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Data",
-        "bbox": [
-            148.65277099609375,
-            216.63267517089844,
-            167.1036376953125,
-            226.57569885253906
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "backbonetext feature",
-        "bbox": [
-            246.15396118164062,
-            224.70175170898438,
-            276.1003112792969,
-            236.87576293945312
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "backbone",
-        "bbox": [
-            247.8997802734375,
-            264.1075134277344,
-            273.85369873046875,
-            270.7946472167969
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "videofeaturelearnable",
-        "bbox": [
-            251.56289672851562,
-            269.5943908691406,
-            377.1904296875,
-            283.26483154296875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "latents",
-        "bbox": [
-            356.0629577636719,
-            282.5633850097656,
-            373.69677734375,
-            289.2505187988281
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "patchedfeatures",
-        "bbox": [
-            352.9921875,
-            232.6826629638672,
-            376.2764892578125,
-            245.35548400878906
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "+ Knowledge",
-        "bbox": [
-            394.72052001953125,
-            179.00489807128906,
-            433.8130187988281,
-            186.7383575439453
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Patcher",
-        "bbox": [
-            402.63128662109375,
-            186.4869842529297,
-            425.8996276855469,
-            194.22044372558594
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "trained withVTC+DVDM",
-        "bbox": [
-            452.1534423828125,
-            179.50369262695312,
-            492.5936584472656,
-            194.71925354003906
+            314.18951416015625,
+            127.70118713378906,
+            321.2291259765625,
+            204.3699951171875
         ],
         "page": 5
     },
     {
         "type": "Caption",
-        "content": "Figure 3: Illustration of the Knowledge Patcher component (bottom left) of PAXION and the trainingobjectives (upper left). On the right, we show the comparison of performance on ActionBench beforeand after adding the Knowledge Patcher.",
+        "content": "Figure 3: The images returned by LST for 5 random source and target images for normally trained(left) and adversarially trained (right) ResNet-50 models. The image in the ith row and jth column isthe LST output obtained using the ith image as target and jth image as the source. The confidence ofthe model prediction for the source class (names on top of each column) is displayed just below eachimage. For example, all four LST output blindspots in the first column (highlighted), using the source\u2018goose\u2019 image, are all predicted to be of the \u2018goose\u2019 class with very high confidence. Diagonal imagesare unchanged, as source equals target. We observe that almost any source image can be iterativelymodified using LST to resemble any target image very closely without any loss in confidence forboth normal and adversarially trained ResNet-50 models.",
+        "bbox": [
+            106.34600067138672,
+            274.8380126953125,
+            504.3475646972656,
+            372.1150817871094
+        ],
+        "page": 5
+    },
+    {
+        "type": "Text",
+        "content": "perceptually aligned gradients, we can sometimes visually notice a few traces of the source imagein the final LST image; for example the \u2018meerkat\u2019 image in the 3rd row, 2nd column in the right sideof Fig 3 has some traces of the source \u2018terrier\u2019 image, but differences are usually hard to perceive.",
         "bbox": [
             108.0,
-            308.8603515625,
-            504.0006103515625,
-            340.65606689453125
+            385.0047607421875,
+            504.001708984375,
+            416.85308837890625
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "Table 1: ActionBench results (in accuracy %). KP-* refers to Knowledge Patcher. AA and VRindicate the Action Antonym task and the Video Reversal task. VTC and DVDM stands for Video-TextContrastive loss and our newly proposed Discriminative Video Dynamics Modeling losses detailedin \u00a7 3.1. Trainable Param# indicates the size of the trainable parameters compared to the backbone.",
+        "content": "We also examine the model confidence over linear interpolations between the source image and LSToutputs for all target pairs in Fig 6. Formally, consider a source image xs with label y and let xoprepresent the LST output when applied toward a target image xt. Denote the difference vector as\u2206v = xop \u2212xs. Then, we observe that xs + \u03b1\u2206v is assigned high confidence with respect to classy by the model \u2200\u03b1 \u2208[0, 1], which represents the entire linear interpolant path between xs and xop.Furthermore, we observe that the path discovered by the Level Set Traversal algorithm enjoys twokey properties: (1) Uniqueness (once the target image is fixed) and (2) Extremality:",
         "bbox": [
-            107.69100189208984,
-            350.52606201171875,
-            504.0028991699219,
-            393.4640197753906
+            107.1729965209961,
+            423.31634521484375,
+            505.7434997558594,
+            498.6960754394531
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "Action Dynamics Benchmark (ActionBench) Results",
+        "content": "(1) Uniqueness: Since the local tangent space of the level set is (d \u22121) dimensional, severalindependent directions are orthogonal to the local gradient, and apriori do not yield a unique path likea gradient-flow. However, once we fix our target image, we use its difference vector with respect tothe current iterate (L4) and compute its projection onto the local tangent space (L7) of the level set,thereby generating a uniquely defined path.",
         "bbox": [
-            208.197998046875,
-            403.80810546875,
-            408.43560791015625,
-            412.7745056152344
+            107.6709976196289,
+            504.7627868652344,
+            505.2468566894531,
+            558.7210083007812
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "BackboneMethod [Patcher Training Loss]TrainableAAVRAAVRAvgParam#(Ego4d)(Ego4d)(SSv2)(SSv2)",
+        "content": "(2) Extremality: Though this flow-based path may be non-linear, we additionally discover that thefinal output-point of this flow is surprisingly linearly connected with high-confidence to the sourceimage after we apply discretized approximations in practical settings for common vision models etc.Formally, the LST output xop is linearly extremal in the sense that xs +(1+\u03f5)\u2206v is rapidly assignedlow-confidence by the model even for extremely small values of \u03f5 > 0, where \u2206v = xop \u2212xs.",
         "bbox": [
-            113.97799682617188,
-            417.4811096191406,
-            502.07952880859375,
-            436.49237060546875
+            107.6709976196289,
+            564.8969116210938,
+            505.7471008300781,
+            619.8804321289062
         ],
         "page": 5
     },
     {
         "type": "Text",
-        "content": "InternVideo",
+        "content": "Thus, using the LST algorithm, we find that the level sets of common models extend outwardsin an expansive, connected manner to include images of arbitrary classes, which human oracleswould never state as being similar. Since the linear path from any given source image to LSToutputs for arbitrary target images retains high model confidence throughout, it unveils a remarkablestar-like substructure for superlevel sets as shown in Fig 4, where the number of \u201climbs\u201d or linearprotuberances of the star-like structure is extraordinarily large, plausibly as large as the number ofimages in all other classes. Furthermore, to study the size of the level sets beyond the one-dimensionalinterpolant paths, we analyze the two-dimensional triangular convex hull between a given sourceimage and two LST output blindspot images, using quantitative metrics in Section 6.",
         "bbox": [
-            113.97799682617188,
-            457.6379699707031,
-            156.76565551757812,
-            466.6043701171875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Backbone-58.846.251.848.351.3KP-Transformer [VTC]8.4M (1.8%)68.262.865.560.664.3KP-Perceiver [VTC]4.2M (0.9%)66.563.669.871.067.7KP-Perceiver [VTC+DVDM]4.2M (0.9%)90.175.590.787.485.9",
-        "bbox": [
-            168.72000122070312,
-            442.6939697265625,
-            502.6531982421875,
-            481.54840087890625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Clip-ViP",
-        "bbox": [
-            113.97799682617188,
-            502.6939697265625,
-            145.82666015625,
-            511.6603698730469
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Backbone-49.355.070.253.657.0KP-Transformer [VTC]3.9M (2.6%)61.953.472.254.360.5KP-Perceiver [VTC]2.4M (1.6%)61.954.671.548.859.2KP-Perceiver [VTC+DVDM]2.4M (1.6%)89.356.989.366.075.4",
-        "bbox": [
-            168.72000122070312,
-            487.7499694824219,
-            502.6531982421875,
-            526.6043701171875
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Singularity",
-        "bbox": [
-            113.97799682617188,
-            547.7499389648438,
-            153.83364868164062,
-            556.7163696289062
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Backbone-47.050.148.949.648.9KP-Transformer [VTC]3.9M (1.8%)61.948.263.849.555.9KP-Perceiver [VTC]1.3M (0.6%)60.346.163.351.555.3KP-Perceiver [VTC+DVDM]1.3M (0.6%)83.858.982.468.873.5",
-        "bbox": [
-            168.72000122070312,
-            532.8059692382812,
-            502.6531982421875,
-            571.660400390625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Human92.078.096.090.089.0",
-        "bbox": [
-            202.69400024414062,
-            577.8619384765625,
-            502.6531982421875,
-            586.828369140625
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Discriminative Video Dynamics Modeling (DVDM) (\u00a7 3.1) objectives that force the model toencode the correlation between the actual action text (e.g., \u201cfalling\u201d) and the correct sequence ofvisual state-changes (i.e., video frames).",
-        "bbox": [
-            107.7509994506836,
-            603.6514282226562,
-            503.9976501464844,
-            635.5990600585938
-        ],
-        "page": 5
-    },
-    {
-        "type": "Text",
-        "content": "Knowledge Patching with Perceivers.Inspired by recent work [2, 27] leveraging Perceivers [21,20] to extract language-related visual features, we use Perceivers to extract knowledge-specificfeatures. As shown in Figure 3 Knowledge Patcher , we use a lightweight Perceiver which per-forms cross-attention between a sequence of lower-dimensional, learnable latents Q and the higher-dimensional visual embedding V\u2217from a frozen, pretrained VidLM backbone. To further investigatethe viability of Perceivers as an alternative to Transformers [49], we include another variant of theKP where we replace the Perceiver with a standard Transformer Encoder. Table 1 shows that the",
-        "bbox": [
-            107.99998474121094,
-            642.9195556640625,
-            505.6506042480469,
-            722.4310302734375
+            107.64099884033203,
+            625.0962524414062,
+            504.3089294433594,
+            722.4070434570312
         ],
         "page": 5
     },
@@ -1584,79 +539,79 @@
         "page": 5
     },
     {
-        "type": "Text",
-        "content": "Perceiver-based KP achieves competitive or better performance compared to the Transformer variantwhile being 2-3 times smaller in scale. Architecture details of the KPs can be found in Appendix D.1.",
-        "bbox": [
-            107.64099884033203,
-            74.40748596191406,
-            505.7412109375,
-            95.27908325195312
-        ],
-        "page": 6
-    },
-    {
-        "type": "Text",
-        "content": "Video-Text Contrastive (VTC) is insufficient for learning action knowledge.We initially trainboth variants of the Knowledge Patcher on the training set of ActionBench with only the Video-TextContrastive (VTC) loss. VTC loss aligns the visual representation V from the KP with the pooledtextual representation t\u2217from the frozen backbone. Results in Table 1 show that training with theVTC loss alone provides marginal to no improvements on Action Antonym (AA) and Video Reversal(VR), particularly on smaller backbone models. This suggests the need for new training objectives(\u00a7 3.1) for learning action knowledge.",
-        "bbox": [
-            107.64099884033203,
-            105.27349090576172,
-            504.0037536621094,
-            180.78207397460938
-        ],
-        "page": 6
-    },
-    {
-        "type": "Text",
-        "content": "3.1Learning Action Knowledge with Discriminative Video Dynamics Modeling",
+        "type": "Caption",
+        "content": "Figure 4: Schematic of Star-like set substructureof Superlevel sets: The linear interpolant pathsbetween the source image xs and blindspots foundusing LST maintain high-confidence throughoutfor arbitrary target images of other classes.",
         "bbox": [
             108.0,
-            198.0994873046875,
-            450.8927001953125,
-            208.0620880126953
+            249.93429565429688,
+            306.0037536621094,
+            303.60906982421875
         ],
         "page": 6
     },
     {
-        "type": "Text",
-        "content": "To address the limitation of the VTC loss in learning action knowledge, we propose two new lossesthat draw inspiration from dynamics modeling in Robotics and Reinforcement Learning [1, 4, 15, 23,39]. Specifically, in a typical Markov Decision Process (MDP) setup, forward dynamics modelingaims to predict the next world state \u02c6xt+1 given the current world state xt and the action ut. Inversedynamics modeling aims to predict the current action \u02c6ut given the current and next world statext, xt+1. Given video frame as a representation of the world states, existing work usually formulatesforward dynamics modeling as a generative task [1, 39, 15], directly reconstructing the pixels orthe latent embedding of the next frame. For inverse dynamics modeling, the action class is usuallypredicted using a dedicated classification layer [4, 23, 1]. However, our preliminary experimentsshow that the existing formulation cannot be directly applied in our setting due to the followingunique challenges: (1) Real world videos are much more complex than videos in a lab setting,with constantly changing backgrounds and moving camera angles, causing a large portion of visualfeatures to be unrelated to the main objects and actions. Furthermore, without additional annotation,it is difficult to identify the frames corresponding to the \u201ccurrent\u201d and \u201cnext\u201d states, as actions maybe continuous (e.g., \"walking\") or repetitive (e.g., \u201cdoing push-ups\u201d) within a video. Thus, thetraining signal from a regression loss becomes extremely noisy. (2) Unlike previous work that has asmall fixed number of action classes, we model actions as natural language phrases, making directclassification inapplicable.",
+        "type": "Caption",
+        "content": "Figure 5: Model Confidence over Linear In-terpolant Paths: We plot the median predictionconfidence with respect to class y2 over linearpaths between the target benign sample (x2)and adversarial examples (such as x1 + \u03b512targeted towards input x2) in input space.While model confidence falls to near-zero usingstandard targeted adversarial attacks, the linearpath between the LST output and source imagehas high confidence of almost 1.0 throughout.",
         "bbox": [
-            107.64099884033203,
-            219.32290649414062,
-            505.2451477050781,
-            414.7480773925781
-        ],
-        "page": 6
-    },
-    {
-        "type": "Text",
-        "content": "To address these unique challenges, we propose a novel \u201crelaxed\u201d formulation of dynamics mod-eling, dubbed Discriminative Video Dynamics Modeling (DVDM), which contains two losses:Video-Action Contrastive (VAC) and Action-Temporal Matching (ATM). Both VAC and ATMcan be directly incorporated into the Video-Text Contrastive (VTC) loss without any additionalparameters. As illustrated in Figure 3 Losses , the VAC loss aims to encourage the model to learnthe correlation between the visual observations and the actual actions. We formulate the VAC lossas adding action antonym texts as hard negatives. The ATM loss encourages the model to considerthe temporal ordering of the visual observations (video frames). Instead of directly generating thenext state frames, we formulate ATM as a discriminative task similar to Video Reversal in \u00a7 2, wherethe model distinguishes reversed videos from the original videos, alleviating the need for explicitstate annotations. In order to make sure that the reversed videos are indeed distinguishable fromthe original ones, we further introduce a method (Appendix C) for identifying videos with salientstate-changes by leveraging image-language foundation models [28]. The idea is to measure theframe-text and frame-frame similarity between the first and second half of a video. We computeATM loss only on the videos that have salient state-changes between frames. Experimental results, asshown in Table 1 and Figure 3, indicate that adding the DVDM objectives significantly improvesthe performance on both probing tasks, suggesting that the resulting representation from theKnowledge Patcher demonstrates a stronger understanding of action knowledge.",
-        "bbox": [
-            107.64099884033203,
-            420.9200744628906,
-            505.6518859863281,
-            620.5660400390625
+            317.4110107421875,
+            193.88931274414062,
+            505.7424621582031,
+            302.10906982421875
         ],
         "page": 6
     },
     {
         "type": "Section-header",
-        "content": "4Leveraging Patched Action Knowledge for Downstream Tasks",
+        "content": "4Disconnected Nature of Standard Adversarial Attacks",
         "bbox": [
             108.0,
-            640.2891235351562,
-            441.7772521972656,
-            652.2443237304688
+            326.9681396484375,
+            401.5360412597656,
+            338.92333984375
         ],
         "page": 6
     },
     {
         "type": "Text",
-        "content": "In \u00a7 3, we showed that the Knowledge Patcher (KP) and DVDM objectives together effectively learnaction knowledge-specific representations. However, these representations are highly specialized toaction understanding, which may not be optimal for general downstream tasks that require both objectand action understanding. Thus, the remaining challenge is to retain the general VL capabilities ofthe backbone while leveraging the newly learned action knowledge.",
+        "content": "At first glance, the images output by the LST algorithm may seem similar to those produced usingtargeted variants of standard adversarial attacks. In this section, we explore the connectivity ofhigh-confidence paths as induced by standard adversarial attacks, and show that adversariallyattacked source images are not linearly connected with high-confidence paths to their target image.In detail, let (x1, y1) and (x2, y2) be any two data samples from different classes (y1 \u0338= y2).A targeted adversarial attack [Carlini and Wagner, 2017] on input x1 with respect to class y2is formulated as solving \u03b512 = arg min\u03b512:||\u03b512||\u2264\u03f5 CE(f(x1 + \u03b512), y2).A related variant,called a feature-level targeted adversarial attack [Sabour et al., 2015] instead uses intermediatenetwork activations to craft image perturbations. If f|L(x) represents the network activationsfrom hidden layer L for an input x, then this attack attempts to match features by optimizing\u03b512 = arg min\u03b512:||\u03b512||\u2264\u03f5 ||f|L(x1+\u03b512)\u2212f|L(x2)||. The hidden layer (L) that is often selected cor-responds to pre-activations of the final fully-connected layer, and thus often induces misclassification.",
+        "bbox": [
+            107.64099884033203,
+            353.60003662109375,
+            505.74346923828125,
+            485.6358642578125
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "Using this framework, we can thus analyze the connectivity of high-confidence paths with respect toclass y2 between the target benign sample (x2) and adversarial examples (such as x1 + \u03b512 targetedtowards x2), using the linear interpolant path between the two. By doing so, we can analyze the levelset with respect to class y2 using targeted adversarial examples alone, though the perturbation utilizedis inherently norm-limited. In Fig 5, we plot the median confidence of a normally trained ResNet-50model over the linear interpolant paths for 1000 source-target pairs. We find that though the modelconfidence with respect to class y2 is high for both the target benign input x2 and the targetedadversarially attacked input x1 + \u03b512 (that is, at the end-points of the linear path), the model doesnot maintain high confidence over the linear interpolant path between the two, but sharply declinesto a valley of near zero-confidence over the path. For specific inputs, we often observe sharp, erraticdiminutions in target-class prediction confidence over the convex combination, with a non-trivialregion of near-zero confidence. This contrasts sharply with the existence of linear-connectivityobserved between a source image and LST blindspot images. We thus crucially note that adversarialattacks are standalone insufficient to study the structure of level sets of common vision models.However, we incorporate them into our proposed Level Set Traversal algorithm in a fruitful manner.",
         "bbox": [
             108.0,
-            666.7704467773438,
-            504.0015563964844,
-            720.193603515625
+            492.12432861328125,
+            505.7453918457031,
+            654.77490234375
+        ],
+        "page": 6
+    },
+    {
+        "type": "Section-header",
+        "content": "5Theoretical Analysis for Common Models",
+        "bbox": [
+            108.0,
+            674.8461303710938,
+            338.6038513183594,
+            686.8013305664062
+        ],
+        "page": 6
+    },
+    {
+        "type": "Text",
+        "content": "To better understand the geometry of level set submanifolds for a given prediction confidence thresh-old, we analyze the nature of confidence preserving perturbations in a few simplified model settings.",
+        "bbox": [
+            107.69100189208984,
+            701.5809326171875,
+            505.6579284667969,
+            722.3998413085938
         ],
         "page": 6
     },
@@ -1673,265 +628,111 @@
     },
     {
         "type": "Text",
-        "content": "Cross-Attn",
+        "content": "1) Linear Functional: First, consider the classification model to be a linear functional f : Rd \u2192R,that is, f(x1 + x2) = f(x1) + f(x2) and f(\u03bbx) = \u03bbf(x). Then, by the Riesz Representationtheorem, there exists a unique vector wf \u2208Rd such that f(x) = \u27e8wf, x\u27e9\u2200x \u2208Rd. We thus observethat for any vector v orthogonal to wf, f(x + v) = \u27e8wf, x + v\u27e9= \u27e8wf, x\u27e9+ \u27e8wf, v\u27e9= \u27e8wf, x\u27e9.Thus, in this setting, the level sets of f are (d \u22121) dimensional linear subspaces spanned by the set{v \u2208Rd : \u27e8w, v\u27e9= 0}. We observe that a similar argument can be extended to affine functions ofthe form f(x) = \u27e8wf, x\u27e9+ c, where c \u2208R.",
         "bbox": [
-            413.39105224609375,
-            123.05323028564453,
-            452.22125244140625,
-            132.23818969726562
+            107.25299835205078,
+            70.4317855834961,
+            505.7437438964844,
+            152.507568359375
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "VTC",
-        "bbox": [
-            422.94854736328125,
-            81.7899398803711,
-            436.10296630859375,
-            89.13790893554688
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "key\u00a0 \u00a0 valuequery",
-        "bbox": [
-            409.37451171875,
-            138.6366424560547,
-            467.47808837890625,
-            144.14761352539062
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "\ud83d\udd25",
-        "bbox": [
-            405.2294921875,
-            113.82421112060547,
-            415.99310302734375,
-            124.89759826660156
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "Paxion: Knowledge Fuser",
-        "bbox": [
-            387.322021484375,
-            160.5001678466797,
-            483.7877197265625,
-            170.21182250976562
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "backbone",
-        "bbox": [
-            369.3117980957031,
-            94.89242553710938,
-            395.4539794921875,
-            101.62806701660156
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "textfeature",
-        "bbox": [
-            373.0028991699219,
-            100.92153930664062,
-            391.7715148925781,
-            113.686279296875
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "Knowledge",
-        "bbox": [
-            367.74456787109375,
-            140.384765625,
-            397.570556640625,
-            147.1204071044922
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "Patcherfeatures",
-        "bbox": [
-            371.7696838378906,
-            146.4138641357422,
-            393.5528564453125,
-            159.17861938476562
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "pooledbackbone",
-        "bbox": [
-            475.3692321777344,
-            135.4518585205078,
-            501.51141357421875,
-            148.21661376953125
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "videofeature",
-        "bbox": [
-            479.06036376953125,
-            147.51007080078125,
-            497.82891845703125,
-            159.72671508789062
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "fusedvideofeature",
-        "bbox": [
-            478.7862854003906,
-            94.89242553710938,
-            497.55487060546875,
-            113.686279296875
-        ],
-        "page": 7
-    },
-    {
-        "type": "Caption",
-        "content": "Figure4:IllustrationoftheKnowledge Fuser component.",
-        "bbox": [
-            365.39801025390625,
-            181.99026489257812,
-            503.9955749511719,
-            202.93710327148438
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "One naive idea is to simply use the backbone embeddingswhenever the task is less action-centric. However, it is difficultto decide when to use the backbone without prior knowledgeof a given task. Further, using the backbone embeddings alonegives up the patched action knowledge that can be essentialfor certain downstream tasks, such as action recognition. Inthis section, we demonstrate that we can get the best of bothworlds by fusing the action-centric representation from theKnowledge Patcher with the object-centric representation fromthe frozen backbone.",
-        "bbox": [
-            107.64099884033203,
-            74.33230590820312,
-            355.43792724609375,
-            182.55105590820312
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "For this we introduce the second component of PAXION, theKnowledge Fuser (KF), illustrated in Figure 4 .The KFtakes the pooled visual feature (v\u2217) from the frozen VL backbone as the input query, and performscross-attention with the extracted visual tokens (V) from the Knowledge Patcher.",
-        "bbox": [
-            108.0,
-            188.90231323242188,
-            503.9953308105469,
-            235.80581665039062
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "4.1Experimental Setup",
-        "bbox": [
-            108.0,
-            249.62847900390625,
-            215.37689208984375,
-            259.591064453125
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "To evaluate the model\u2019s ability to retain general visual-linguistic capabilities while leveraging newlylearned action knowledge, we consider a spectrum of video-language tasks with different emphaseson object and action understanding. Specifically, we consider Video-Text Retrieval (SSv2-label [24]),which is object-centric and biased towards static appearances [59, 24]; Causal-Temporal VQA(NExT-QA [54]), which requires joint understanding of static objects and dynamic events; and Video-to-Action Retrieval (SSv2-template [24], Temporal-SSv2 [45]), which is highly action-centric andtemporal-intensive. A task is considered to be temporal-intensive if it cannot be solved without correcttemporal information [45], e.g., reversed or shuffled frames. For example, as illustrated in Figure 5,the Video-to-Action Retrieval task obscures object names in the text, making it impossible to aligntext with a video based solely on objects. Moreover, it is impossible to distinguish \u201capproaching\u201d and\u201cmoving away\u201d without considering the temporal ordering of the frames.",
-        "bbox": [
-            106.67500305175781,
-            269.720947265625,
-            505.6515808105469,
-            388.7480773925781
-        ],
-        "page": 7
-    },
-    {
-        "type": "Text",
-        "content": "For PAXION, we finetune the Knowledge Fuser jointly with the Knowledge Patcher on downstreamtasks using VTC loss. By default, the KP in PAXION is trained with VTC and DVDM losses (\u00a7 3.1).We include the baselines KP-Transformer FT [VTC] and KP-Perceiver FT [VTC], which are bothobtained by continuing to finetune the VTC-only KPs from Table 1 on downstream tasks. Additionally,we compare PAXION with Side-Tuning [61], a Parameter-Efficient Finetuning (PEFT) method thatcould serve as an alternative to the KF. For the Side-Tuning variant, we initialize the \"side-model\"using the same Knowledge Patcher as in PAXION and do alpha blending with the frozen backbone.Implementation and configuration details for each method and task can be found in Appendix D. Theresults are shown in Tables 2 and 3.",
+        "content": "We remark that by applying a first-order Taylor series approximation for general real-valued smoothfunctions, we observe near-affine behavior locally within a small neighborhood: f(x + \u03f5a) =f(x)+\u03f5\u27e8\u2207f(x), a\u27e9+O(\u03f52\u2225a\u22252). Thus locally, we observe that confidence-preserving perturbationscan arise from a (d \u22121) dimensional plane orthogonal to the gradient. Indeed we incorporate thisimplicitly in our proposed Level Set Traversal algorithm, wherein the orthogonal projection \u2206x\u22a5with respect to the local gradient is iteratively computed, and its relative success can partly beattributed to the orthogonal hyperplane having a large dimension, namely (d \u22121).",
         "bbox": [
             107.53199768066406,
-            395.0978088378906,
-            505.73968505859375,
-            492.4090881347656
+            158.3489532470703,
+            504.0041198730469,
+            233.74008178710938
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "Table 2: Video-Text Retrieval and Video-to-Action Retrieval results. R1 and R5 represent Recall@1and Recall@5 (in %) respectively. Subscripts vt2 and t2v represent video-to-text and text-to-video,respectively.",
+        "content": "Another related setting worthy of note is that of neural networks that utilize ReLU activations,which induces a piece-wise linear structure over tessellated subsets of the input domain. Thus, agiven output neuron of a ReLU network functionally has the form f(x) = \u27e8w, x\u27e9+ c within agiven tessellated region, and thus has a constant gradient within the same region. Further, betweentwo such adjacent regions, the two orthogonal (d \u22121) dimensional hyperplanes typically intersectover an affine space over dimension at least (d \u22122). Thus if x1, x2 are two inputs such that theirlinear interpolant path cuts across n distinct tessellated regions, the common intersection of theseorthogonal hyperplanes will typically be (d\u2212n) dimensional, indicating that there exist perturbationswhich lie in the common null-space of the gradients as defined along each tessellated region thatis crossed. Indeed in the following section, we demonstrate empirically for Residual Networksthat though the exact iterative path followed by the Level Set Traversal algorithm is discretized andnon-linear, the final outputs so found are often linearly connected through paths of high confidenceto the source image, thereby lying within the level set of the original source class. This indicatesthat the overlap of different (d \u22121) dimensional hyperplanes is non-trivial at a non-local scale inimage space, whereby we observe extended connected regions of high confidence.",
         "bbox": [
-            107.69100189208984,
-            497.8981628417969,
-            505.2428283691406,
-            529.6570434570312
+            107.64099884033203,
+            240.09030151367188,
+            505.2437438964844,
+            402.8550720214844
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "Method [Patcher Training Loss]",
+        "content": "2) Full-Rank Linear Transformations: Let us now consider a setting apart from classification, suchas regression, wherein the complete vector representation of the output is of principal interest. Letthe model be of the form f : Rd \u2192Rd, f(x) = Ax, where A \u2208Rd\u00d7d is a full-rank matrix. In thissetting, we observe that if f(x1) = f(x2) = Ax1 = Ax2, implying that A(x1 \u2212x2) = 0, the zero-vector. But since A is full-rank, this implies that x1 \u2212x2 = 0, i.e, x1 = x2. Thus, f is a bijectivefunction and has a trivial null space. Thus in this setting, we necessarily have to relax the problemto be that of identifying perturbations of large magnitude to the input that minimally change thefunction output: that is, we solve for minv\u0338=0\u2225Av\u22252",
         "bbox": [
-            121.83399963378906,
-            549.9570922851562,
-            224.66038513183594,
-            558.9235229492188
+            107.7509994506836,
+            409.2673645019531,
+            505.6529846191406,
+            499.6082763671875
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "Video-Text RetrievalVideo-to-Action RetrievalSSv2-labelSSv2-templateTemporal-SSv2R1v2t R5v2t R1t2v R5t2vR1R5R1R5",
+        "content": "\u2225v\u22252 . Indeed, let the Singular Value Decomposition(SVD) of the full rank matrix A be given by A = U\u03a3V T , where U, V are d \u00d7 d orthogonal matrices,and \u03a3 is a diagonal matrix consisting of the positive singular values \u03c3i for 1 \u2264i \u2264d, in descendingorder without loss of generality. Then, \u2225Av\u2225= \u2225U\u03a3V T v\u2225= \u2225U(\u03a3V T v)\u2225= \u2225\u03a3V T v\u2225since Uis an orthogonal matrix. Similarly, since V is orthogonal as well, let z = V T v, so that \u2225z\u2225= \u2225v\u2225.Thus, minv\u0338=0\u2225Av\u22252",
         "bbox": [
-            241.58799743652344,
-            539.9940795898438,
-            487.92510986328125,
-            569.7568359375
+            107.6709976196289,
+            488.903564453125,
+            505.7430419921875,
+            561.4273071289062
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "InternVideo Backbone18.839.919.940.05.615.911.235.8KP-Transformer FT [VTC]24.150.021.746.021.155.941.188.9KP-Perceiver FT [VTC]27.057.427.156.824.859.742.591.3Side-Tuning [61] [VTC+DVDM]30.959.226.653.122.255.150.290.9PAXION [VTC+DVDM]32.361.228.054.326.961.551.291.9",
+        "content": "\u2225v\u22252 = minz\u0338=0\u2225\u03a3z\u22252",
         "bbox": [
-            121.83399963378906,
-            575.169921875,
-            480.1153564453125,
-            623.9863891601562
+            170.43699645996094,
+            546.5799560546875,
+            261.53125,
+            563.2705688476562
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "4.2Analysis",
+        "content": "\u2225z\u22252 = minz \u2225\u03a3z\u22252such that zT z = 1. But since \u03a3 is diagonal,",
+        "bbox": [
+            242.44500732421875,
+            546.909912109375,
+            505.2460021972656,
+            563.2705688476562
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "minz \u2225\u03a3z\u22252 = \ufffddi=1 \u03c32i z2i , under the constraint that ||z||2 = 1. It is then easy to observe that theminimum value attained is \u03c32d = \u03c32min, and is attained when the input vector to f is the right-singularvector corresponding to the minimum singular value of A.",
+        "bbox": [
+            107.7509994506836,
+            562.9379272460938,
+            504.16497802734375,
+            599.7500610351562
+        ],
+        "page": 7
+    },
+    {
+        "type": "Text",
+        "content": "In this setting, we remark that adversarial perturbations, in contrast, can be formulated in thissetting as maxv\u0338=0\u2225Av\u22252",
         "bbox": [
             108.0,
-            648.7425537109375,
-            166.4007568359375,
-            658.7051391601562
+            606.1002807617188,
+            503.99737548828125,
+            631.0482788085938
         ],
         "page": 7
     },
     {
         "type": "Text",
-        "content": "PAXION improves joint understanding of objects and actions.Tables 2 and 3 show that PAXIONoutperforms both the Backbone and the VTC-only baselines (KP-*). This indicates that PAXIONnot only retains the original VL capabilities of the backbone, but also fills in the gap of the missingaction knowledge by fusing the original representations with the patched ones. We corroborate thisfinding by observing more significant improvements on action-centric and temporal-intensive tasks,",
+        "content": "\u2225v\u22252 , with the maximum value given by \u03c32max and attained by the right-singularvector corresponding to the maximum singular value of A, highlighting the complementary natureof the two problems as indicated previously in Section 2.1. Indeed, the condition number \u03ba of aninvertible matrix A is defined as \u03ba = \u03c3max/\u03c3min = \u2225A\u2225\u00b7 \u2225A\u22121\u2225. If condition number is largewith \u03ba \u226b1, the matrix A is said to be ill-conditioned, and induces an inescapable compromise:if \u03c3max = \u2225A\u2225\u22481 (as potentially expected in \"robust\" networks), then 1/\u03c3min = \u2225A\u22121\u2225\u226b1is necessarily large, thereby inducing extreme under-sensitivty along some dimensions; while if1/\u03c3min = \u2225A\u22121\u2225\u22481, then \u03c3max = \u2225A\u2225\u226b1 and the model is extremely over-sensitive, similarto the phenomenon of adversarial vulnerability.",
         "bbox": [
-            108.0,
-            668.7943725585938,
-            505.2468566894531,
-            722.4082641601562
+            107.50199890136719,
+            618.8677368164062,
+            505.37982177734375,
+            719.6870727539062
         ],
         "page": 7
     },
@@ -1948,331 +749,89 @@
     },
     {
         "type": "Text",
-        "content": "Table 3: Causal-Temporal VQA (NExT-QA) results (in accuracy %) on the validation set. Weconsider both the original and ATP-hard [7] split. We report accuracy for all questions or specifictypes of questions, including causal (C), temporal (T), and descriptive (D) questions.",
+        "content": "Table 1: Quantitative image distance metrics between output of Level Set Traversal and target images.",
         "bbox": [
             107.69100189208984,
-            73.99832153320312,
-            504.00323486328125,
-            105.85409545898438
+            71.2754135131836,
+            505.7428894042969,
+            81.13788604736328
         ],
         "page": 8
     },
     {
         "type": "Text",
-        "content": "Method [Patcher Training Loss]",
+        "content": "ModelsRMSE : \u00b5 \u00b1 \u03c3\u2113\u221edist: \u00b5 \u00b1 \u03c3SSIM: \u00b5 \u00b1 \u03c3LPIPS dist: \u00b5 \u00b1 \u03c3",
         "bbox": [
-            154.01800537109375,
-            126.15509796142578,
-            256.84539794921875,
-            135.1215057373047
+            140.73199462890625,
+            92.31380462646484,
+            494.00469970703125,
+            103.15619659423828
         ],
         "page": 8
     },
     {
         "type": "Text",
-        "content": "NExT-QAOriginalATP-hard [7]CTDallCTall",
+        "content": "ResNet-50 (Normal)0.008 \u00b1 0.0010.046 \u00b1 0.0200.990 \u00b1 0.0210.002 \u00b1 0.004ResNet-50 (AT)0.029 \u00b1 0.0080.746 \u00b1 0.1240.915 \u00b1 0.0410.057 \u00b1 0.037DeiT-S (Normal)0.011 \u00b1 0.0020.116 \u00b1 0.0300.973 \u00b1 0.0240.024 \u00b1 0.017DeiT-S (AT)0.046 \u00b1 0.0100.821 \u00b1 0.1170.898 \u00b1 0.0410.219 \u00b1 0.068",
         "bbox": [
-            278.62799072265625,
-            116.19208526611328,
-            452.37677001953125,
-            145.1654052734375
+            115.14299774169922,
+            108.42781829833984,
+            486.64984130859375,
+            151.47805786132812
         ],
         "page": 8
     },
     {
-        "type": "Text",
-        "content": "InternVideo Backbone43.338.652.543.227.027.327.1KP-Transformer FT [VTC]46.145.061.348.132.533.633.0KP-Perceiver FT [VTC]46.046.058.948.030.131.630.7Side-Tuning [61] [VTC+DVDM]54.952.069.856.337.436.036.8PAXION [VTC+DVDM]56.053.068.557.038.838.138.5",
-        "bbox": [
-            154.01800537109375,
-            151.36697387695312,
-            455.7430419921875,
-            200.18438720703125
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "\"Approaching something with your camera\"",
-        "bbox": [
-            259.05242919921875,
-            230.74020385742188,
-            393.78466796875,
-            238.61842346191406
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "Video-to-Action Retrieval (Temporal-SSv2)",
-        "bbox": [
-            255.4604034423828,
-            216.9891357421875,
-            397.0414123535156,
-            224.8673553466797
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "\"Moving away from something with your camera\"",
-        "bbox": [
-            258.7053527832031,
-            242.7283172607422,
-            411.06005859375,
-            250.60653686523438
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "45.1%",
-        "bbox": [
-            430.0813903808594,
-            231.0260009765625,
-            448.07415771484375,
-            238.11639404296875
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "46.8%",
-        "bbox": [
-            429.7287902832031,
-            243.0141143798828,
-            447.7215576171875,
-            250.10450744628906
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "60.0%",
-        "bbox": [
-            469.21905517578125,
-            231.0260009765625,
-            487.2118835449219,
-            238.11639404296875
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "23.5%\u2714\u2718",
-        "bbox": [
-            247.90171813964844,
-            228.31716918945312,
-            487.2118835449219,
-            252.02964782714844
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "PaxionVTC-Finetune",
-        "bbox": [
-            419.3383483886719,
-            253.2392578125,
-            488.4486083984375,
-            260.32965087890625
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "Ranking Scores",
-        "bbox": [
-            431.8222961425781,
-            216.6365509033203,
-            485.1199951171875,
-            224.5147705078125
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "Question:\u00a0\"what did thebaby do after heapproached nearthe camera?\"",
-        "bbox": [
-            246.2158966064453,
-            274.42816162109375,
-            296.86212158203125,
-            313.9983215332031
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "Causal-Temporal VQA (NExT-QA)",
-        "bbox": [
-            264.81512451171875,
-            264.94158935546875,
-            375.7022705078125,
-            272.81982421875
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "A. \"raised his hand to take the camera\"16.8%",
-        "bbox": [
-            306.5090637207031,
-            274.78076171875,
-            447.7828063964844,
-            282.39349365234375
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "PaxionVTC-Finetune",
-        "bbox": [
-            418.6331787109375,
-            316.3531494140625,
-            488.9775085449219,
-            323.44354248046875
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "Ranking Scores",
-        "bbox": [
-            431.8222961425781,
-            264.94158935546875,
-            485.1199951171875,
-            272.81982421875
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "B. \"bored\"C. \"turn back to the toy\"D. \"move his legs\"E. \"suck his thumb\"",
-        "bbox": [
-            306.5090637207031,
-            282.890380859375,
-            376.80419921875,
-            315.76129150390625
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "\u2714\u2718\u2718\u2718\u2718",
-        "bbox": [
-            298.1460266113281,
-            272.4468994140625,
-            304.88177490234375,
-            317.08209228515625
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "18.2%28.2%",
-        "bbox": [
-            431.78924560546875,
-            284.5531311035156,
-            447.7828063964844,
-            299.31787109375
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "21.7%15.1%",
-        "bbox": [
-            431.78924560546875,
-            301.4775390625,
-            447.7828063964844,
-            316.2422790527344
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "29.9%21.3%20.2%",
-        "bbox": [
-            470.9269104003906,
-            276.0909423828125,
-            486.92047119140625,
-            299.31787109375
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "18.2%10.4%",
-        "bbox": [
-            470.9269104003906,
-            301.4775390625,
-            486.92047119140625,
-            316.2422790527344
-        ],
-        "page": 8
-    },
-    {
-        "type": "Caption",
-        "content": "Figure 5: Qualitative examples on Temporal-SSv2 [45] and NExT-QA [54]. VTC-Finetune andPAXION refer to methods in row 3 and row 5 in Tables 2 and 3.",
+        "type": "Section-header",
+        "content": "6Quantifying Under-Sensitivity of Vision Models",
         "bbox": [
             108.0,
-            333.3290710449219,
-            503.9997253417969,
-            354.4540710449219
+            176.628173828125,
+            368.03759765625,
+            188.5833740234375
         ],
         "page": 8
     },
     {
         "type": "Text",
-        "content": "such as Temporal-SSv2 (+20% @R1), compared to object-centric tasks, such as SSv2-label (+11%@R1)2. The decomposed results on NExT-QA (Table 3) show that PAXION helps more on the Causal(C) and Temporal (T) types of questions, and on the harder subset (ATP-hard) where the temporaland action knowledge is emphasized.",
-        "bbox": [
-            107.08300018310547,
-            378.4400634765625,
-            504.8291320800781,
-            421.15606689453125
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "PAXION also outperforms Side-Tuning, highlighting the effectiveness of cross-attention for deepfusion. Specifically, the Knowledge Fuser allows us to attend to all extracted visual tokens from theKnowledge Patcher instead of only blending with pooled representations as in Side-Tuning.",
+        "content": "In this paper, we primarily consider standard vision datasets such as ImageNet [Deng et al., 2009]and CIFAR-10 [Krizhevsky et al., 2009] (latter in Section C of the Appendix). We thereby explorethe \u201cblind-spots\u201d of popular vision models such ResNet [He et al., 2016] and Vision Transformers[Dosovitskiy et al., 2020, Touvron et al., 2021]. Furthermore, we explore the connectivity of such levelsets on normally trained variants of such networks, as well as adversarially robust counterparts. Forthe latter, we analyze robust models trained adversarially against (4/255) \u2113\u221econstrained adversaries,available on RobustBench [Croce et al., 2021]. Specifically, we utilize a robust ResNet-50 modelfrom Salman et al. [2020] and a robust DeiT model from Singh et al. [2023]. We also fix thehyperparameters of LST for all models for a fair comparison (detailed in Section E of the Appendix).",
         "bbox": [
             108.0,
-            427.5072937011719,
-            504.00018310546875,
-            459.3630676269531
+            203.87078857421875,
+            505.73846435546875,
+            301.1561584472656
         ],
         "page": 8
     },
     {
         "type": "Text",
-        "content": "Qualitative analysis.Figure 5 shows two qualitative examples on Temporal-SSv2 and NExT-QA.For the Temporal-SSv2 example, we find that the finetuned Knowledge Patcher trained with onlyVTC fails to distinguish \u201cMoving away\u201d from \u201cApproaching,\u201d while PAXION trained with DVDMsuccessfully correlates the seemingly expanding object with the action \u201cApproaching\u201d. For the NExT-QA example, the question asks the model to identify what happens after the action \u201capproached nearthe camera\u201d. The VTC baseline incorrectly selects the action \u201cturn back to the toy,\u201d which happensbefore approaching the camera. On the other hand, PAXION successfully chooses \u201craised his hand totake the camera\u201d. This indicates a stronger understanding of both action dynamics in words suchas \u201capproach\u201d and the temporal ordering implied by words such as \u201cafter\u201d. Additional qualitativeexamples and analysis of failure cases can be found in Appendix E.",
+        "content": "Image Quality Metrics: We now proceed to quantitatively verify our observations in Section 3.First, to help quantify the deviation between target images and blindspot outputs generated by ourproposed Level Set Traversal algorithm, we utilize a combination of classical image metrics such asRMSE, \u2113\u221eand Structural Similarity Index (SSIM), and perceptual measures such as LPIPS distanceusing AlexNet [Zhang et al., 2018]. For SSIM, a higher value indicates a closer match, while for allother metrics, a lower value indicates a closer match. To calculate these metrics, we sample around1000 source images from ImageNet, and select five other random target images of different classesfor each source image. We present the image quality metrics for blindspots discovered by LST inTable 1. Here the standard deviation is over the different randomly chosen source and target images.",
+        "bbox": [
+            107.25299835205078,
+            307.43243408203125,
+            505.74468994140625,
+            404.83148193359375
+        ],
+        "page": 8
+    },
+    {
+        "type": "Text",
+        "content": "Metrics for Model Confidence: To evaluate the extent of the model invariance over the regionsbetween the LST outputs and the source image, we evaluate the model confidence with respect tothe source class over one-dimensional linear interpolant paths and over two-dimensional subspacesas well. For the latter, we evaluate the model confidence over the triangular convex hull obtained bylinear interpolation over three reference points, namely the source image and the two target blindspotimages produced using LST. For example, the input at the \u2018centroid\u2019 of the triangle formed by a sourceimage and pair of target blindspots is the arithmetic mean of the three images. We visualize these inFig 6, wherein the prediction confidence (in the range [0, 1]) assigned by the model with respect to thesource class is mapped to a continuous colorbar, with high-confidence points (close to 1.0) appearingas bright yellow, and low-confidence points (close to 0.0) appearing as dark violet. Specifically, weuse the following metrics: (a) Average Triangle (\u2206) Confidence: the mean of the model\u2019s sourceclass confidence over the enclosed triangle, (b) Average Triangle (\u2206) Fraction for various values of\u03b4: the fraction of inputs in the triangular region for which the model confidence is greater than psrc \u2212\u03b4,averaged over all possible target blindspot pairs, where psrc is the confidence of the source image, (c)Average Path Confidence: the average model confidence over all linear paths from the source imageto all LST blindspot images. The higher these metrics, the more confident, and thus invariant, themodel is in this region. For computing these metrics, we use linear interpolations between the sourceimages and the 5 LST outputs found previously for computing the distance metrics. We thus use\ufffd52\ufffd= 10 triangles for each source image, and sample this triangular area in an equispaced mannerto obtain 66 images for computation of the triangle (\u2206) metrics. We present these metrics in Table 2,along with the mean (and standard deviation) of model confidence on the source class images (psrc)for reference. Here, the standard deviation is over the different randomly chosen source images.",
         "bbox": [
             107.64099884033203,
-            467.3691711425781,
-            505.74420166015625,
-            575.5970458984375
+            411.09344482421875,
+            505.24481201171875,
+            651.4730224609375
         ],
         "page": 8
     },
     {
         "type": "Text",
-        "content": "Disentangling the impact of Knowledge Patching and Fusing.We further investigate the dis-entangled impact of the Knowledge Fuser (KF) and the Knowledge Patcher (KP) with two ablationsettings: (1) KP+Finetune, where instead of adding the KF, we directly finetune the KP trained withDVDM on downstream tasks; (2) KP[VTC]+KF, where we train the KP without DVDM and then addthe KF upon it. The results are shown in Figure 6, where the \u2206score represents the relative differenceof downstream task performance between our original PAXION (Row 5 in Tables 2 and 3) and the twoablated settings. The key observations are as follows: (1) The Knowledge Fuser contributes moreto object understanding. From Figure 6 Left, we find that the KF helps most when the tasks are moreobject-centric, e.g., SSv2-label. On highly action-centric tasks, e.g., Temporal-SSv2, directly usingthe action-knowledge-patched representation is preferable to fusing with the backbone representation.",
+        "content": "We can now quantitatively confirm many of the trends we qualitatively observed in Section 3. InTable 1, we observe that the LST outputs found for the models are closer to the targets as comparedto the adversarially trained models. The difference is particularly stark when comparing the \u2113\u221edistances, as \u2113\u221eis a particularly sensitive metric and is also the threat model against which themodels were trained. However, for other distance metrics like RMSE or LPIPS, the differencebetween normally trained and adversarially trained ResNet-50 is not as high. In particular, LPIPS",
         "bbox": [
-            107.64099884033203,
-            583.5194091796875,
-            505.7392883300781,
-            691.8058471679688
-        ],
-        "page": 8
-    },
-    {
-        "type": "Text",
-        "content": "2The scores are calculated between PAXION and KP-Perceiver FT [VTC]. The improvement @R1 for SSv2-label is averaged across R1v2t and R1t2v.",
-        "bbox": [
-            108.0,
-            701.6947021484375,
-            505.4859924316406,
-            723.162353515625
+            107.53199768066406,
+            657.8242797851562,
+            504.0030212402344,
+            722.4310302734375
         ],
         "page": 8
     },
@@ -2289,99 +848,66 @@
     },
     {
         "type": "Text",
-        "content": "moreaction-centric",
+        "content": "Table 2: Quantitative confidence metrics over the triangular convex hull (\u2206) of a given source imageand two target LST blindspot image-pairs and over linear interpolant paths between source andblindspot images. (For reference, a random classifier would have confidence of 0.001)",
         "bbox": [
-            110.5326919555664,
-            118.98724365234375,
-            131.04185485839844,
-            142.52122497558594
+            107.69100189208984,
+            71.68589782714844,
+            504.00244140625,
+            103.69705200195312
         ],
         "page": 9
     },
     {
         "type": "Text",
-        "content": "moreobject-centric",
+        "content": "ModelspsrcAvg \u2206Conf.Avg \u2206Frac. (\u00b5 \u00b1 \u03c3)Avg Path Conf.(\u00b5 \u00b1 \u03c3)(\u00b5 \u00b1 \u03c3)\u03b4 = 0.0\u03b4 = 0.1\u03b4 = 0.2\u03b4 = 0.3(\u00b5 \u00b1 \u03c3)",
         "bbox": [
-            110.5326919555664,
-            71.98197937011719,
-            131.04185485839844,
-            95.50341796875
+            131.6160888671875,
+            113.98503875732422,
+            499.5256652832031,
+            129.8692169189453
         ],
         "page": 9
     },
     {
         "type": "Text",
-        "content": "Finetune  v.s.  FuseVTC  v.s.  VTC+DVDM",
+        "content": "ResNet-50 (Normal)0.99 \u00b1 0.020.56 \u00b1 0.100.13 \u00b1 0.150.51 \u00b1 0.110.53 \u00b1 0.10.54 \u00b1 0.100.96 \u00b1 0.05ResNet-50 (AT)0.88 \u00b1 0.110.83 \u00b1 0.090.49 \u00b1 0.290.79 \u00b1 0.130.85 \u00b1 0.10.88 \u00b1 0.090.93 \u00b1 0.06DeiT-S (Normal)0.85 \u00b1 0.060.68 \u00b1 0.050.54 \u00b1 0.110.67 \u00b1 0.060.71 \u00b1 0.060.73 \u00b1 0.060.94 \u00b1 0.02DeiT-S (AT)0.76 \u00b1 0.080.59 \u00b1 0.070.20 \u00b1 0.090.43 \u00b1 0.140.63 \u00b1 0.150.76 \u00b1 0.120.73 \u00b1 0.06",
         "bbox": [
-            154.76702880859375,
-            157.622314453125,
-            466.3601379394531,
-            171.02085876464844
+            112.4724349975586,
+            134.20303344726562,
+            494.37359619140625,
+            166.41038513183594
         ],
         "page": 9
     },
     {
         "type": "Caption",
-        "content": "Figure 6: Left: Impact of the Knowledge Fuser. Comparing finetuning or fusing the same KnowledgePatcher trained with VTC+DVDM losses. Right: Impact of action knowledge patching (DVDM)on downstream tasks. Comparing fusing with the Knowledge Patcher trained with VTC loss onlyor VTC+DVDM losses. The \u2206score indicates the relative difference in terms of downstream taskaccuracy between our original PAXION and the ablated settings (detailed in \u00a74.2).",
+        "content": "Figure 6: Visualization of confidence of standard (top) and robust (bottom) ResNet-50 models overthe triangular convex hull of a source \u2018goose\u2019 image and two LST outputs for all pairs of target imagesfrom 4 other classes (same images as in Fig 3). In all source-target image pairs, the linear interpolantpath maintains high confidence, implying that the source image is linearly connected to the LSTtarget output in a star-like substructure within the level set. For adversarially trained models, weobserve that a significant fraction of the triangular hull lies in the superlevel sets of high-confidence,thereby indicating their under-sensitivity in regions far beyond their original threat model.",
         "bbox": [
             108.0,
-            177.5197296142578,
-            504.66375732421875,
-            231.21707153320312
+            337.0563659667969,
+            505.2450256347656,
+            412.455078125
         ],
         "page": 9
     },
     {
         "type": "Text",
-        "content": "(2) Patching with action knowledge contributes more to action-centric understanding. FromFigure 6 Right, we find that patching with action knowledge, i.e., training with DVDM objectives,contributes to better performance on downstream tasks that are more action-centric. Importantly,this result also indicates that the improvements observed in Tables 2 and 3 do not come solely fromadding the KF. However, if the task is more object-centric, such as SSv2-label, VTC training alone issufficient.",
+        "content": "distances for both models are low, which indirectly implies that the perceived difference betweenthe images for humans oracles is relatively low. This can also be confirmed by visually inspectingthe images in Fig 3. For the normally trained DeiT-S, the distance metrics are very similar to thatof ResNet-50, with slightly higher RMSE and LPIPS distances. However, the adversarially trained(AT) variant is significantly less under-sensitive compared to both its normal counterpart and theResNet-50 (AT). Specifically, the LPIPS distance metric is much greater for DeiT-S (AT), whichimplies there exist significant human-perceptible differences in the image. We can confirm this inFig 7, where the LST output for the adversarially trained DeiT-S model contains visible traces of thesource image. However, the LST outputs are still clearly much closer to the target class as comparedto the source, which indicates that there are still some significant blind spots in DeiT-S (AT).",
         "bbox": [
             107.6709976196289,
-            259.6234436035156,
-            505.2474670410156,
-            324.2980651855469
+            434.16229248046875,
+            504.0036926269531,
+            542.3820190429688
         ],
         "page": 9
     },
     {
         "type": "Text",
-        "content": "Robustness to domain shift.Learned action knowledge should be generalizable to unseen tasksand domains. However, this goal is difficult to realize with only domain-specific datasets likeSSv2[13] which contains only 174 actions. Therefore, in Appendix A we conduct experiments onzero-shot cross-domain transfer which demonstrate that the Knowledge Fuser in PAXION increasesrobustness to domain shift and can introduce positive transfer during zero-shot inference.",
+        "content": "However, when we measure the extent of model invariance over the convex regions enclosed betweenthe LST output and the target images, we find that adversarially trained ResNet-50 are overall moreinvariant (or under-sensitive) as compared to the normally trained variant. For example, the averagetriangle confidence for ResNet-50 (AT) is higher than that of normally trained ResNet-50, eventhough its source confidence is much lower. We also find that a much larger fraction of the triangularconvex hull lies within the superlevel set for psrc \u2212\u03b4 for ResNet-50 (AT) as compared to normalResNet-50 for all values of \u03b4. The average path confidence is much closer to psrc for ResNet-50(AT) as compared to normally trained ResNet-50. This quantitatively verifies the observation madein Fig 6 that adversarial training demonstrably exacerbates under-sensitivity. Interestingly, theserobust models are under-sensitive over subsets of the input domain that lie well beyond the originalthreat model used in its training. Moreover, between the normally trained DeiT-S and ResNet-50models, the former appears to be more invariant with greater average confidence over the triangularconvex hulls, despite having lower source image confidences psrc. For the robust variant of DeiT-Showever, the trend is less apparent due to the significantly lower average source image confidencespsrc. However the average relative \u2206fraction becomes higher for larger values of \u03b4 (such as 0.3),indicating that the superlevel sets are indeed expansive, albeit for lower confidence thresholds.",
         "bbox": [
-            108.0,
-            337.3741760253906,
-            504.0010986328125,
-            391.1180725097656
-        ],
-        "page": 9
-    },
-    {
-        "type": "Section-header",
-        "content": "5Related Work",
-        "bbox": [
-            108.0,
-            413.97515869140625,
-            197.09014892578125,
-            425.93035888671875
-        ],
-        "page": 9
-    },
-    {
-        "type": "Text",
-        "content": "Limitations of vision-language contrastive pretraining.Since CLIP [43], multimodal contrastivelosses have been the major pretraining objective for almost all recent image-language [43, 28, 27, 53,51, 58] and video-language models [55, 35, 10, 60, 12, 50, 57, 52]. Previous work [17, 59, 24, 5] hasrevealed the limitation of contrastive pretraining on fine-grained compositional understanding, verbunderstanding, and temporal reasoning. Concurrent work [37, 9] proposed mining hard negativesby rule-based heuristics or large-language models [8] to improve understanding of structured vision-language concepts and verbs. In this work, we focus on general action knowledge which includesverb understanding as well as action temporal understanding. Instead of directly tuning the entirebackbone as in [59, 37], PAXION enables fast action knowledge patching while also achievingimproved performance on both object-centric and action-centric downstream tasks. It is worth notingthat the hard negative mining method proposed by [37] can be easily incorporated with our VAC lossand could potentially result in stronger results.",
-        "bbox": [
-            107.7509994506836,
-            437.34234619140625,
-            505.65673828125,
-            567.3190307617188
-        ],
-        "page": 9
-    },
-    {
-        "type": "Text",
-        "content": "Parameter-efficient fine-tuning (PEFT).The recent surge in the size of large language models [6,41, 62, 40, 48] has spurred research on parameter-efficient fine-tuning [18, 31, 61, 46, 19, 33].Although current video-language models are smaller in scale, we aim to develop PAXION to beapplicable to larger models that we anticipate will emerge in the near future. The most similarPEFT-related work to ours is Side-Tuning [61], which we compare against in \u00a7 4.1. At a high-level,unlike existing PEFT methods that optimize for specific downstream tasks, PAXION is designed tolearn a specific type of knowledge that can benefit various downstream tasks (\u00a7 4.2). Furthermore, itis unclear how to aggregate the task-specific parameters, such as those in adapters [18] or low-ranklayers [19], to perform multiple tasks. The versatility of PAXION allows for its use in learning varioustypes of knowledge, each with its own Knowledge Patcher. Subsequently, the patched knowledge-specific representations can be fused together using one Knowledge Fuser. This work serves aproof-of-concept where we focus on action knowledge. We leave the exploration of other types ofknowledge and a more comprehensive comparison with PEFT methods as future work.",
-        "bbox": [
-            107.64099884033203,
-            581.5059204101562,
-            505.7433776855469,
+            107.6709976196289,
+            548.8843994140625,
+            505.2453918457031,
             722.4070434570312
         ],
         "page": 9
@@ -2399,46 +925,101 @@
     },
     {
         "type": "Section-header",
-        "content": "6Conclusions and Future Work",
+        "content": "7Discussion",
         "bbox": [
             108.0,
             72.78716278076172,
-            279.9277648925781,
+            179.7431640625,
             84.74236297607422
         ],
         "page": 10
     },
     {
         "type": "Text",
-        "content": "In this work we propose the ActionBench benchmark for evaluating models\u2019 understanding ofaction knowledge, and reveal a major deficiency in state-of-the-art video-language foundation modelsin this area. We then propose PAXION to patch in such action knowledge without compromisingmodels\u2019 existing capabilities. We show that PAXION significantly improves the model\u2019s actionunderstanding while achieving competitive or superior performance on downstream tasks. Onelimitation of this work is that we only experimented with patching one type of knowledge. We intendto address this in future work, where we plan to expand PAXION to patch broader aspects of physicalknowledge such as object affordances and mental simulation, and to explore fusion with multiplelearned Knowledge Patchers.",
+        "content": "While the existence of level sets alone is not very significant in itself, using the proposed LSTalgorithm, we find that the level set for common vision models is remarkably expansive \u2014 largeenough to contain inputs that look near-identical to arbitrary target images from other classes. Sincethe linear path from any given source image to LST blindspot outputs retain high model confidencethroughout, the level sets have a star-like connected substructure, where the number of \u2019limbs\u2019 orlinear protuberances of the star-like structure is extraordinarily large, plausibly as large as the numberof images in all other classes. This is considerably noteworthy since it indicates the hitherto unknownand unappreciated scale and extent of under-sensitivity in common vision models. Moreover thishints at the potential degree of difficulty towards adequately mitigating this phenomenon in practicalsettings. For instance, if the level set for images of class y1 contained sizable protuberances towardsonly one other class y2 alone, the problem could perhaps be tackled by introducing a contrastivetraining objective that encourages the network to better discriminate between y1 \u2212y2 image pairsby utilizing a denser sampling of related image augmentations, likely resulting in the diminutionof these specific \u2018directed\u2019 protuberances (assuming reasonable train-test generalization). But sincethe star-like connected substructure uncovered by LST implies that such protuberances exist towardsany generic image of any other class, such simple approaches will likely be ineffective and possiblycomputationally infeasible from a combinatorial perspective. Thus, based on the observationsuncovered with LST, we hypothesize that addressing the pervasive issue of under-sensitivity inconventional vision models might present a significantly non-trivial challenge.",
         "bbox": [
-            108.0,
-            97.05831909179688,
-            504.0016784667969,
-            194.36904907226562
+            107.53199768066406,
+            97.28231811523438,
+            504.3442077636719,
+            303.6830749511719
         ],
         "page": 10
     },
     {
         "type": "Section-header",
-        "content": "Acknowledgements",
+        "content": "8Related Work",
         "bbox": [
             108.0,
-            210.7921142578125,
-            206.83363342285156,
-            222.747314453125
+            320.3301696777344,
+            197.09014892578125,
+            332.2853698730469
         ],
         "page": 10
     },
     {
         "type": "Text",
-        "content": "This research is based upon work supported by U.S. DARPA ECOLE Program No. #HR00112390060and U.S. DARPA KAIROS Program No. FA8750-19-2-1004. The views and conclusions containedherein are those of the authors and should not be interpreted as necessarily representing the officialpolicies, either expressed or implied, of DARPA, or the U.S. Government. The U.S. Governmentis authorized to reproduce and distribute reprints for governmental purposes notwithstanding anycopyright annotation therein.",
+        "content": "The phenomenon of under-sensitivity in classification models was first pointed out by Jacobsen et al.[2018a], wherein they utilize a class of invertible neural networks called fully Invertible RevNets[Jacobsen et al., 2018b, Kingma and Dhariwal, 2018] to specifically craft input images that donot affect network activations at a given layer. In contrast, our proposed algorithm is applicable togeneral network architectures since we solely utilize input-gradients to perform the traversal overimage space. Tram\u00e8r et al. [2020] further demonstrated that due to the misalignment of \u2113p normbounded balls and the ideal set of human-imperceptible perturbations, networks that are adversariallytrained against such \u2113p bounded perturbations of relatively large radius are overly-smooth, andbecome excessively susceptible to invariance-based attacks within the same \u2113p radius. To findsuch images that lie within a given \u2113p threat model, but induce human oracles to change their labelassignment, the authors propose to identify the training image from another class closest in imagespace and apply a series of semantic-preserving transformations, and additionally use techniquessuch as realignment and spectral clustering. Given that these operations are fairly complex, the attackalgorithm is slow, with alignment alone requiring an amortized time of minutes per input example.In contrast, our proposed method relies upon gradient-backpropagation steps which are efficientlyparallelized across a minibatch of input images. Furthermore, our technique is seen to be successfulfor arbitrary source-target image pairs, since we do not utilize near-neighbour training images asthe target. On the theoretical front, Jayaram et al. [2020] analyze the problem of span-recovery ofneural networks given only oracle access to the network predictions. They characterize the feasibilityof span recovery, and thus approximations of the null space of networks in a provable setting, butremark that its success in practical settings is potentially limited to networks that are extremely thin.",
         "bbox": [
             107.69100189208984,
-            235.2154083251953,
-            504.3530578613281,
-            299.6470642089844
+            344.9345397949219,
+            505.7470703125,
+            573.0257568359375
         ],
         "page": 10
+    },
+    {
+        "type": "Section-header",
+        "content": "9Conclusions",
+        "bbox": [
+            108.0,
+            589.692138671875,
+            187.71728515625,
+            601.6473388671875
+        ],
+        "page": 10
+    },
+    {
+        "type": "Text",
+        "content": "In this work, we investigate the phenomenon of under-sensitivity of classification models, whereinlarge-magnitude semantic perturbations leave network activations unchanged. To identify such\u201cblind spots\u201d that occur within high-confidence level sets of common vision models, we developa novel Level Set Traversal algorithm that iteratively perturbs a given source image to appear visuallysimilar to an arbitrary target image by utilizing orthogonal projections with respect to the localinput gradient. The proposed method is applicable to general neural networks, and helps uncovera star-like substructure for the level and superlevel sets of CNNs and ViTs on common datasets. Wefurther observe that adversarially trained models retain a high-degree of confidence over regions thatlie far beyond its original threat model, with super-level sets that extend over a significant fractionof the triangular convex hull between a given source image and arbitrary pair of blindspot images.",
+        "bbox": [
+            106.67500305175781,
+            614.21728515625,
+            504.3529357910156,
+            722.4070434570312
+        ],
+        "page": 10
+    },
+    {
+        "type": "Text",
+        "content": "10",
+        "bbox": [
+            301.01898193359375,
+            742.3324584960938,
+            310.9815673828125,
+            752.2950439453125
+        ],
+        "page": 10
+    },
+    {
+        "type": "Section-header",
+        "content": "10Acknowledgements",
+        "bbox": [
+            108.0,
+            72.78716278076172,
+            230.74403381347656,
+            84.74236297607422
+        ],
+        "page": 11
+    },
+    {
+        "type": "Text",
+        "content": "This project was supported in part by a grant from an NSF CAREER AWARD 1942230, ONRYIP award N00014-22-1-2271, ARO\u2019s Early Career Program Award 310902-00001, Meta grant23010098, HR00112090132 (DARPA/RED), HR001119S0026 (DARPA/GARD), Army Grant No.W911NF2120076, NIST 60NANB20D134, the NSF award CCF2212458, an Amazon ResearchAward and an award from Capital One.",
+        "bbox": [
+            107.4219970703125,
+            97.20230102539062,
+            505.7420959472656,
+            150.87606811523438
+        ],
+        "page": 11
     }
 ]

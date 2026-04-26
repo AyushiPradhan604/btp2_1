@@ -51,6 +51,7 @@ Rules:
 - Narrative & Hook: Craft a strong central narrative thread (Problem -> Idea -> Why it matters). Include a strong "hook" to grab attention while preserving empirical rigor.
 - "Aha Moment": Clearly articulate what is novel, parameter setups, or critical outcomes, articulating exactly why this is different from prior constraints natively.
 - Summarize the section comprehensively using 5 to 7 meticulously dense bullet points (approx 25-40 words each) to preserve visual layout bounds and absolutely eliminate poster whitespace.
+- CRITICAL: DO NOT explicitly reference section numbers (e.g., "Section 4.1") or figure numbers (e.g., "Figure 2") in your bullet points. Present the information seamlessly without these direct references.
 - Never output blank lines or "Summary not available".
 '''
     actual_content = extract_section_text(section_name, section_content)
